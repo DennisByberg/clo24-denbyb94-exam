@@ -8,7 +8,7 @@ Main project repository containing all source code, documentation, and project r
 
 ## 📋 Project Management
 
-### [Project Backlog](https://github.com/users/DennisByberg/projects/11)
+### [Project Backlog](https://github.com/users/DennisByberg/projects/14)
 
 Public backlog for tracking development progress, tasks, and milestones throughout the project lifecycle.
 
