@@ -172,3 +172,7 @@ __marimo__/
 
 # GitHub Copilot Instructions
 .github/instructions/copilot-instructions.md
+
+# === Personal & Sensitive ===
+# Private folder for local notes, credentials, drafts, and personal files
+/private
