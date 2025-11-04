@@ -10,11 +10,11 @@ This document tracks all project deliverables and their respective deadlines for
 
 **Deadline:** Tuesday, October 28, 2025 - 23:59  
 **Platform:** Classroom  
-**Status:** ✅
+**Status:** Completed
 
 ### Projektplan v1 (sign-off)
 
-**Deadline:** Tuesday, November 4, 2025 - 12:00  
+**Deadline:** Tuesday, November 6, 2025 - 23:59  
 **Platform:** Classroom  
 **Status:** Pending...
 
