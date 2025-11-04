@@ -38,42 +38,40 @@ jobs:
 
             console.log(`Found issue numbers: ${Array.from(issueNumbers).join(', ')}`);
 
-            // GraphQL query to get organization/user projects
+            // Hard-code project number (from your screenshot: project #14)
+            const PROJECT_NUMBER = 14;
+
+            // GraphQL query to get project by number
             const projectQuery = `
-              query($owner: String!) {
-                repositoryOwner(login: $owner) {
-                  ... on User {
-                    projectsV2(first: 20) {
-                      nodes {
-                        id
-                        title
-                        number
-                      }
-                    }
-                  }
-                  ... on Organization {
-                    projectsV2(first: 20) {
-                      nodes {
-                        id
-                        title
-                        number
-                      }
-                    }
+              query($owner: String!, $number: Int!) {
+                user(login: $owner) {
+                  projectV2(number: $number) {
+                    id
+                    title
+                    number
                   }
                 }
               }
             `;
 
-            const projectData = await github.graphql(projectQuery, { owner });
-            const projects = projectData.repositoryOwner.projectsV2.nodes;
-
-            if (projects.length === 0) {
-              console.log('No projects found');
+            let projectData;
+            try {
+              projectData = await github.graphql(projectQuery, { 
+                owner, 
+                number: PROJECT_NUMBER 
+              });
+            } catch (error) {
+              console.log(`Error fetching project #${PROJECT_NUMBER}:`, error.message);
+              console.log('Make sure the project number is correct and the token has access');
               return;
             }
 
-            // Use first project (you can filter by name if needed)
-            const project = projects[0];
+            if (!projectData.user.projectV2) {
+              console.log(`Project #${PROJECT_NUMBER} not found`);
+              return;
+            }
+
+            const project = projectData.user.projectV2;
             console.log(`Using project: ${project.title} (#${project.number})`);
 
             // Get project fields and find the Status field
