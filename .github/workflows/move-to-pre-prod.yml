@@ -16,7 +16,6 @@ jobs:
           script: |
             const owner = context.repo.owner;
             const repo = context.repo.repo;
-            const sha = context.sha;
 
             // Get commits in this push
             const commits = context.payload.commits || [];
@@ -27,83 +26,215 @@ jobs:
               const matches = commit.message.match(/#(\d+)/g);
               if (matches) {
                 matches.forEach(match => {
-                  issueNumbers.add(match.substring(1));
+                  issueNumbers.add(parseInt(match.substring(1)));
                 });
               }
             }
 
+            if (issueNumbers.size === 0) {
+              console.log('No issue numbers found in commit messages');
+              return;
+            }
+
             console.log(`Found issue numbers: ${Array.from(issueNumbers).join(', ')}`);
 
-            // Get project information
-            const { data: projects } = await github.rest.projects.listForRepo({
-              owner,
-              repo,
-            });
+            // GraphQL query to get organization/user projects
+            const projectQuery = `
+              query($owner: String!) {
+                repositoryOwner(login: $owner) {
+                  ... on User {
+                    projectsV2(first: 20) {
+                      nodes {
+                        id
+                        title
+                        number
+                      }
+                    }
+                  }
+                  ... on Organization {
+                    projectsV2(first: 20) {
+                      nodes {
+                        id
+                        title
+                        number
+                      }
+                    }
+                  }
+                }
+              }
+            `;
+
+            const projectData = await github.graphql(projectQuery, { owner });
+            const projects = projectData.repositoryOwner.projectsV2.nodes;
 
             if (projects.length === 0) {
               console.log('No projects found');
               return;
             }
 
+            // Use first project (you can filter by name if needed)
             const project = projects[0];
-            console.log(`Using project: ${project.name}`);
+            console.log(`Using project: ${project.title} (#${project.number})`);
 
-            // Get project columns
-            const { data: columns } = await github.rest.projects.listColumns({
-              project_id: project.id,
-            });
+            // Get project fields and find the Status field
+            const fieldQuery = `
+              query($projectId: ID!) {
+                node(id: $projectId) {
+                  ... on ProjectV2 {
+                    fields(first: 20) {
+                      nodes {
+                        ... on ProjectV2SingleSelectField {
+                          id
+                          name
+                          options {
+                            id
+                            name
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            `;
 
-            const preProductionColumn = columns.find(col => 
-              col.name.toLowerCase().includes('pre') || 
-              col.name.toLowerCase().includes('prod')
+            const fieldData = await github.graphql(fieldQuery, { projectId: project.id });
+            const statusField = fieldData.node.fields.nodes.find(field => 
+              field.name && field.name.toLowerCase() === 'status'
             );
 
-            if (!preProductionColumn) {
-              console.log('Pre-Prod column not found');
-              console.log('Available columns:', columns.map(c => c.name).join(', '));
+            if (!statusField) {
+              console.log('Status field not found');
               return;
             }
 
-            console.log(`Moving to column: ${preProductionColumn.name}`);
+            const preProductionOption = statusField.options.find(opt => 
+              opt.name.toLowerCase().includes('pre') || 
+              opt.name.toLowerCase().includes('prod')
+            );
 
-            // Move each issue to Pre-Prod
+            if (!preProductionOption) {
+              console.log('Pre-Prod status not found');
+              console.log('Available statuses:', statusField.options.map(o => o.name).join(', '));
+              return;
+            }
+
+            console.log(`Moving to status: ${preProductionOption.name}`);
+
+            // Process each issue
             for (const issueNumber of issueNumbers) {
               try {
-                // Get issue to verify it exists
-                const { data: issue } = await github.rest.issues.get({
+                // Get issue node ID
+                const issueQuery = `
+                  query($owner: String!, $repo: String!, $number: Int!) {
+                    repository(owner: $owner, name: $repo) {
+                      issue(number: $number) {
+                        id
+                        title
+                        projectItems(first: 10) {
+                          nodes {
+                            id
+                            project {
+                              id
+                            }
+                          }
+                        }
+                      }
+                    }
+                  }
+                `;
+
+                const issueData = await github.graphql(issueQuery, {
                   owner,
                   repo,
-                  issue_number: parseInt(issueNumber),
+                  number: issueNumber
                 });
 
-                // Find the card for this issue across all columns
-                let cardId = null;
-                for (const column of columns) {
-                  const { data: cards } = await github.rest.projects.listCards({
-                    column_id: column.id,
-                  });
-                  
-                  const card = cards.find(c => 
-                    c.content_url && c.content_url.endsWith(`/issues/${issueNumber}`)
-                  );
-                  
-                  if (card) {
-                    cardId = card.id;
-                    console.log(`Found card ${cardId} in column ${column.name}`);
-                    break;
-                  }
+                const issue = issueData.repository.issue;
+                if (!issue) {
+                  console.log(`Issue #${issueNumber} not found`);
+                  continue;
                 }
 
-                if (cardId) {
-                  // Move the card
-                  await github.rest.projects.moveCard({
-                    card_id: cardId,
-                    position: 'top',
-                    column_id: preProductionColumn.id,
+                // Find project item for this issue in our project
+                const projectItem = issue.projectItems.nodes.find(
+                  item => item.project.id === project.id
+                );
+
+                if (!projectItem) {
+                  console.log(`Issue #${issueNumber} not in project, adding it first`);
+                  
+                  // Add issue to project
+                  const addMutation = `
+                    mutation($projectId: ID!, $contentId: ID!) {
+                      addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                        item {
+                          id
+                        }
+                      }
+                    }
+                  `;
+
+                  const addResult = await github.graphql(addMutation, {
+                    projectId: project.id,
+                    contentId: issue.id
                   });
-                  console.log(`Moved issue #${issueNumber} to Pre-Prod`);
+
+                  const newItemId = addResult.addProjectV2ItemById.item.id;
+
+                  // Update status
+                  const updateMutation = `
+                    mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $value: String!) {
+                      updateProjectV2ItemFieldValue(
+                        input: {
+                          projectId: $projectId
+                          itemId: $itemId
+                          fieldId: $fieldId
+                          value: { singleSelectOptionId: $value }
+                        }
+                      ) {
+                        projectV2Item {
+                          id
+                        }
+                      }
+                    }
+                  `;
+
+                  await github.graphql(updateMutation, {
+                    projectId: project.id,
+                    itemId: newItemId,
+                    fieldId: statusField.id,
+                    value: preProductionOption.id
+                  });
+
+                  console.log(`Added and moved issue #${issueNumber} to Pre-Prod`);
                 } else {
-                  console.log(`Card not found for issue #${issueNumber}`);
+                  // Update existing project item status
+                  const updateMutation = `
+                    mutation($projectId: ID!, $itemId: ID!, $fieldId: ID!, $value: String!) {
+                      updateProjectV2ItemFieldValue(
+                        input: {
+                          projectId: $projectId
+                          itemId: $itemId
+                          fieldId: $fieldId
+                          value: { singleSelectOptionId: $value }
+                        }
+                      ) {
+                        projectV2Item {
+                          id
+                        }
+                      }
+                    }
+                  `;
+
+                  await github.graphql(updateMutation, {
+                    projectId: project.id,
+                    itemId: projectItem.id,
+                    fieldId: statusField.id,
+                    value: preProductionOption.id
+                  });
+
+                  console.log(`Moved issue #${issueNumber} to Pre-Prod`);
                 }
               } catch (error) {
                 console.error(`Error processing issue #${issueNumber}:`, error.message);
