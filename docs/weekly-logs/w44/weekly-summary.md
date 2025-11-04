@@ -1,4 +1,4 @@
-# Week 44 – Project Setup and Documentation Structure
+# Week 44 - Project Foundation and Initial Setup
 
 ## Overview
 
@@ -22,6 +22,8 @@ The first week focused on establishing a solid project foundation with clear str
 Getting the basic project structure in place feels really good and motivating. Having a clear foundation with organized folders, documentation standards, and initial planning gives me confidence to move forward with the actual development work.
 
 The chosen folder structure with separate `frontend/` and `backend/` folders prepares for a clear separation of concerns when coding begins. The weekly structure with separate checklist and summary files will help maintain focus and track progress systematically throughout the entire project.
+
+## Acknowledgments
 
 Special thanks to [Niklas Häll](https://github.com/mymh13) who gave me the idea to use Architecture Decision Records (ADR) and showed me how to structure projects professionally.
 

@@ -1,19 +1,16 @@
-# Checklist – Week 45
+# Sprint Checklist – Week 45
 
-## Before planning clinic (Monday)
+## Weekly Tasks (Ongoing)
 
 - [x] I have read feedback from mini-idea.
 - [x] Git repo and workspace set up.
-- [ ] Students have sketched initial backlog (user stories or todo-list).
+- [x] Populate project backlog with tasks.
+- [x] Create project plan document.
 
-## Tuesday – plan review
+## Thursday (Nov 6)
 
-- [ ] 30 min per student/group (register decisions in log).
-- [ ] Update risk log directly in document.
-- [ ] Mark plans as "Approved" or "Complete" in Classroom.
+- [ ] Submit backlog and project plan to Classroom (deadline 23:59).
 
-## Friday – sprint demo
+## Friday (Nov 7)
 
-- [ ] Schedule ready and communicated.
-- [ ] Run 5-min demo + 2 min questions per student.
-- [ ] Note highlights and blockers for next week.
+- [ ] Finalize weekly summary (Overview, Reflection, Acknowledgments, Next Steps).
