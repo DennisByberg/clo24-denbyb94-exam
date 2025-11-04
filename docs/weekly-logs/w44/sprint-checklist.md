@@ -1,4 +1,4 @@
-# Sprint Checklist – Week 44
+# Week 44 - Sprint Checklist
 
 ## Weekly Tasks (Ongoing)
 

@@ -1,1 +1,56 @@
-# clo24-denbyb94-exam
+# Full-stack Web Platform for ESS Group
+
+_description coming soon..._
+
+## Tech Stack / ADRs
+
+### Frontend
+
+- **[ADR-001-frontend](docs/adr/ADR-001-frontend.md)**
+
+### Backend
+
+_backend tech stack / adrs coming soon..._
+
+### DevOps & Tools
+
+_DevOps & Tools tech stack / adrs coming soon..._
+
+## Project Structure
+
+```
+.
+├── .github/
+│   └── workflows/
+├── backend/
+├── frontend/
+├── docs/
+│   ├── adr/
+│   ├── resources/
+│   └── weekly-logs/
+├── .gitignore
+├── LICENSE
+└── README.md
+```
+
+## Resources
+
+- **[Project Idea & Vision](docs/resources/idea-description.md)** - Original project proposal and objectives
+- **[Project Plan](docs/resources/project-plan.md)** - Detailed project roadmap and milestones
+- **[Course Objectives](docs/resources/course-objectives.md)** - Learning goals and expectations
+- **[Deadlines](docs/resources/deadlines.md)** - Course deliverables and timeline
+
+## Weekly Logs
+
+- **[w44](docs/weekly-logs/w44/)** - Project Foundation and Initial Setup
+- **[w45](docs/weekly-logs/w45/)**
+
+## Project Links
+
+- **[GitHub Repository](https://github.com/DennisByberg/clo24-denbyb94-exam)** - Source code and project resources
+- **[Project Board](https://github.com/users/DennisByberg/projects/14)** - Task tracking and development progress
+- **[.gitignore](.gitignore)** - Git ignore configuration
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
