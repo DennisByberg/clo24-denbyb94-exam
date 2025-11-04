@@ -1,7 +1,7 @@
 # ADR-001: Frontend Technology Stack
 
 **Status:** Accepted  
-**Date:** 2024-10-31  
+**Date:** 2025-10-31  
 **Decision Makers:** Dennis Byberg
 
 ## Context and Problem Statement
