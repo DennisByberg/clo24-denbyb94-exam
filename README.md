@@ -2,7 +2,7 @@
 
 _description coming soon..._
 
-## Tech Stack / ADRs
+## 🚀 Tech Stack / ADRs
 
 ### Frontend
 
@@ -16,7 +16,7 @@ _backend tech stack / adrs coming soon..._
 
 _DevOps & Tools tech stack / adrs coming soon..._
 
-## Project Structure
+## 📁 Project Structure
 
 ```
 .
@@ -33,24 +33,24 @@ _DevOps & Tools tech stack / adrs coming soon..._
 └── README.md
 ```
 
-## Resources
+## 📚 Resources
 
 - **[Project Idea & Vision](docs/resources/idea-description.md)** - Original project proposal and objectives
 - **[Project Plan](docs/resources/project-plan.md)** - Detailed project roadmap and milestones
 - **[Course Objectives](docs/resources/course-objectives.md)** - Learning goals and expectations
 - **[Deadlines](docs/resources/deadlines.md)** - Course deliverables and timeline
 
-## Weekly Logs
+## 📝 Weekly Logs
 
 - **[w44](docs/weekly-logs/w44/)** - Project Foundation and Initial Setup
 - **[w45](docs/weekly-logs/w45/)**
 
-## Project Links
+## 🔗 Project Links
 
 - **[GitHub Repository](https://github.com/DennisByberg/clo24-denbyb94-exam)** - Source code and project resources
 - **[Project Board](https://github.com/users/DennisByberg/projects/14)** - Task tracking and development progress
 - **[.gitignore](.gitignore)** - Git ignore configuration
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
