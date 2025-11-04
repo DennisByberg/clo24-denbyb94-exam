@@ -1,4 +1,4 @@
-# Sprint Checklist – Week 45
+# Week 45 - Sprint Checklist
 
 ## Weekly Tasks (Ongoing)
 
