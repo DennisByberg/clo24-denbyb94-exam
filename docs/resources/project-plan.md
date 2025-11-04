@@ -1,7 +1,7 @@
 # Project Plan – Full-stack Web Platform for ESS Group
 
 **Student:** Dennis Byberg  
-**Date:** 2024-11-03
+**Date:** 2025-11-03
 
 ## 1. Project Overview
 
@@ -121,6 +121,6 @@
 
 ## 10. Approval
 
-- **Student:** Dennis Byberg – 2024-11-03
-- **Supervisor:** Marcus Medina Ramirez - 2024-11-03
+- **Student:** Dennis Byberg – 2025-11-03
+- **Supervisor:** Marcus Medina Ramirez - 2025-11-03
 - **Comments/Conditions:**
