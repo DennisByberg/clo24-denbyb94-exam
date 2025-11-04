@@ -1,0 +1,111 @@
+name: Move to Pre-Prod on Dev Push
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  move-to-pre-prod:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Move linked issues to Pre-Prod
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const owner = context.repo.owner;
+            const repo = context.repo.repo;
+            const sha = context.sha;
+
+            // Get commits in this push
+            const commits = context.payload.commits || [];
+
+            // Extract issue numbers from commit messages
+            const issueNumbers = new Set();
+            for (const commit of commits) {
+              const matches = commit.message.match(/#(\d+)/g);
+              if (matches) {
+                matches.forEach(match => {
+                  issueNumbers.add(match.substring(1));
+                });
+              }
+            }
+
+            console.log(`Found issue numbers: ${Array.from(issueNumbers).join(', ')}`);
+
+            // Get project information
+            const { data: projects } = await github.rest.projects.listForRepo({
+              owner,
+              repo,
+            });
+
+            if (projects.length === 0) {
+              console.log('No projects found');
+              return;
+            }
+
+            const project = projects[0];
+            console.log(`Using project: ${project.name}`);
+
+            // Get project columns
+            const { data: columns } = await github.rest.projects.listColumns({
+              project_id: project.id,
+            });
+
+            const preProductionColumn = columns.find(col => 
+              col.name.toLowerCase().includes('pre') || 
+              col.name.toLowerCase().includes('prod')
+            );
+
+            if (!preProductionColumn) {
+              console.log('Pre-Prod column not found');
+              console.log('Available columns:', columns.map(c => c.name).join(', '));
+              return;
+            }
+
+            console.log(`Moving to column: ${preProductionColumn.name}`);
+
+            // Move each issue to Pre-Prod
+            for (const issueNumber of issueNumbers) {
+              try {
+                // Get issue to verify it exists
+                const { data: issue } = await github.rest.issues.get({
+                  owner,
+                  repo,
+                  issue_number: parseInt(issueNumber),
+                });
+
+                // Find the card for this issue across all columns
+                let cardId = null;
+                for (const column of columns) {
+                  const { data: cards } = await github.rest.projects.listCards({
+                    column_id: column.id,
+                  });
+                  
+                  const card = cards.find(c => 
+                    c.content_url && c.content_url.endsWith(`/issues/${issueNumber}`)
+                  );
+                  
+                  if (card) {
+                    cardId = card.id;
+                    console.log(`Found card ${cardId} in column ${column.name}`);
+                    break;
+                  }
+                }
+
+                if (cardId) {
+                  // Move the card
+                  await github.rest.projects.moveCard({
+                    card_id: cardId,
+                    position: 'top',
+                    column_id: preProductionColumn.id,
+                  });
+                  console.log(`Moved issue #${issueNumber} to Pre-Prod`);
+                } else {
+                  console.log(`Card not found for issue #${issueNumber}`);
+                }
+              } catch (error) {
+                console.error(`Error processing issue #${issueNumber}:`, error.message);
+              }
+            }
