@@ -1,10 +1,10 @@
-# 🎯 Course Objectives
+# Course Objectives
 
-## Overview
+## 📋 Overview
 
 This document outlines the key learning objectives and expectations for the cloud development course project.
 
-## Course Goals
+## 🎯 Course Goals
 
 ### 1. Problem Definition & Scope
 

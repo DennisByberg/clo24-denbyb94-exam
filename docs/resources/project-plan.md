@@ -3,14 +3,14 @@
 **Student:** Dennis Byberg  
 **Date:** 2025-11-03
 
-## 1. Project Overview
+## 📖 Project Overview
 
 - **Title:** Full-stack Web Platform for ESS Group's New Facility – From .NET to Python
 
 - **Summary:**  
   Develop a web platform for ESS Group's new restaurant/spa/event facility with booking system and user management. Learn Python/FastAPI before LIA internship at ESS Group.
 
-## 2. Goals & Deliverables
+## 🎯 Goals & Deliverables
 
 - **Main Goal:**  
   Build a functional web platform with booking system and user management in Python/FastAPI.
@@ -24,12 +24,12 @@
   - **Week 50 (11/12):** Azure deployment, final report
   - **Week 51 (19/12):** Demo & opposition
 
-## 3. Stakeholders & Target Audience
+## 👥 Stakeholders & Target Audience
 
 - **Primary audience:** End users (customers/members/administrators)
 - **Secondary stakeholders:** ESS Group (LIA host), Marcus Medina Ramirez (supervisor)
 
-## 4. Scope
+## 🔍 Scope
 
 ### Features Included:
 
@@ -50,7 +50,7 @@
 - SMS/email notifications
 - Native mobile app
 
-## 5. Milestones & Timeline
+## 📅 Milestones & Timeline
 
 | Week   | Milestone                 | Deliverable / Activity                                                                |
 | ------ | ------------------------- | ------------------------------------------------------------------------------------- |
@@ -63,7 +63,7 @@
 | **50** | Testing & Deployment      | Azure deployment, CI/CD pipeline, bugfixing, final report                             |
 | **51** | Presentation & Reflection | Demo, opposition, final reflection                                                    |
 
-## 6. Risk Log
+## ⚠️ Risk Log
 
 | Risk                          | Probability | Impact | Mitigation / Plan B                                  |
 | ----------------------------- | ----------- | ------ | ---------------------------------------------------- |
@@ -74,7 +74,7 @@
 
 **Supervisor feedback:** _"Go hard with SRP and it will work out"_
 
-## 7. Resources & Tools
+## 🛠️ Resources & Tools
 
 - **Code repo:** [`clo24-denbyb94-exam`](https://github.com/DennisByberg/clo24-denbyb94-exam)
 - **Branch strategy:** `main` (prod), `dev` (integration), feature branches
@@ -90,7 +90,7 @@
   - **Husky** - Pre-commit linting
 - **Documentation:** ADR, Weekly logs, GitHub Project #14
 
-## 8. Quality Assurance
+## ✅ Quality Assurance
 
 - **Test Strategy:**
 
@@ -108,7 +108,7 @@
   - README with setup instructions
   - API documentation (FastAPI auto-docs)
 
-## 9. Demo & Presentation Plan
+## 🎬 Demo & Presentation Plan
 
 - **Demonstrate:**
 
@@ -119,7 +119,7 @@
 - **Test Accounts:**
   - Customer & Admin
 
-## 10. Approval
+## ✍️ Approval
 
 - **Student:** Dennis Byberg – 2025-11-03
 - **Supervisor:** Marcus Medina Ramirez - 2025-11-03
