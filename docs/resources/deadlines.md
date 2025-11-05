@@ -16,7 +16,7 @@ This document tracks all project deliverables and their respective deadlines for
 
 **Deadline:** Tuesday, November 6, 2025 - 23:59  
 **Platform:** Classroom  
-**Status:** ⏳ Pending...
+**Status:** ✅ Completed
 
 ### Förstudie/PoC + risklogg & progresslogg
 

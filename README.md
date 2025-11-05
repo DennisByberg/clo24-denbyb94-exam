@@ -6,7 +6,12 @@ _description coming soon..._
 
 ### Frontend
 
-- **[ADR-001-frontend](docs/adr/ADR-001-frontend.md)**
+- **[ADR-002: React](docs/adr/ADR-002-react.md)** - Component-based UI library
+- **[ADR-003: TypeScript](docs/adr/ADR-003-typescript.md)** - Static type checking
+- **[ADR-004: Next.js](docs/adr/ADR-004-nextjs.md)** - SSR/SSG and routing
+- **[ADR-005: Mantine](docs/adr/ADR-005-mantine.md)** - UI component library
+- **[ADR-008: TanStack Query](docs/adr/ADR-008-tanstack-query.md)** - Data fetching and caching
+- **[ADR-009: Zod](docs/adr/ADR-009-zod.md)** - Runtime validation and type safety
 
 ### Backend
 
@@ -14,7 +19,10 @@ _backend tech stack / adrs coming soon..._
 
 ### DevOps & Tools
 
-_DevOps & Tools tech stack / adrs coming soon..._
+- **[ADR-001: GitHub Actions](docs/adr/ADR-001-github-actions.md)** - CI/CD pipeline
+- **[ADR-006: Bun](docs/adr/ADR-006-bun.md)** - Fast package management
+- **[ADR-007: Husky](docs/adr/ADR-007-husky.md)** - Automated code quality checks
+- **[ADR-010: ESLint and Prettier](docs/adr/ADR-010-eslint-prettier.md)** - Code quality and formatting
 
 ## 📁 Project Structure
 
