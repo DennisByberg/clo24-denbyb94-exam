@@ -22,6 +22,7 @@ _backend tech stack / adrs coming soon..._
 - **[ADR-001: GitHub Actions](docs/adr/ADR-001-github-actions.md)** - CI/CD pipeline
 - **[ADR-006: Bun](docs/adr/ADR-006-bun.md)** - Fast package management
 - **[ADR-007: Husky](docs/adr/ADR-007-husky.md)** - Automated code quality checks
+- **[ADR-010: ESLint and Prettier](docs/adr/ADR-010-eslint-prettier.md)** - Code quality and formatting
 
 ## 📁 Project Structure
 
