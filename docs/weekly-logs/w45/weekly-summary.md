@@ -7,6 +7,7 @@ _Will be completed by Friday, November 7, 2025_
 ## ✅ Completed Activities
 
 - Created and finalized project plan document with supervisor feedback
+- Submitted backlog and project plan to Classroom before deadline
 - Setup Developent Branch
 - Populated GitHub project backlog with tasks
 - Organized backlog into sprints with proper status columns (Todo, In Progress, Pre-Prod, Done)

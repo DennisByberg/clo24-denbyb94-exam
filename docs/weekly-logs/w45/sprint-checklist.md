@@ -9,7 +9,7 @@
 
 ## 📅 Thursday (Nov 6)
 
-- [ ] Submit backlog and project plan to Classroom (deadline 23:59).
+- [x] Submit backlog and project plan to Classroom (deadline 23:59).
 
 ## 📅 Friday (Nov 7)
 
