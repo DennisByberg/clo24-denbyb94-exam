@@ -1,178 +1,32 @@
-# === Python ===
-__pycache__/
-*.py[codz]
-*$py.class
-*.so
-
-# Distribution / packaging
-.Python
-build/
-develop-eggs/
-dist/
-downloads/
-eggs/
-.eggs/
-lib/
-lib64/
-parts/
-sdist/
-var/
-wheels/
-share/python-wheels/
-*.egg-info/
-.installed.cfg
-*.egg
-MANIFEST
-
-# PyInstaller
-*.manifest
-*.spec
-
-# Installer logs
-pip-log.txt
-pip-delete-this-directory.txt
-
-# Testing
-htmlcov/
-.tox/
-.nox/
-.coverage
-.coverage.*
-.cache
-nosetests.xml
-coverage.xml
-*.cover
-*.py.cover
-.hypothesis/
-.pytest_cache/
-cover/
-
-# Translations
-*.mo
-*.pot
-
-# Django
-*.log
-local_settings.py
-db.sqlite3
-db.sqlite3-journal
-
-# Flask
-instance/
-.webassets-cache
-
-# Scrapy
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-.pybuilder/
-target/
-
-# Jupyter
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# === Package Managers ===
-# pipenv
-#Pipfile.lock
-
-# UV
-#uv.lock
-
-# poetry
-#poetry.lock
-#poetry.toml
-
-# pdm
-#pdm.lock
-#pdm.toml
-.pdm-python
-.pdm-build/
-
-# pixi
-#pixi.lock
-.pixi
-
-# PEP 582
-__pypackages__/
-
-# === Background Tasks ===
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath
-*.sage.py
-
 # === Environments ===
 .env
 .envrc
-.venv
-env/
-venv/
-ENV/
-env.bak/
-venv.bak/
+.env.local
+.env.*.local
 
 # === IDEs & Editors ===
-# PyCharm
-#.idea/
+# VSCode (project-wide settings)
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
 
-# VSCode
-# .vscode/
-
-# Spyder
-.spyderproject
-.spyproject
-
-# Rope
-.ropeproject
+# JetBrains IDEs
+.idea/
 
 # Cursor
 .cursorignore
 .cursorindexingignore
 
-# === Static Analysis ===
-# mypy
-.mypy_cache/
-.dmypy.json
-dmypy.json
-
-# Pyre
-.pyre/
-
-# pytype
-.pytype/
-
-# Ruff
-.ruff_cache/
-
-# === Other Tools ===
-# mkdocs
-/site
-
-# Cython
-cython_debug/
-
-# Abstra
-.abstra/
-
-# PyPI
-.pypirc
-
-# Marimo
-marimo/_static/
-marimo/_lsp/
-__marimo__/
-
-# GitHub Copilot Instructions
-.github/instructions/copilot-instructions.md
+# OS Files
+.DS_Store
+*.swp
+*.swo
+*~
+Thumbs.db
 
 # === Personal & Sensitive ===
 # Private folder for local notes, credentials, drafts, and personal files
 /private
+
+# GitHub Copilot Instructions
+.github/instructions/copilot-instructions.md
