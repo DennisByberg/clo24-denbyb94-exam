@@ -41,6 +41,12 @@ _backend tech stack / adrs coming soon..._
 └── README.md
 ```
 
+## ‍💻 Developer Guides
+
+- **[Frontend Developer Guide](frontend/README.md)** - Setup and development workflow for frontend
+
+_Backend guide coming soon..._
+
 ## 📚 Resources
 
 - **[Project Idea & Vision](docs/resources/idea-description.md)** - Original project proposal and objectives
