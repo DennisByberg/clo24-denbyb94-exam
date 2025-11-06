@@ -1,6 +1,31 @@
-# Full-stack Web Platform for ESS Group
+# CLO24 Exam Project - Cloud Development
 
-_description coming soon..._
+This repository contains the exam project for the CLO24 Cloud Development course, where students independently deepen and broaden their technical competencies by learning new technologies not previously covered in the program.
+
+**Project:** Full-stack web platform for ESS Group's new facility, transitioning from .NET to Python/FastAPI to prepare for upcoming internship (LIA). The project involves building a booking system with user management, deployed on Azure App Service.
+
+Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/wiki)** for comprehensive project documentation including weekly summaries, course checklists, time tracking, project plan, and resources.
+
+## ‍💻 Developer Guides
+
+- **[Frontend Developer Guide](frontend/README.md)** - Setup and development workflow for frontend
+
+## 📁 Project Structure
+
+```
+.
+├── .github/
+│   └── workflows/
+├── backend/
+├── frontend/
+├── docs/
+│   ├── adr/
+│   ├── resources/
+│   └── weekly-logs/
+├── .gitignore
+├── LICENSE
+└── README.md
+```
 
 ## 🚀 Tech Stack / ADRs
 
@@ -23,47 +48,6 @@ _backend tech stack / adrs coming soon..._
 - **[ADR-006: Bun](docs/adr/ADR-006-bun.md)** - Fast package management
 - **[ADR-007: Husky](docs/adr/ADR-007-husky.md)** - Automated code quality checks
 - **[ADR-010: ESLint and Prettier](docs/adr/ADR-010-eslint-prettier.md)** - Code quality and formatting
-
-## 📁 Project Structure
-
-```
-.
-├── .github/
-│   └── workflows/
-├── backend/
-├── frontend/
-├── docs/
-│   ├── adr/
-│   ├── resources/
-│   └── weekly-logs/
-├── .gitignore
-├── LICENSE
-└── README.md
-```
-
-## ‍💻 Developer Guides
-
-- **[Frontend Developer Guide](frontend/README.md)** - Setup and development workflow for frontend
-
-_Backend guide coming soon..._
-
-## 📚 Resources
-
-- **[Project Idea & Vision](docs/resources/idea-description.md)** - Original project proposal and objectives
-- **[Project Plan](docs/resources/project-plan.md)** - Detailed project roadmap and milestones
-- **[Course Objectives](docs/resources/course-objectives.md)** - Learning goals and expectations
-- **[Deadlines](docs/resources/deadlines.md)** - Course deliverables and timeline
-
-## 📝 Weekly Logs
-
-- **[w44](docs/weekly-logs/w44/)** - Project Foundation and Initial Setup
-- **[w45](docs/weekly-logs/w45/)**
-
-## 🔗 Project Links
-
-- **[GitHub Repository](https://github.com/DennisByberg/clo24-denbyb94-exam)** - Source code and project resources
-- **[Project Board](https://github.com/users/DennisByberg/projects/14)** - Task tracking and development progress
-- **[Time Log](https://github.com/DennisByberg/clo24-denbyb94-exam/wiki/Time-Log)** - Work hours and project time tracking
 
 ## 📄 License
 
