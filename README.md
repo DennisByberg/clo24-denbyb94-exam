@@ -41,7 +41,7 @@ _backend tech stack / adrs coming soon..._
 └── README.md
 ```
 
-## �‍💻 Developer Guides
+## ‍💻 Developer Guides
 
 - **[Frontend Developer Guide](frontend/README.md)** - Setup and development workflow for frontend
 
