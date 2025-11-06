@@ -4,9 +4,11 @@ This repository contains the exam project for the CLO24 Cloud Development course
 
 **Project:** Full-stack web platform for ESS Group's new facility, transitioning from .NET to Python/FastAPI to prepare for upcoming internship (LIA). The project involves building a booking system with user management, deployed on Azure App Service.
 
-Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/wiki)** for comprehensive project documentation including weekly summaries, course checklists, time tracking, project plan, and resources.
+> **Note:** This is a simulated project scenario for educational purposes. The facility and its content are fictional and AI-generated.
 
-## ‍💻 Developer Guides
+Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/wiki)** for project documentation.
+
+## 💻 Developer Guides
 
 - **[Frontend Developer Guide](frontend/README.md)** - Setup and development workflow for frontend
 
@@ -14,14 +16,15 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 
 ```
 .
-├── .github/
-│   └── workflows/
-├── backend/
-├── frontend/
-├── docs/
-│   ├── adr/
-│   ├── resources/
-│   └── weekly-logs/
+├── .github/           # GitHub configuration
+│   └── workflows/     # CI/CD pipelines
+├── backend/           # Backend application (Python/FastAPI)
+├── frontend/          # Frontend application (Next.js)
+│   ├── .husky/        # Git hooks
+│   ├── public/        # Static assets
+│   └── src/           # Source code
+├── docs/              # Documentation
+│   └── adr/           # Architecture Decision Records
 ├── .gitignore
 ├── LICENSE
 └── README.md
@@ -51,4 +54,4 @@ _backend tech stack / adrs coming soon..._
 
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the **[LICENSE](LICENSE)** file for details.
