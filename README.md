@@ -63,7 +63,7 @@ _Backend guide coming soon..._
 
 - **[GitHub Repository](https://github.com/DennisByberg/clo24-denbyb94-exam)** - Source code and project resources
 - **[Project Board](https://github.com/users/DennisByberg/projects/14)** - Task tracking and development progress
-- **[.gitignore](.gitignore)** - Git ignore configuration
+- **[Time Log](https://github.com/DennisByberg/clo24-denbyb94-exam/wiki/Time-Log)** - Work hours and project time tracking
 
 ## 📄 License
 
