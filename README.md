@@ -1,6 +1,34 @@
-# Full-stack Web Platform for ESS Group
+# CLO24 Exam Project - Cloud Development
 
-_description coming soon..._
+This repository contains the exam project for the CLO24 Cloud Development course, where students independently deepen and broaden their technical competencies by learning new technologies not previously covered in the program.
+
+**Project:** Full-stack web platform for ESS Group's new facility, transitioning from .NET to Python/FastAPI to prepare for upcoming internship (LIA). The project involves building a booking system with user management, deployed on Azure App Service.
+
+> **Note:** This is a simulated project scenario for educational purposes. The facility and its content are fictional and AI-generated.
+
+Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/wiki)** for project documentation.
+
+## 💻 Developer Guides
+
+- **[Frontend Developer Guide](frontend/README.md)** - Setup and development workflow for frontend
+
+## 📁 Project Structure
+
+```
+.
+├── .github/           # GitHub configuration
+│   └── workflows/     # CI/CD pipelines
+├── backend/           # Backend application (Python/FastAPI)
+├── frontend/          # Frontend application (Next.js)
+│   ├── .husky/        # Git hooks
+│   ├── public/        # Static assets
+│   └── src/           # Source code
+├── docs/              # Documentation
+│   └── adr/           # Architecture Decision Records
+├── .gitignore
+├── LICENSE
+└── README.md
+```
 
 ## 🚀 Tech Stack / ADRs
 
@@ -24,47 +52,6 @@ _backend tech stack / adrs coming soon..._
 - **[ADR-007: Husky](docs/adr/ADR-007-husky.md)** - Automated code quality checks
 - **[ADR-010: ESLint and Prettier](docs/adr/ADR-010-eslint-prettier.md)** - Code quality and formatting
 
-## 📁 Project Structure
-
-```
-.
-├── .github/
-│   └── workflows/
-├── backend/
-├── frontend/
-├── docs/
-│   ├── adr/
-│   ├── resources/
-│   └── weekly-logs/
-├── .gitignore
-├── LICENSE
-└── README.md
-```
-
-## ‍💻 Developer Guides
-
-- **[Frontend Developer Guide](frontend/README.md)** - Setup and development workflow for frontend
-
-_Backend guide coming soon..._
-
-## 📚 Resources
-
-- **[Project Idea & Vision](docs/resources/idea-description.md)** - Original project proposal and objectives
-- **[Project Plan](docs/resources/project-plan.md)** - Detailed project roadmap and milestones
-- **[Course Objectives](docs/resources/course-objectives.md)** - Learning goals and expectations
-- **[Deadlines](docs/resources/deadlines.md)** - Course deliverables and timeline
-
-## 📝 Weekly Logs
-
-- **[w44](docs/weekly-logs/w44/)** - Project Foundation and Initial Setup
-- **[w45](docs/weekly-logs/w45/)**
-
-## 🔗 Project Links
-
-- **[GitHub Repository](https://github.com/DennisByberg/clo24-denbyb94-exam)** - Source code and project resources
-- **[Project Board](https://github.com/users/DennisByberg/projects/14)** - Task tracking and development progress
-- **[Time Log](https://github.com/DennisByberg/clo24-denbyb94-exam/wiki/Time-Log)** - Work hours and project time tracking
-
 ## 📄 License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the MIT License - see the **[LICENSE](LICENSE)** file for details.
