@@ -1,0 +1,42 @@
+name: Frontend Linting
+
+on:
+  pull_request:
+    branches:
+      - dev
+    paths:
+      - 'frontend/**'
+      - '.github/workflows/frontend-lint.yml'
+
+jobs:
+  frontend-lint:
+    name: Frontend Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: latest
+
+      - name: Install dependencies
+        run: |
+          cd frontend
+          bun install
+
+      - name: Run ESLint
+        run: |
+          cd frontend
+          bun run lint
+
+      - name: Type check
+        run: |
+          cd frontend
+          bunx tsc --noEmit
+
+      - name: Build check
+        run: |
+          cd frontend
+          bun run build
