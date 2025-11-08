@@ -141,7 +141,7 @@ export default function Header() {
           <Divider my="md" />
 
           <Group justify="center" grow pb="xl" px="md">
-            <Button>Login</Button>
+            <Button disabled>Login</Button>
           </Group>
         </ScrollArea>
       </Drawer>
