@@ -38,6 +38,7 @@
   background-color: var(--mantine-color-dark-7);
 }
 
+/* TODO: Use Mantine breakpoints for responsiveness instead of hardcoded values */
 @media (max-width: 768px) {
   .link {
     height: 42px;

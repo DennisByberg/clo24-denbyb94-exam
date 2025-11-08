@@ -16,10 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: '',
-  description: '',
-};
+// TODO: Add Metadata
 
 export default function RootLayout({
   children,
@@ -28,10 +25,8 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <head>
-        <ColorSchemeScript defaultColorScheme="dark" />
-      </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <ColorSchemeScript defaultColorScheme="dark" />
         <Providers>
           <Header />
           {children}

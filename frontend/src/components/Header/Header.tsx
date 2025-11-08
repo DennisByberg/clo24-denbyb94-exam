@@ -97,8 +97,9 @@ export default function Header() {
         opened={drawerOpened}
         onClose={closeDrawer}
         size="100%"
+        title="Navigation Menu"
         zIndex={1000}
-        aria-label="Main navigation menu"
+        aria-label="Navigation Menu"
       >
         <ScrollArea h="calc(100vh - 80px)" mx="-md">
           <Link href="/" className={classes.link} onClick={closeDrawer}>
