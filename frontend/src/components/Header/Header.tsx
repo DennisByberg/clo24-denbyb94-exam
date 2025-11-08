@@ -97,7 +97,7 @@ export default function Header() {
         opened={drawerOpened}
         onClose={closeDrawer}
         size="100%"
-        zIndex={1000000}
+        zIndex={1000}
         aria-label="Main navigation menu"
       >
         <ScrollArea h="calc(100vh - 80px)" mx="-md">
