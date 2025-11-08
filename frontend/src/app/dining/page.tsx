@@ -1,9 +1,9 @@
 import { Container, Title } from '@mantine/core';
 
-export default function Home() {
+export default function DiningPage() {
   return (
     <Container size="md" py="xl">
-      <Title order={1}>Home</Title>
+      <Title order={1}>Dining & Drinking</Title>
     </Container>
   );
 }
