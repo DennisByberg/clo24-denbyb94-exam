@@ -84,11 +84,22 @@ export default function Header() {
             <Button disabled>Login</Button>
           </Group>
 
-          <Burger opened={drawerOpened} onClick={toggleDrawer} hiddenFrom="sm" />
+          <Burger
+            opened={drawerOpened}
+            onClick={toggleDrawer}
+            hiddenFrom="sm"
+            aria-label="Toggle navigation menu"
+          />
         </Group>
       </header>
 
-      <Drawer opened={drawerOpened} onClose={closeDrawer} size="100%" zIndex={1000000}>
+      <Drawer
+        opened={drawerOpened}
+        onClose={closeDrawer}
+        size="100%"
+        zIndex={1000000}
+        aria-label="Main navigation menu"
+      >
         <ScrollArea h="calc(100vh - 80px)" mx="-md">
           <Link href="/" className={classes.link} onClick={closeDrawer}>
             Home
