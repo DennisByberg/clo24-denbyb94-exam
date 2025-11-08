@@ -1,0 +1,46 @@
+.header {
+  height: 60px;
+  padding-left: var(--mantine-spacing-md);
+  padding-right: var(--mantine-spacing-md);
+  border-bottom: 1px solid var(--mantine-color-dark-4);
+}
+
+.logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  text-decoration: none;
+  color: var(--mantine-color-white);
+}
+
+.link {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: var(--mantine-spacing-md);
+  padding-right: var(--mantine-spacing-md);
+  text-decoration: none;
+  color: var(--mantine-color-white);
+  font-weight: 500;
+  font-size: var(--mantine-font-size-sm);
+}
+
+.link:hover {
+  background-color: var(--mantine-color-dark-6);
+}
+
+.subLink {
+  padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
+  border-radius: var(--mantine-radius-md);
+  color: var(--mantine-color-white);
+}
+
+.subLink:hover {
+  background-color: var(--mantine-color-dark-7);
+}
+
+@media (max-width: 768px) {
+  .link {
+    height: 42px;
+    width: 100%;
+  }
+}
