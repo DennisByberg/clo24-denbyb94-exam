@@ -16,7 +16,7 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconChevronDown } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
 import classes from './Header.module.css';
 
 const bookingLinks = [
@@ -105,7 +105,7 @@ export default function Header() {
               <Box component="span" mr={5}>
                 Bookings
               </Box>
-              <IconChevronDown size={16} />
+              {linksOpened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
             </Center>
           </UnstyledButton>
           <Collapse in={linksOpened}>
