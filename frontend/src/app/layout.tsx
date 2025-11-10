@@ -1,6 +1,10 @@
 import type { Metadata } from 'next';
+import { ColorSchemeScript } from '@mantine/core';
 import { Geist, Geist_Mono } from 'next/font/google';
+import '@mantine/core/styles.css';
 import './globals.css';
+import Providers from '@/components/Providers/Providers';
+import Header from '@/components/Header/Header';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -12,10 +16,7 @@ const geistMono = Geist_Mono({
   subsets: ['latin'],
 });
 
-export const metadata: Metadata = {
-  title: 'ESS Group Booking',
-  description: 'Facility booking system for ESS Group',
-};
+// TODO: Add Metadata
 
 export default function RootLayout({
   children,
@@ -24,7 +25,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>{children}</body>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+        <ColorSchemeScript defaultColorScheme="dark" />
+        <Providers>
+          <Header />
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }

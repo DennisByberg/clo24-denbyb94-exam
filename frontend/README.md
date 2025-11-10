@@ -14,6 +14,23 @@ Developer guide for setting up and working with the frontend codebase. Contains 
 - **[ADR-010: ESLint and Prettier](../docs/adr/ADR-010-eslint-prettier.md)** - Code quality and formatting
 - **[ADR-007: Husky](../docs/adr/ADR-007-husky.md)** - Pre-commit hooks
 
+## Site Navigation
+
+![Site Navigation Structure](./images/site-navigation-structure.png)
+
+[Edit diagram in Excalidraw](https://excalidraw.com/#json=BdvcJwUIBZ9_A5NroHjtU,5JZtOOeIxq_-3Xo4xksisA)
+
+Main navigation pages:
+
+- **Home** - Landing page
+- **About** - Company information
+- **Gallery** - Image gallery
+- **Bookings**
+  - **Dining & Drinking** - Restaurant booking
+  - **Pool Club & Spa** - Spa services booking
+  - **Conference & Events** - Event space booking
+- **Login** - User authentication
+
 ## Frontend Structure
 
 ```
@@ -26,6 +43,7 @@ frontend/
 │   │   └── utils/
 │   └── types/
 ├── public/
+├── images/
 ├── .husky/
 ├── .gitignore
 ├── .prettierrc
