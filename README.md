@@ -56,6 +56,7 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 - **[ADR-006: Bun](docs/adr/ADR-006-bun.md)** - Fast package management
 - **[ADR-007: Husky](docs/adr/ADR-007-husky.md)** - Automated code quality checks
 - **[ADR-010: ESLint and Prettier](docs/adr/ADR-010-eslint-prettier.md)** - Code quality and formatting
+- **[ADR-016: Docker](docs/adr/ADR-016-docker.md)** - Containerization
 
 ## 📄 License
 
