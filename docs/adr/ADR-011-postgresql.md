@@ -72,4 +72,3 @@ We will use **PostgreSQL** as the database.
 ## References
 
 - [PostgreSQL Documentation](https://www.postgresql.org/docs/)
-- [Why PostgreSQL?](https://www.postgresql.org/about/)
