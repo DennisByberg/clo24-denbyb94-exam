@@ -46,6 +46,7 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 
 - **[ADR-011: PostgreSQL](docs/adr/ADR-011-postgresql.md)** - Relational database for booking system
 - **[ADR-012: FastAPI](docs/adr/ADR-012-fastapi.md)** - Modern Python web framework
+- **[ADR-013: SQLAlchemy](docs/adr/ADR-013-sqlalchemy.md)** - ORM for database interactions
 
 ### DevOps & Tools
 
