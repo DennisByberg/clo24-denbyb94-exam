@@ -11,6 +11,7 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 ## 💻 Developer Guides
 
 - **[Frontend Developer Guide](frontend/README.md)** - Setup and development workflow for frontend
+- **[Backend Developer Guide](backend/README.md)** - Setup and development workflow for backend
 
 ## 📁 Project Structure
 
@@ -43,7 +44,7 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 
 ### Backend
 
-_backend tech stack / adrs coming soon..._
+- **[ADR-011: PostgreSQL](docs/adr/ADR-011-postgresql.md)** - Relational database for booking system
 
 ### DevOps & Tools
 
