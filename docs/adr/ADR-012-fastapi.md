@@ -11,7 +11,7 @@ The project needs a Python web framework to build the REST API for the booking p
 ## Decision Drivers
 
 - Used at internship placement (ESS Group)
-- Prepare for LIA by learning their stack
+- Prepare for internship by learning their stack
 - Modern Python framework
 - Need to learn new backend technology for exam project
 - API-first design for frontend-backend separation
@@ -46,13 +46,13 @@ We will use **FastAPI** as the web framework.
 
 **Rationale:**
 
-- **Internship alignment**: ESS Group uses FastAPI - learning it now prepares for LIA
+- **Internship alignment**: ESS Group uses FastAPI - learning it now prepares for internship
 - **Exam requirement**: Need to learn a new technology, FastAPI is completely new to me
 - **Modern framework**: Built for modern Python with async/await support
 - **API-first**: Designed specifically for building REST APIs
 - **Automatic documentation**: Built-in Swagger/OpenAPI documentation
 
-**Note:** The choice was clear - FastAPI is what I'll use at my LIA placement, making it the obvious choice for the exam project. Django and Flask were considered but not seriously evaluated since they don't align with the LIA tech stack.
+**Note:** The choice was clear - FastAPI is what I'll use at my internship placement, making it the obvious choice for the exam project. Django and Flask were considered but not seriously evaluated since they don't align with the internship tech stack.
 
 ## Consequences
 

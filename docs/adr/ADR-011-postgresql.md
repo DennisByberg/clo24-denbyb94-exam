@@ -14,7 +14,7 @@ The booking platform needs a database to store users, bookings, and facility inf
 - Need for ACID transactions for booking system
 - Many-to-many relationships between bookings and time slots
 - Data integrity is critical for booking conflicts
-- Learning opportunity before LIA
+- Learning opportunity before internship
 
 ## Considered Alternatives
 
@@ -49,7 +49,7 @@ We will use **PostgreSQL** as the database.
 - **ACID transactions**: Critical for preventing double bookings
 - **Data integrity**: Foreign keys and constraints ensure data validity
 - **Industry standard**: PostgreSQL is widely used in modern web applications
-- **Learning value**: Want to learn PostgreSQL properly before LIA
+- **Learning value**: Want to learn PostgreSQL properly before internship
 
 **Note:** The booking system's relational nature (many-to-many between bookings and time slots) makes a relational database the clear choice.
 

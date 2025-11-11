@@ -11,7 +11,7 @@ The project needs a UI component library for building the booking platform inter
 ## Decision Drivers
 
 - Used at internship placement (ESS Group)
-- Prepare for LIA by learning their stack
+- Prepare for internship by learning their stack
 - Good TypeScript support
 - Comprehensive component set
 
@@ -34,7 +34,7 @@ We will use **Mantine** as the UI component library.
 
 **Rationale:**
 
-- **Internship alignment**: ESS Group uses Mantine - learning it now prepares for LIA
+- **Internship alignment**: ESS Group uses Mantine - learning it now prepares for internship
 - **TypeScript support**: Built with TypeScript, good autocomplete
 - **Comprehensive**: 100+ components for forms, tables, modals, date pickers, etc.
 - **Built-in form handling**: @mantine/form included
