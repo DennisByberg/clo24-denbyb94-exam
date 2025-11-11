@@ -33,7 +33,7 @@ We will use **SQLAlchemy** as the ORM.
 - **FastAPI integration**: Works well with Pydantic models
 - **Industry standard**: Most popular ORM in Python ecosystem
 
-**Note:** Supervisor warned that SQLAlchemy can be "tricky to configure" and "bråkig" (troublesome), but I see this as a valuable learning opportunity. The challenge of getting it configured correctly will be good preparation for real-world development.
+**Note:** Supervisor warned that SQLAlchemy can be tricky to configure but I see this as a valuable learning opportunity. The challenge of getting it configured correctly will be good preparation for real-world development.
 
 ## Consequences
 
@@ -51,13 +51,6 @@ We will use **SQLAlchemy** as the ORM.
 - Learning curve for SQLAlchemy-specific patterns
 - Potential "headaches" during setup
 - Abstraction layer may hide some SQL details
-
-### Mitigation Strategy
-
-- Read documentation carefully
-- Test incrementally during implementation
-- Have raw SQL as fallback if needed
-- Ask supervisor for guidance when stuck
 
 ## References
 
