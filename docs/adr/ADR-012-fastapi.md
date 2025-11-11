@@ -68,7 +68,6 @@ We will use **FastAPI** as the web framework.
 
 - Completely new framework to learn
 - Need to learn async programming in Python
-- Smaller ecosystem compared to Django
 
 ## References
 
