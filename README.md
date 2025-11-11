@@ -11,7 +11,7 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 ## 💻 Developer Guides
 
 - **[Frontend Developer Guide](frontend/README.md)** - Setup and development workflow for frontend
-- **[Backend Developer Guide](backend/README.md)** -
+- **[Backend Developer Guide](backend/README.md)** - Setup and development workflow for backend
 
 ## 📁 Project Structure
 
