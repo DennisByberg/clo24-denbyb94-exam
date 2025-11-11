@@ -33,7 +33,7 @@ We will use **Bun** as the JavaScript package manager.
 
 **Rationale:**
 
-- **Internship alignment**: ESS Group uses Bun - learning it now prepares for LIA
+- **Internship alignment**: ESS Group uses Bun - learning it now prepares for internship
 - **Learning opportunity**: Good chance to learn modern tooling
 - **Fast**: Much faster installation than npm
 - **Compatible**: Drop-in replacement for npm (same commands work)

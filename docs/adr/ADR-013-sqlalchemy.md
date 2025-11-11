@@ -18,7 +18,7 @@ The project needs an ORM (Object-Relational Mapping) tool to interact with the P
 
 ## Considered Alternatives
 
-No alternatives were seriously considered. ESS Group recommended SQLAlchemy, and since I had positive experience with Entity Framework in .NET, using an ORM was a natural choice. I lack the knowledge to evaluate other Python ORMs, so I trusted the LIA recommendation.
+No alternatives were seriously considered. ESS Group recommended SQLAlchemy, and since I had positive experience with Entity Framework in .NET, using an ORM was a natural choice. I lack the knowledge to evaluate other Python ORMs, so I trusted the internship placement recommendation.
 
 ## Decision
 

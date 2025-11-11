@@ -11,7 +11,7 @@ The project needs a React setup for building the booking platform. Should we use
 ## Decision Drivers
 
 - Used at internship placement (ESS Group)
-- Prepare for LIA by learning their stack
+- Prepare for internship by learning their stack
 - Built-in routing and optimizations
 - SEO for public pages
 
@@ -34,7 +34,7 @@ We will use **Next.js** as the React framework.
 
 **Rationale:**
 
-- **Internship alignment**: ESS Group uses Next.js - learning it now prepares for LIA
+- **Internship alignment**: ESS Group uses Next.js - learning it now prepares for internship
 - **Built-in routing**: File-based routing is convenient
 - **SEO support**: SSR/SSG good for public-facing pages
 - **Industry standard**: Widely used in professional projects

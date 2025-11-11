@@ -2,7 +2,7 @@
 
 This repository contains the exam project for the CLO24 Cloud Development course, where students independently deepen and broaden their technical competencies by learning new technologies not previously covered in the program.
 
-**Project:** Full-stack web platform for ESS Group's new facility, transitioning from .NET to Python/FastAPI to prepare for upcoming internship (LIA). The project involves building a booking system with user management, deployed on Azure App Service.
+**Project:** Full-stack web platform for ESS Group's new facility, transitioning from .NET to Python/FastAPI to prepare for upcoming internship. The project involves building a booking system with user management, deployed on Azure App Service.
 
 > **Note:** This is a simulated project scenario for educational purposes. The facility and its content are fictional and AI-generated.
 
