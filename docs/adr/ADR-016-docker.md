@@ -28,7 +28,7 @@ We will use **Docker** for containerization.
 
 - **Internship alignment**: ESS Group uses Docker in their stack
 - **Previous experience**: Used Docker during education for development environments and building images for Azure Container Registry (ACR)
-- **Industry standard**: Docker is increasingly used in the industry
+- **Ecosystem and support**: Docker has a wide ecosystem and strong community support
 - **Azure integration**: Works with Azure App Service deployment
 - **Consistent environments**: Same setup for development and production
 
