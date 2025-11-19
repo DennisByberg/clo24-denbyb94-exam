@@ -7,9 +7,7 @@ class Settings(BaseSettings):
     # App info
     app_name: str = "ESS Booking Platform API"
     app_version: str = "0.1.0"
-    app_description: str = (
-        "REST API for managing bookings at ESS Group's facility including restaurant, spa, and event spaces"
-    )
+    app_description: str = "REST API for managing bookings at ESS Group's facility including restaurant, spa, and event spaces"
 
     # Environment
     debug: bool = True

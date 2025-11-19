@@ -15,7 +15,6 @@ from app.db.base import Base
 from app.db.session import DATABASE_URL
 
 # Import all models to ensure they're registered with Base
-from app.models import User, Restaurant, RestaurantTable, BookingSlot, Booking
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
