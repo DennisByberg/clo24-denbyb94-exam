@@ -16,9 +16,6 @@ uv run ruff check .
 
 # Format code
 uv run ruff format .
-
-# Type check
-uv run mypy .
 ```
 
 **Auto-fix linting issues:**
