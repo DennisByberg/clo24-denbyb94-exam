@@ -1,0 +1,43 @@
+name: Backend Linting
+
+on:
+  pull_request:
+    branches:
+      - dev
+    paths:
+      - 'backend/**'
+      - '.github/workflows/backend-lint.yml'
+
+jobs:
+  backend-lint:
+    name: Backend Lint & Type Check
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Install UV
+        run: curl -LsSf https://astral.sh/uv/install.sh | sh
+
+      - name: Add UV to PATH
+        run: echo "$HOME/.cargo/bin" >> $GITHUB_PATH
+
+      - name: Install dependencies
+        run: uv sync
+
+      - name: Run Ruff linting
+        run: uv run ruff check .
+
+      - name: Run Ruff formatting check
+        run: uv run ruff format --check .
+
+      - name: Run mypy type checking
+        run: uv run mypy .
