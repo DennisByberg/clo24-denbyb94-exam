@@ -39,4 +39,4 @@ jobs:
         run: uvx ruff format --check .
 
       - name: Run mypy type checking
-        run: uvx mypy .
+        run: uv run mypy .
