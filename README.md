@@ -58,6 +58,7 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 - **[ADR-007: Husky](docs/adr/ADR-007-husky.md)** - Automated code quality checks
 - **[ADR-010: ESLint and Prettier](docs/adr/ADR-010-eslint-prettier.md)** - Code quality and formatting
 - **[ADR-016: Docker](docs/adr/ADR-016-docker.md)** - Containerization
+- **[ADR-018: Ruff](docs/adr/ADR-018-ruff.md)** - Python linting and formatting
 
 ## 📄 License
 
