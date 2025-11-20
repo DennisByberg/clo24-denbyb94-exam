@@ -49,6 +49,7 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 - **[ADR-013: SQLAlchemy](docs/adr/ADR-013-sqlalchemy.md)** - ORM for database interactions
 - **[ADR-014: Pydantic](docs/adr/ADR-014-pydantic.md)** - Data validation and serialization
 - **[ADR-015: Alembic](docs/adr/ADR-015-alembic.md)** - Database migrations
+- **[ADR-017: UV](docs/adr/ADR-017-uv.md)** - Python package manager
 
 ### DevOps & Tools
 
@@ -57,6 +58,7 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 - **[ADR-007: Husky](docs/adr/ADR-007-husky.md)** - Automated code quality checks
 - **[ADR-010: ESLint and Prettier](docs/adr/ADR-010-eslint-prettier.md)** - Code quality and formatting
 - **[ADR-016: Docker](docs/adr/ADR-016-docker.md)** - Containerization
+- **[ADR-018: Ruff](docs/adr/ADR-018-ruff.md)** - Python linting and formatting
 
 ## 📄 License
 
