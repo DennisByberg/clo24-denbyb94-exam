@@ -7,7 +7,7 @@
 
 ## 📋 Overview
 
-5 tables: `user`, `restaurant`, `restaurant_table`, `booking_slot`, `booking`
+5 tables: `user`, `restaurant`, `restaurant_table`, `restaurant_booking_slot`, `restaurant_booking`
 
 ---
 
@@ -62,7 +62,7 @@
 
 ---
 
-### booking_slot
+### restaurant_booking_slot
 
 | Column           | Type     | Constraints                                 | Description       |
 | ---------------- | -------- | ------------------------------------------- | ----------------- |
@@ -75,20 +75,20 @@
 
 ---
 
-### booking
+### restaurant_booking
 
-| Column            | Type         | Constraints                             | Description      |
-| ----------------- | ------------ | --------------------------------------- | ---------------- |
-| `id`              | INTEGER      | PRIMARY KEY, AUTOINCREMENT              | Unique ID        |
-| `user_id`         | VARCHAR(255) | FOREIGN KEY (user.id), NOT NULL         | Logged in user   |
-| `booking_slot_id` | INTEGER      | FOREIGN KEY (booking_slot.id), NOT NULL | Which time slot  |
-| `guest_count`     | INTEGER      | NOT NULL, CHECK (guest_count > 0)       | Number of guests |
+| Column            | Type         | Constraints                                        | Description      |
+| ----------------- | ------------ | -------------------------------------------------- | ---------------- |
+| `id`              | INTEGER      | PRIMARY KEY, AUTOINCREMENT                         | Unique ID        |
+| `user_id`         | VARCHAR(255) | FOREIGN KEY (user.id), NOT NULL                    | Logged in user   |
+| `booking_slot_id` | INTEGER      | FOREIGN KEY (restaurant_booking_slot.id), NOT NULL | Which time slot  |
+| `guest_count`     | INTEGER      | NOT NULL, CHECK (guest_count > 0)                  | Number of guests |
 
 ---
 
 ## 🔗 Relationships (all 1:N)
 
 1. `restaurant` → `restaurant_table`
-2. `restaurant_table` → `booking_slot`
-3. `user` → `booking`
-4. `booking_slot` → `booking`
+2. `restaurant_table` → `restaurant_booking_slot`
+3. `user` → `restaurant_booking`
+4. `restaurant_booking_slot` → `restaurant_booking`

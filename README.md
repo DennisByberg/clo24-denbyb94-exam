@@ -44,21 +44,25 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 
 ### Backend
 
-- **[ADR-011: PostgreSQL](docs/adr/ADR-011-postgresql.md)** - Relational database for booking system
 - **[ADR-012: FastAPI](docs/adr/ADR-012-fastapi.md)** - Modern Python web framework
 - **[ADR-013: SQLAlchemy](docs/adr/ADR-013-sqlalchemy.md)** - ORM for database interactions
 - **[ADR-014: Pydantic](docs/adr/ADR-014-pydantic.md)** - Data validation and serialization
 - **[ADR-015: Alembic](docs/adr/ADR-015-alembic.md)** - Database migrations
 - **[ADR-017: UV](docs/adr/ADR-017-uv.md)** - Python package manager
+- **[ADR-018: Ruff](docs/adr/ADR-018-ruff.md)** - Python linting and formatting
 
-### DevOps & Tools
+### Database & Cloud
+
+- **[ADR-011: PostgreSQL](docs/adr/ADR-011-postgresql.md)** - Relational database for booking system
+- **[ADR-020: Azure Easy Auth](docs/adr/ADR-020-azure-easy-auth.md)** - Authentication with Google OAuth
+
+### DevOps & Tooling
 
 - **[ADR-001: GitHub Actions](docs/adr/ADR-001-github-actions.md)** - CI/CD pipeline
-- **[ADR-006: Bun](docs/adr/ADR-006-bun.md)** - Fast package management
-- **[ADR-007: Husky](docs/adr/ADR-007-husky.md)** - Automated code quality checks
-- **[ADR-010: ESLint and Prettier](docs/adr/ADR-010-eslint-prettier.md)** - Code quality and formatting
+- **[ADR-006: Bun](docs/adr/ADR-006-bun.md)** - JavaScript package manager
+- **[ADR-007: Husky](docs/adr/ADR-007-husky.md)** - Git hooks for code quality
+- **[ADR-010: ESLint and Prettier](docs/adr/ADR-010-eslint-prettier.md)** - JavaScript linting and formatting
 - **[ADR-016: Docker](docs/adr/ADR-016-docker.md)** - Containerization
-- **[ADR-018: Ruff](docs/adr/ADR-018-ruff.md)** - Python linting and formatting
 
 ## 📄 License
 
