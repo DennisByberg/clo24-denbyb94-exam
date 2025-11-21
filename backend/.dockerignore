@@ -29,6 +29,6 @@ alembic/versions/*.pyc
 .git/
 .gitignore
 
-# Documentation
+# Documentation (exclude all markdown files except README.md)
 *.md
 !README.md
