@@ -9,6 +9,9 @@ class Settings(BaseSettings):
     app_version: str = "0.1.0"
     app_description: str = "REST API for managing bookings at ESS Group's facility including restaurant, spa, and event spaces"
 
+    # Database
+    database_url: str = "postgresql://user:password@localhost:5432/restaurant_db"
+
     # Environment
     debug: bool = True
 
