@@ -1,9 +1,10 @@
-from sqlalchemy import Column, Integer, ForeignKey, DateTime, UniqueConstraint
+from sqlalchemy import Column, DateTime, ForeignKey, Integer, UniqueConstraint
+
 from app.db.base import Base
 
 
 class BookingSlot(Base):
-    __tablename__ = "booking_slot"
+    __tablename__ = "restaurant_booking_slot"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     table_id = Column(Integer, ForeignKey("restaurant_table.id"), nullable=False)

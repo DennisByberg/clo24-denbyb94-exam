@@ -1,18 +1,16 @@
-from logging.config import fileConfig
 import os
 import sys
-
-from sqlalchemy import engine_from_config
-from sqlalchemy import pool
+from logging.config import fileConfig
 
 from alembic import context  # type: ignore
+from sqlalchemy import engine_from_config, pool
 
 # Add parent directory to path so we can import app modules
 sys.path.insert(0, os.path.dirname(os.path.dirname(__file__)))
 
 # Import your models and database configuration
+from app.config import settings
 from app.db.base import Base
-from app.db.session import DATABASE_URL
 
 # Import all models to ensure they're registered with Base
 from app.models import (  # noqa: F401
@@ -27,8 +25,8 @@ from app.models import (  # noqa: F401
 # access to the values within the .ini file in use.
 config = context.config
 
-# Override sqlalchemy.url with our DATABASE_URL from environment
-config.set_main_option("sqlalchemy.url", DATABASE_URL)
+# Override sqlalchemy.url with our database_url from settings
+config.set_main_option("sqlalchemy.url", settings.database_url)
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
