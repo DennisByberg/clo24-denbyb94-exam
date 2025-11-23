@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import { ColorSchemeScript } from '@mantine/core';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '@mantine/core/styles.css';
