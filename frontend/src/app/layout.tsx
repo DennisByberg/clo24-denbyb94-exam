@@ -1,4 +1,3 @@
-import type { Metadata } from 'next';
 import { ColorSchemeScript } from '@mantine/core';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '@mantine/core/styles.css';
@@ -24,12 +23,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" suppressHydrationWarning>
+      <head>
         <ColorSchemeScript defaultColorScheme="dark" />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Providers>
           <Header />
-          {children}
+          <main>{children}</main>
         </Providers>
       </body>
     </html>

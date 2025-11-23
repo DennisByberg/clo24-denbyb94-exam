@@ -21,6 +21,14 @@ Main navigation pages:
   - **Conference & Events** - Event space booking
 - **Login** - User authentication
 
+## Color Scheme
+
+Application uses Mantine's color palette with the following semantic colors:
+
+- **Success**: `teal.5`
+- **Error**: `red.6`
+- **Loading**: `dimmed` (adapts to dark/light mode)
+
 ## Frontend Structure
 
 ```
