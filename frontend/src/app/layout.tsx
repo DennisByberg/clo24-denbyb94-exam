@@ -24,8 +24,10 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+      <head>
         <ColorSchemeScript defaultColorScheme="dark" />
+      </head>
+      <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <Providers>
           <Header />
           {children}
