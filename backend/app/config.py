@@ -15,6 +15,9 @@ class Settings(BaseSettings):
     # Environment
     debug: bool = True
 
+    # Security/CORS
+    allowed_origins: list[str] = ["http://localhost:3000", "http://localhost:8000"]
+
     # API
     api_prefix: str = "/api"
 

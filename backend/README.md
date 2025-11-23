@@ -12,14 +12,14 @@ Run these commands before committing:
 cd backend
 
 # Lint code
-uv run ruff check .
+docker-compose exec backend uv run ruff check .
 
 # Format code
-uv run ruff format .
+docker-compose exec backend uv run ruff format .
 ```
 
 **Auto-fix linting issues:**
 
 ```bash
-uv run ruff check --fix .
+docker-compose exec backend uv run ruff check --fix .
 ```
