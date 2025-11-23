@@ -6,7 +6,7 @@ See the main **[README](../README.md)** for complete tech stack and ADR document
 
 ## 📁 Backend Structure
 
-```conf
+```py
 backend/
 ├── alembic/              # Database migrations
 ├── app/
