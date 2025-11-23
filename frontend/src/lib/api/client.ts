@@ -1,5 +1,5 @@
-// Case URL for backend API
-const BASE_URL = 'http://localhost:8000';
+// Base URL for backend API from environment variable
+const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 // Custom error class for API errors with status code
 export class ApiError extends Error {

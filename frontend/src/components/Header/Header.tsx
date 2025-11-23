@@ -17,17 +17,13 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
+import { mainLinks, bookingLinks, adminLinks } from '@/constants/navigation';
 import classes from './Header.module.css';
-
-const bookingLinks = [
-  { href: '/dining', label: 'Dining & Drinking', description: 'Reserve a table at our restaurant' },
-  { href: '/spa', label: 'Pool Club & Spa', description: 'Book spa treatments and pool access' },
-  { href: '/events', label: 'Conference & Events', description: 'Book spaces for events' },
-];
 
 export default function Header() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
+  const [adminLinksOpened, { toggle: toggleAdminLinks }] = useDisclosure(false);
 
   return (
     <Box>
@@ -38,15 +34,11 @@ export default function Header() {
           </Link>
 
           <Group h="100%" gap={0} visibleFrom="sm">
-            <Link href="/" className={classes.link}>
-              Home
-            </Link>
-            <Link href="/about" className={classes.link}>
-              About
-            </Link>
-            <Link href="/gallery" className={classes.link}>
-              Gallery
-            </Link>
+            {mainLinks.map((link) => (
+              <Link key={link.href} href={link.href} className={classes.link}>
+                {link.label}
+              </Link>
+            ))}
 
             <HoverCard width={300} position="bottom" radius="md" shadow="md" withinPortal>
               <HoverCard.Target>
@@ -62,6 +54,37 @@ export default function Header() {
 
               <HoverCard.Dropdown>
                 {bookingLinks.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className={classes.subLink}
+                    style={{ textDecoration: 'none', display: 'block' }}
+                  >
+                    <Text size="sm" fw={500}>
+                      {item.label}
+                    </Text>
+                    <Text size="xs" c="dimmed">
+                      {item.description}
+                    </Text>
+                  </Link>
+                ))}
+              </HoverCard.Dropdown>
+            </HoverCard>
+
+            <HoverCard width={300} position="bottom" radius="md" shadow="md" withinPortal>
+              <HoverCard.Target>
+                <UnstyledButton className={classes.link}>
+                  <Center inline>
+                    <Box component="span" mr={5}>
+                      Admin
+                    </Box>
+                    <IconChevronDown size={16} />
+                  </Center>
+                </UnstyledButton>
+              </HoverCard.Target>
+
+              <HoverCard.Dropdown>
+                {adminLinks.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
@@ -102,15 +125,11 @@ export default function Header() {
         aria-label="Navigation Menu"
       >
         <ScrollArea h="calc(100vh - 80px)" mx="-md">
-          <Link href="/" className={classes.link} onClick={closeDrawer}>
-            Home
-          </Link>
-          <Link href="/about" className={classes.link} onClick={closeDrawer}>
-            About
-          </Link>
-          <Link href="/gallery" className={classes.link} onClick={closeDrawer}>
-            Gallery
-          </Link>
+          {mainLinks.map((link) => (
+            <Link key={link.href} href={link.href} className={classes.link} onClick={closeDrawer}>
+              {link.label}
+            </Link>
+          ))}
 
           <UnstyledButton className={classes.link} onClick={toggleLinks}>
             <Center inline>
@@ -122,6 +141,33 @@ export default function Header() {
           </UnstyledButton>
           <Collapse in={linksOpened}>
             {bookingLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={classes.subLink}
+                onClick={closeDrawer}
+                style={{ textDecoration: 'none', display: 'block' }}
+              >
+                <Text size="sm" fw={500}>
+                  {item.label}
+                </Text>
+                <Text size="xs" c="dimmed">
+                  {item.description}
+                </Text>
+              </Link>
+            ))}
+          </Collapse>
+
+          <UnstyledButton className={classes.link} onClick={toggleAdminLinks}>
+            <Center inline>
+              <Box component="span" mr={5}>
+                Admin
+              </Box>
+              {adminLinksOpened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
+            </Center>
+          </UnstyledButton>
+          <Collapse in={adminLinksOpened}>
+            {adminLinks.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
