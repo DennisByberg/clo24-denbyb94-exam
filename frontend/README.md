@@ -6,7 +6,7 @@ See the main **[README](../README.md)** for complete tech stack and ADR document
 
 ## 📁 Frontend Structure
 
-```py
+```bash
 frontend/
 ├── .husky/               # Git hooks
 ├── images/               # Static images and diagrams

@@ -15,7 +15,7 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 
 ## 📁 Project Structure
 
-```py
+```bash
 clo24-denbyb94-exam/
 ├── .github/              # GitHub configuration
 ├── backend/              # Backend application (Python/FastAPI)
