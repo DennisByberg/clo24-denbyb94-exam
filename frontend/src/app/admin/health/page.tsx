@@ -36,6 +36,7 @@ export default function HealthPage() {
           title="Database"
           icon={<IconDatabase size={20} color="var(--mantine-color-dimmed)" />}
           status={isLoading ? 'loading' : error ? 'error' : data?.database_status || 'unknown'}
+          error={error ? (error as Error).message : undefined}
         />
         {/* AUTHENTICATION STATUS */}
         <HealthCard
@@ -50,6 +51,7 @@ export default function HealthPage() {
                   ? `${data.auth_mode} mode`
                   : 'unknown'
           }
+          error={error ? (error as Error).message : undefined}
         />
         {/* USER COUNT STATUS */}
         <HealthCard
@@ -64,6 +66,7 @@ export default function HealthPage() {
                   ? `${data.user_count} users`
                   : 'unknown'
           }
+          error={error ? (error as Error).message : undefined}
         />
         {/* RESPONSE TIME */}
         <HealthCard
@@ -78,6 +81,7 @@ export default function HealthPage() {
                   ? `${data.response_time_ms}ms`
                   : 'unknown'
           }
+          error={error ? (error as Error).message : undefined}
         />
       </SimpleGrid>
     </Container>

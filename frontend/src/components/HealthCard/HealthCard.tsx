@@ -12,13 +12,13 @@ export default function HealthCard({ title, status, error, icon }: HealthCardPro
   const isLoading = status === 'loading';
   const isError = status === 'error' || status === 'unknown';
 
-  // Healthy states: "healthy", "connected", or contains "mode" or "users" or "ms"
+  // Healthy states: "healthy", "connected", or matches known healthy patterns
+  const HEALTHY_STATUSES = new Set(['healthy', 'connected']);
   const isHealthy =
-    status === 'healthy' ||
-    status === 'connected' ||
-    status.includes('mode') ||
-    status.includes('users') ||
-    status.includes('ms');
+    HEALTHY_STATUSES.has(status) ||
+    /^\d+ users$/.test(status) ||
+    /^\d+ms$/.test(status) ||
+    /^(mock|azure) mode$/.test(status);
 
   const cardContent = (
     <Paper withBorder p="md" radius="md">
