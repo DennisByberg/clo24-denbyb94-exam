@@ -20,11 +20,13 @@ async def health_check(db: Annotated[Session, Depends(get_db)]):
         db.execute(text("SELECT 1"))
         database_status = "connected"
     except Exception:
+        db.rollback()
         database_status = "error"
 
     try:
         user_count = db.query(User).count()
     except Exception:
+        db.rollback()
         user_count = 0
 
     # Calculate response time in milliseconds
