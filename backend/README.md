@@ -31,6 +31,39 @@ backend/
 
 See `.env.example` for required configuration.
 
+## 🔐 Authentication
+
+The application supports two authentication modes:
+
+### Development Mode (Mock Authentication)
+
+Set `MOCK_AUTH=true` in `.env` for local development. This returns a mock user without requiring Azure Easy Auth headers.
+
+**Mock user data:**
+
+- ID: `mock-user-123`
+- Name: `Test User`
+- Email: `mock_mail@example.com`
+- Role: `customer`
+
+**Test the endpoint:**
+
+```bash
+curl http://localhost:8000/api/auth/me
+```
+
+### Production Mode (Azure Easy Auth)
+
+Set `MOCK_AUTH=false` in production. The application validates Azure Easy Auth headers:
+
+- `X-MS-CLIENT-PRINCIPAL-ID` - Azure AD user ID
+- `X-MS-CLIENT-PRINCIPAL-NAME` - User display name
+- `X-MS-CLIENT-PRINCIPAL-EMAIL` - User email
+
+**First-time login:** New users are automatically created with `customer` role.
+
+**Existing users:** Name and email are updated if changed in Azure AD.
+
 ## 🚀 Quick Start
 
 **Prerequisites:** Docker Desktop must be running
@@ -42,7 +75,21 @@ See `.env.example` for required configuration.
    docker-compose up -d
    ```
 
-2. **Access the API:**
+2. **Seed the database:**
+
+   ```bash
+   docker-compose exec backend uv run python -m app.db.seed_restaurant_data
+   ```
+
+   This populates the database with test data:
+
+   - 1 restaurant (ESS Restaurant X)
+   - 8 tables with various seating capacities (2-8 seats)
+   - 2400 booking slots (30 days × 8 tables × 10 time slots/day)
+
+   **Note:** Running the seed script multiple times is safe - it clears old data before creating new data.
+
+3. **Access the API:**
 
 - **API:** [http://localhost:8000](http://localhost:8000)
 - **API Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
