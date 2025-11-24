@@ -1,14 +1,40 @@
-# Frontend Developer Guide
+# Frontend Documentation
 
 Developer guide for setting up and working with the frontend codebase. Contains setup instructions, project structure overview, and development workflow conventions.
 
 See the main **[README](../README.md)** for complete tech stack and ADR documentation.
 
-## Site Navigation
+## 📁 Frontend Structure
 
-![Site Navigation Structure](./images/site-navigation-structure.png)
+```bash
+frontend/
+├── .husky/               # Git hooks
+├── images/               # Static images and diagrams
+├── public/               # Public static assets
+├── src/
+│   ├── app/              # Next.js App Router pages
+│   ├── components/       # React components
+│   ├── constants/        # Application constants
+│   ├── lib/
+│   │   ├── api/          # API client and endpoints
+│   │   └── utils/        # Helper functions
+│   └── types/            # TypeScript type definitions
+├── .env.example          # Environment variables template
+├── .gitignore            # Git ignore rules
+├── .prettierrc           # Prettier configuration
+├── bun.lock              # Bun lock file
+├── eslint.config.mjs     # ESLint configuration
+├── next.config.ts        # Next.js configuration
+├── package.json          # Project dependencies
+├── README.md             # (this file)
+└── tsconfig.json         # TypeScript configuration
+```
 
-[Edit diagram in Excalidraw](https://excalidraw.com/#json=BdvcJwUIBZ9_A5NroHjtU,5JZtOOeIxq_-3Xo4xksisA)
+## 🗺️ Site Navigation
+
+![Site Navigation Structure](./images/site-navigation-structure-v2.png)
+
+[Edit diagram in Excalidraw](https://excalidraw.com/#json=m3Dmc4u8ZSZGAGFjH_iu9,A8OGVGdCE6UbIjuc1FSyLg)
 
 Main navigation pages:
 
@@ -21,72 +47,47 @@ Main navigation pages:
   - **Conference & Events** - Event space booking
 - **Login** - User authentication
 
-## Frontend Structure
+## 🎨 Color Scheme
 
-```
-frontend/
-├── src/
-│   ├── app/
-│   ├── components/
-│   ├── lib/
-│   │   ├── api/
-│   │   └── utils/
-│   └── types/
-├── public/
-├── images/
-├── .husky/
-├── .gitignore
-├── .prettierrc
-├── eslint.config.mjs
-├── next.config.ts
-├── package.json
-├── tsconfig.json
-└── README.md
-```
+Application uses Mantine's color palette with the following semantic colors:
 
-## Quick Start
+- **Success**: `teal.5`
+- **Error**: `red.6`
+- **Loading**: `dimmed` (adapts to dark/light mode)
 
-```bash
-# Clone and navigate to frontend
-git clone https://github.com/DennisByberg/clo24-denbyb94-exam.git
-cd clo24-denbyb94-exam/frontend
+## ⚙️ Environment Variables
 
-# Install dependencies
-bun install
+See `.env.example` for required configuration.
 
-# Start development server
-bun run dev
-```
+## 🚀 Quick Start
+
+**Prerequisites:** Docker Desktop must be running
+
+1. **Clone and navigate to frontend:**
+
+   ```bash
+   git clone https://github.com/DennisByberg/clo24-denbyb94-exam.git
+   cd clo24-denbyb94-exam/frontend
+   ```
+
+2. **Install dependencies:**
+
+   ```bash
+   bun install
+   ```
+
+3. **Start backend services:**
+
+   ```bash
+   cd ..
+   docker-compose up -d
+   ```
+
+4. **Start development server:**
+
+   ```bash
+   cd frontend
+   bun run dev
+   ```
 
 Open [http://localhost:3000](http://localhost:3000) to see the app.
-
-## Making Changes
-
-1. **Create a new branch:**
-
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-2. **Make your changes** in `frontend/` directory
-
-3. **Test locally:**
-
-   ```bash
-   bun run dev    # Verify changes work
-   bun run lint   # Check code quality
-   ```
-
-4. **Commit your changes:**
-
-   ```bash
-   git add .
-   git commit -m "feat: your feature description #<issue number>"
-   ```
-
-   Pre-commit hooks will automatically run ESLint and Prettier.
-
-5. **Push and create PR:**
-   ```bash
-   git push origin feature/your-feature-name
-   ```

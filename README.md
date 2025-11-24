@@ -10,25 +10,22 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 
 ## 💻 Developer Guides
 
-- **[Frontend Developer Guide](frontend/README.md)** - Setup and development workflow for frontend
-- **[Backend Developer Guide](backend/README.md)** - Setup and development workflow for backend
+- **[Frontend Documentation](frontend/README.md)** - Frontend setup and development
+- **[Backend Documentation](backend/README.md)** - Backend setup and development
 
 ## 📁 Project Structure
 
-```
-.
-├── .github/           # GitHub configuration
-│   └── workflows/     # CI/CD pipelines
-├── backend/           # Backend application (Python/FastAPI)
-├── frontend/          # Frontend application (Next.js)
-│   ├── .husky/        # Git hooks
-│   ├── public/        # Static assets
-│   └── src/           # Source code
-├── docs/              # Documentation
-│   └── adr/           # Architecture Decision Records
-├── .gitignore
-├── LICENSE
-└── README.md
+```bash
+clo24-denbyb94-exam/
+├── .github/              # GitHub configuration
+├── backend/              # Backend application (Python/FastAPI)
+├── frontend/             # Frontend application (Next.js)
+├── docs/                 # Documentation
+├── .env.example          # Environment variables template
+├── .gitignore            # Git ignore rules
+├── docker-compose.yml    # Docker services configuration
+├── LICENSE               # MIT License
+└── README.md             # (this file)
 ```
 
 ## 🚀 Tech Stack / ADRs
@@ -63,6 +60,37 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 - **[ADR-007: Husky](docs/adr/ADR-007-husky.md)** - Git hooks for code quality
 - **[ADR-010: ESLint and Prettier](docs/adr/ADR-010-eslint-prettier.md)** - JavaScript linting and formatting
 - **[ADR-016: Docker](docs/adr/ADR-016-docker.md)** - Containerization
+
+## 🔧 Making Changes
+
+1. **Create a new branch:**
+
+   ```bash
+   git checkout -b feature/your-feature-name
+   ```
+
+2. **Make your changes** in the relevant directory
+
+3. **Test locally** using the commands in the respective README files
+
+4. **Commit your changes:**
+
+   ```bash
+   git add .
+   git commit -m "feat: your feature description #<issue number>"
+   ```
+
+   Pre-commit hooks will automatically run ESLint and Prettier (frontend only).
+
+5. **Push and create PR:**
+
+   ```bash
+   git push origin feature/your-feature-name
+   ```
+
+## ⚙️ Environment Variables
+
+See `.env.example` files in root, frontend and backend directories for required configuration.
 
 ## 📄 License
 
