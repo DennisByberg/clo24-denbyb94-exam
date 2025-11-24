@@ -1,23 +1,32 @@
 import { Paper, Group, Text, Code, Loader } from '@mantine/core';
-import { IconHeartbeat, IconCheck, IconX, IconServer } from '@tabler/icons-react';
+import { IconHeartbeat, IconServer } from '@tabler/icons-react';
 
 interface HealthCardProps {
+  title: string;
   status: string;
   error?: string;
+  icon?: React.ReactNode;
 }
 
-export default function HealthCard({ status, error }: HealthCardProps) {
-  const isHealthy = status === 'healthy';
+export default function HealthCard({ title, status, error, icon }: HealthCardProps) {
   const isLoading = status === 'loading';
-  const isError = status === 'error';
+  const isError = status === 'error' || status === 'unknown';
 
-  return (
+  // Healthy states: "healthy", "connected", or matches known healthy patterns
+  const HEALTHY_STATUSES = new Set(['healthy', 'connected']);
+  const isHealthy =
+    HEALTHY_STATUSES.has(status) ||
+    /^\d+ users$/.test(status) ||
+    /^\d+ms$/.test(status) ||
+    /^(mock|azure) mode$/.test(status);
+
+  const cardContent = (
     <Paper withBorder p="md" radius="md">
       <Group justify="space-between">
         <Group gap="xs">
-          <IconServer size={20} color="var(--mantine-color-dimmed)" />
+          {icon || <IconServer size={20} color="var(--mantine-color-dimmed)" />}
           <Text size="sm" c="dimmed" fw={700} tt="uppercase">
-            Backend Health
+            {title}
           </Text>
         </Group>
         {isLoading ? (
@@ -32,7 +41,7 @@ export default function HealthCard({ status, error }: HealthCardProps) {
       {isLoading ? (
         <Code fz={'lg'} c="var(--mantine-color-dimmed)" block mt={25}>
           <Group gap="xs">
-            <Loader size="xs" type="oval" />
+            <Loader size="xs" type="oval" color="teal" />
             <Text span inherit>
               Connecting
             </Text>
@@ -40,12 +49,7 @@ export default function HealthCard({ status, error }: HealthCardProps) {
         </Code>
       ) : isError ? (
         <Code fz="lg" c="var(--mantine-color-red-6)" block mt={25}>
-          <Group gap="xs">
-            <IconX size={16} />
-            <Text span inherit>
-              {error || 'Failed to fetch'}
-            </Text>
-          </Group>
+          {error || 'Failed to fetch'}
         </Code>
       ) : (
         <Code
@@ -54,14 +58,11 @@ export default function HealthCard({ status, error }: HealthCardProps) {
           block
           mt={25}
         >
-          <Group gap="xs">
-            {isHealthy ? <IconCheck size={16} /> : <IconX size={16} />}
-            <Text span inherit>
-              {status}
-            </Text>
-          </Group>
+          {status}
         </Code>
       )}
     </Paper>
   );
+
+  return cardContent;
 }
