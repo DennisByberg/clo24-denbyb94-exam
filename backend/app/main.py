@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from app.config import settings
-from app.routers import auth
+from app.routers import auth_router, health_router
 
 app = FastAPI(
     title=settings.app_name,
@@ -20,14 +20,10 @@ app.add_middleware(
 )
 
 # Register routers
-app.include_router(auth.router, prefix=settings.api_prefix)
+app.include_router(auth_router, prefix=settings.api_prefix)
+app.include_router(health_router)
 
 
 @app.get("/")
 def read_root():
     return {"message": "Hello from FastAPI!"}
-
-
-@app.get("/health")
-def health_check():
-    return {"status": "healthy"}
