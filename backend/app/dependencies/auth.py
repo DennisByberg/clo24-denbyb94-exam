@@ -16,10 +16,10 @@ async def get_current_user(
     x_ms_client_principal_email: str | None = Header(None),
 ) -> UserResponse:
     """
-    Get current authenticated user from mock (dev) or Azure Easy Auth (production).
+    Authenticate and retrieve the current user.
     """
 
-    # MOCK MODE - Development/Testing
+    # Development mode: return mock user for testing without Azure Easy Auth
     if settings.mock_auth:
         mock_user = UserResponse(
             id="mock-user-123",
@@ -29,39 +29,59 @@ async def get_current_user(
         )
         return mock_user
 
-    # PRODUCTION MODE - Azure Easy Auth
+    # Production mode: validate Azure Easy Auth headers
     if not x_ms_client_principal_id:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Not authenticated - Azure Easy Auth headers missing",
         )
 
-    # Get or create user from database
+    # Query database for existing user by Azure AD ID
     user = db.query(User).filter(User.id == x_ms_client_principal_id).first()
 
+    # First-time login: create new user account
     if not user:
-        # First login - create new user
-        user = User(
-            id=x_ms_client_principal_id,
-            name=x_ms_client_principal_name or "Unknown",
-            email=x_ms_client_principal_email
-            or f"{x_ms_client_principal_id}@unknown.com",
-            role="customer",
-        )
-        db.add(user)
-        db.commit()
-        db.refresh(user)
+        try:
+            # Create new user with Azure Easy Auth data, defaulting to 'customer' role
+            user = User(
+                id=x_ms_client_principal_id,
+                name=x_ms_client_principal_name or "Unknown",
+                email=x_ms_client_principal_email
+                or f"{x_ms_client_principal_id}@unknown.com",
+                role="customer",
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+        except Exception:
+            db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to create user account",
+            )
         return UserResponse.model_validate(user)
 
-    # User exists - update name if it changed
-    if x_ms_client_principal_name:
+    # Existing user: update name/email only if changed to avoid unnecessary DB writes
+    changed = False
+
+    if x_ms_client_principal_name and str(user.name) != x_ms_client_principal_name:
         user.name = x_ms_client_principal_name  # type: ignore
+        changed = True
 
-    # Update email if it changed
-    if x_ms_client_principal_email:
+    if x_ms_client_principal_email and str(user.email) != x_ms_client_principal_email:
         user.email = x_ms_client_principal_email  # type: ignore
+        changed = True
 
-    db.commit()
-    db.refresh(user)
+    # Persist updated user information only if something changed
+    if changed:
+        try:
+            db.commit()
+            db.refresh(user)
+        except Exception:
+            db.rollback()
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail="Failed to update user account",
+            )
 
     return UserResponse.model_validate(user)
