@@ -1,12 +1,10 @@
-from .user import UserResponse
 from .restaurant import (
+    RestaurantDetailResponse,
     RestaurantResponse,
     RestaurantTableResponse,
-    RestaurantDetailResponse,
 )
 
 __all__ = [
-    "UserResponse",
     "RestaurantResponse",
     "RestaurantTableResponse",
     "RestaurantDetailResponse",
