@@ -10,6 +10,7 @@ class Restaurant(Base):
     id = Column(Integer, primary_key=True, autoincrement=True)
     name = Column(String(100), nullable=False)
     total_seating = Column(Integer, nullable=False)
+    image_url = Column(String(500), nullable=True)
 
     # Relationship to tables
     tables = relationship("RestaurantTable", back_populates="restaurant")

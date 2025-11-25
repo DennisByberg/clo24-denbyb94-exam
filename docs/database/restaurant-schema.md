@@ -44,11 +44,12 @@
 
 ### restaurant
 
-| Column          | Type         | Constraints                | Description     |
-| --------------- | ------------ | -------------------------- | --------------- |
-| `id`            | INTEGER      | PRIMARY KEY, AUTOINCREMENT | Unique ID       |
-| `name`          | VARCHAR(100) | NOT NULL                   | Restaurant name |
-| `total_seating` | INTEGER      | NOT NULL                   | Total capacity  |
+| Column          | Type         | Constraints                | Description            |
+| --------------- | ------------ | -------------------------- | ---------------------- |
+| `id`            | INTEGER      | PRIMARY KEY, AUTOINCREMENT | Unique ID              |
+| `name`          | VARCHAR(100) | NOT NULL                   | Restaurant name        |
+| `total_seating` | INTEGER      | NOT NULL                   | Total capacity         |
+| `image_url`     | VARCHAR(500) | NULLABLE                   | Azure Blob Storage URL |
 
 ---
 
