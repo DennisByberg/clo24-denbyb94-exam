@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import {
+  Avatar,
   Box,
   Burger,
   Button,
@@ -11,19 +12,22 @@ import {
   Drawer,
   Group,
   HoverCard,
+  Menu,
   ScrollArea,
   Text,
   UnstyledButton,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconChevronDown, IconChevronUp } from '@tabler/icons-react';
+import { IconChevronDown, IconChevronUp, IconLogout, IconUser } from '@tabler/icons-react';
 import { mainLinks, bookingLinks, adminLinks } from '@/constants/navigation';
+import { useAuth } from '@/hooks/useAuth';
 import classes from './Header.module.css';
 
 export default function Header() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const [adminLinksOpened, { toggle: toggleAdminLinks }] = useDisclosure(false);
+  const { user, logout } = useAuth();
 
   return (
     <Box>
@@ -104,7 +108,36 @@ export default function Header() {
           </Group>
 
           <Group visibleFrom="sm">
-            <Button disabled>Login</Button>
+            {user ? (
+              <Menu shadow="md" width={200}>
+                <Menu.Target>
+                  <UnstyledButton>
+                    <Group gap="xs">
+                      <Avatar src={user.picture} alt={user.name} size="sm" radius="xl" />
+                      <div>
+                        <Text size="sm" fw={500}>
+                          {user.name}
+                        </Text>
+                        <Text size="xs" c="dimmed">
+                          {user.email}
+                        </Text>
+                      </div>
+                    </Group>
+                  </UnstyledButton>
+                </Menu.Target>
+                <Menu.Dropdown>
+                  <Menu.Item leftSection={<IconUser size={16} />} disabled>
+                    Profile
+                  </Menu.Item>
+                  <Menu.Divider />
+                  <Menu.Item leftSection={<IconLogout size={16} />} color="red" onClick={logout}>
+                    Logout
+                  </Menu.Item>
+                </Menu.Dropdown>
+              </Menu>
+            ) : (
+              <Button disabled>Login</Button>
+            )}
           </Group>
 
           <Burger
@@ -188,7 +221,13 @@ export default function Header() {
           <Divider my="md" />
 
           <Group justify="center" grow pb="xl" px="md">
-            <Button disabled>Login</Button>
+            {user ? (
+              <Button color="red" onClick={logout} leftSection={<IconLogout size={16} />}>
+                Logout
+              </Button>
+            ) : (
+              <Button disabled>Login</Button>
+            )}
           </Group>
         </ScrollArea>
       </Drawer>

@@ -1,5 +1,6 @@
 import { Paper, Group, Text, Code, Loader } from '@mantine/core';
 import { IconHeartbeat, IconServer } from '@tabler/icons-react';
+import { isHealthyStatus } from '@/lib/utils/healthStatus';
 
 interface HealthCardProps {
   title: string;
@@ -8,19 +9,19 @@ interface HealthCardProps {
   icon?: React.ReactNode;
 }
 
+/**
+ * Card component displaying health status with visual indicators
+ * @param title - Card title
+ * @param status - Health status string
+ * @param error - Optional error message
+ * @param icon - Optional custom icon
+ */
 export default function HealthCard({ title, status, error, icon }: HealthCardProps) {
   const isLoading = status === 'loading';
   const isError = status === 'error' || status === 'unknown';
+  const isHealthy = isHealthyStatus(status);
 
-  // Healthy states: "healthy", "connected", or matches known healthy patterns
-  const HEALTHY_STATUSES = new Set(['healthy', 'connected']);
-  const isHealthy =
-    HEALTHY_STATUSES.has(status) ||
-    /^\d+ users$/.test(status) ||
-    /^\d+ms$/.test(status) ||
-    /^(mock|azure) mode$/.test(status);
-
-  const cardContent = (
+  return (
     <Paper withBorder p="md" radius="md">
       <Group justify="space-between">
         <Group gap="xs">
@@ -29,13 +30,15 @@ export default function HealthCard({ title, status, error, icon }: HealthCardPro
             {title}
           </Text>
         </Group>
-        {isLoading ? (
-          <IconHeartbeat color="var(--mantine-color-dimmed)" />
-        ) : (
-          <IconHeartbeat
-            color={isHealthy ? 'var(--mantine-color-teal-5)' : 'var(--mantine-color-red-6)'}
-          />
-        )}
+        <IconHeartbeat
+          color={
+            isLoading
+              ? 'var(--mantine-color-dimmed)'
+              : isHealthy
+                ? 'var(--mantine-color-teal-5)'
+                : 'var(--mantine-color-red-6)'
+          }
+        />
       </Group>
 
       {isLoading ? (
@@ -63,6 +66,4 @@ export default function HealthCard({ title, status, error, icon }: HealthCardPro
       )}
     </Paper>
   );
-
-  return cardContent;
 }

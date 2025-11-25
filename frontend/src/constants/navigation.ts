@@ -4,7 +4,7 @@ export const mainLinks: NavLink[] = [
   { href: '/', label: 'Home' },
   { href: '/about', label: 'About' },
   { href: '/gallery', label: 'Gallery' },
-];
+] as const;
 
 export const bookingLinks: NavLinkWithDescription[] = [
   {

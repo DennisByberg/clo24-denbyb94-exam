@@ -2,7 +2,7 @@ import { ColorSchemeScript } from '@mantine/core';
 import { Geist, Geist_Mono } from 'next/font/google';
 import '@mantine/core/styles.css';
 import './globals.css';
-import Providers from '@/components/Providers/Providers';
+import AppProviders from '@/providers/AppProviders';
 import Header from '@/components/Header/Header';
 
 const geistSans = Geist({
@@ -28,10 +28,10 @@ export default function RootLayout({
         <ColorSchemeScript defaultColorScheme="dark" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
-        <Providers>
+        <AppProviders>
           <Header />
           <main>{children}</main>
-        </Providers>
+        </AppProviders>
       </body>
     </html>
   );
