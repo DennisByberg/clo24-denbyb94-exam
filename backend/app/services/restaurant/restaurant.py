@@ -1,4 +1,4 @@
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 
 from app.models import Restaurant
 
@@ -14,4 +14,9 @@ class RestaurantService:
     @staticmethod
     def get_restaurant_by_id(db: Session, restaurant_id: int) -> Restaurant | None:
         """Get a specific restaurant by ID with its tables"""
-        return db.query(Restaurant).filter(Restaurant.id == restaurant_id).first()
+        return (
+            db.query(Restaurant)
+            .options(joinedload(Restaurant.tables))
+            .filter(Restaurant.id == restaurant_id)
+            .first()
+        )
