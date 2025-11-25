@@ -68,28 +68,34 @@ Set `MOCK_AUTH=false` in production. The application validates Azure Easy Auth h
 
 **Prerequisites:** Docker Desktop must be running
 
-1. **Start backend services:**
+**Start backend services:**
 
-   ```bash
-   cd clo24-denbyb94-exam
-   docker-compose up -d
-   ```
+```bash
+cd clo24-denbyb94-exam
+docker-compose up -d
+```
 
-2. **Seed the database:**
+**Run database migrations:**
 
-   ```bash
-   docker-compose exec backend uv run python -m app.db.seed_restaurant_data
-   ```
+```bash
+docker-compose exec backend uv run alembic upgrade head
+```
 
-   This populates the database with test data:
+**Seed the database:**
 
-   - 1 restaurant (ESS Restaurant X)
-   - 8 tables with various seating capacities (2-8 seats)
-   - 2400 booking slots (30 days × 8 tables × 10 time slots/day)
+```bash
+docker-compose exec backend uv run python -m app.db.seed_restaurant_data
+```
 
-   **Note:** Running the seed script multiple times is safe - it clears old data before creating new data.
+This populates the database with test data:
 
-3. **Access the API:**
+- 1 restaurant (ESS Restaurant X)
+- 8 tables with various seating capacities (2-8 seats)
+- 2400 booking slots (30 days × 8 tables × 10 time slots/day)
+
+**Note:** Running the seed script multiple times is safe - it clears old data before creating new data.
+
+**Access the API:**
 
 - **API:** [http://localhost:8000](http://localhost:8000)
 - **API Docs:** [http://localhost:8000/docs](http://localhost:8000/docs)
