@@ -22,7 +22,7 @@ app.add_middleware(
 # Register routers
 app.include_router(auth_router, prefix=settings.api_prefix)
 app.include_router(health_router)
-app.include_router(restaurant_router)
+app.include_router(restaurant_router, prefix=settings.api_prefix)
 
 
 @app.get("/")
