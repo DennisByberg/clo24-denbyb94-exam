@@ -8,6 +8,7 @@ import {
   Button,
   Center,
   Collapse,
+  Container,
   Divider,
   Drawer,
   Group,
@@ -32,121 +33,123 @@ export default function Header() {
   return (
     <Box>
       <header className={classes.header}>
-        <Group justify="space-between" h="100%">
-          <Link href="/" className={classes.logo}>
-            LOGO
-          </Link>
+        <Container size="xl" h="100%">
+          <Group justify="space-between" h="100%">
+            <Link href="/" className={classes.logo}>
+              LOGO
+            </Link>
 
-          <Group h="100%" gap={0} visibleFrom="sm">
-            {mainLinks.map((link) => (
-              <Link key={link.href} href={link.href} className={classes.link}>
-                {link.label}
-              </Link>
-            ))}
+            <Group h="100%" gap={0} visibleFrom="sm">
+              {mainLinks.map((link) => (
+                <Link key={link.href} href={link.href} className={classes.link}>
+                  {link.label}
+                </Link>
+              ))}
 
-            <HoverCard width={300} position="bottom" radius="md" shadow="md" withinPortal>
-              <HoverCard.Target>
-                <UnstyledButton className={classes.link}>
-                  <Center inline>
-                    <Box component="span" mr={5}>
-                      Bookings
-                    </Box>
-                    <IconChevronDown size={16} />
-                  </Center>
-                </UnstyledButton>
-              </HoverCard.Target>
-
-              <HoverCard.Dropdown>
-                {bookingLinks.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={classes.subLink}
-                    style={{ textDecoration: 'none', display: 'block' }}
-                  >
-                    <Text size="sm" fw={500}>
-                      {item.label}
-                    </Text>
-                    <Text size="xs" c="dimmed">
-                      {item.description}
-                    </Text>
-                  </Link>
-                ))}
-              </HoverCard.Dropdown>
-            </HoverCard>
-
-            <HoverCard width={300} position="bottom" radius="md" shadow="md" withinPortal>
-              <HoverCard.Target>
-                <UnstyledButton className={classes.link}>
-                  <Center inline>
-                    <Box component="span" mr={5}>
-                      Admin
-                    </Box>
-                    <IconChevronDown size={16} />
-                  </Center>
-                </UnstyledButton>
-              </HoverCard.Target>
-
-              <HoverCard.Dropdown>
-                {adminLinks.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className={classes.subLink}
-                    style={{ textDecoration: 'none', display: 'block' }}
-                  >
-                    <Text size="sm" fw={500}>
-                      {item.label}
-                    </Text>
-                    <Text size="xs" c="dimmed">
-                      {item.description}
-                    </Text>
-                  </Link>
-                ))}
-              </HoverCard.Dropdown>
-            </HoverCard>
-          </Group>
-
-          <Group visibleFrom="sm">
-            {user ? (
-              <Menu shadow="md" width={200}>
-                <Menu.Target>
-                  <UnstyledButton>
-                    <Group gap="xs">
-                      <Avatar src={user.picture} alt={user.name} size="sm" radius="xl" />
-                      <div>
-                        <Text size="sm" fw={500}>
-                          {user.name}
-                        </Text>
-                        <Text size="xs" c="dimmed">
-                          {user.email}
-                        </Text>
-                      </div>
-                    </Group>
+              <HoverCard width={300} position="bottom" radius="md" shadow="md" withinPortal>
+                <HoverCard.Target>
+                  <UnstyledButton className={classes.link}>
+                    <Center inline>
+                      <Box component="span" mr={5}>
+                        Bookings
+                      </Box>
+                      <IconChevronDown size={16} />
+                    </Center>
                   </UnstyledButton>
-                </Menu.Target>
-                <Menu.Dropdown>
-                  <Menu.Item leftSection={<IconUser size={16} />} disabled>
-                    Profile
-                  </Menu.Item>
-                  <Menu.Divider />
-                  <Menu.Item leftSection={<IconLogout size={16} />} color="red" onClick={logout}>
-                    Logout
-                  </Menu.Item>
-                </Menu.Dropdown>
-              </Menu>
-            ) : (
-              <Button disabled>Login</Button>
-            )}
-          </Group>
+                </HoverCard.Target>
 
-          <Burger
-            opened={drawerOpened}
-            onClick={toggleDrawer}
-            hiddenFrom="sm"
-            aria-label="Toggle navigation menu"
-          />
-        </Group>
+                <HoverCard.Dropdown>
+                  {bookingLinks.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={classes.subLink}
+                      style={{ textDecoration: 'none', display: 'block' }}
+                    >
+                      <Text size="sm" fw={500}>
+                        {item.label}
+                      </Text>
+                      <Text size="xs" c="dimmed">
+                        {item.description}
+                      </Text>
+                    </Link>
+                  ))}
+                </HoverCard.Dropdown>
+              </HoverCard>
+
+              <HoverCard width={300} position="bottom" radius="md" shadow="md" withinPortal>
+                <HoverCard.Target>
+                  <UnstyledButton className={classes.link}>
+                    <Center inline>
+                      <Box component="span" mr={5}>
+                        Admin
+                      </Box>
+                      <IconChevronDown size={16} />
+                    </Center>
+                  </UnstyledButton>
+                </HoverCard.Target>
+
+                <HoverCard.Dropdown>
+                  {adminLinks.map((item) => (
+                    <Link
+                      key={item.href}
+                      href={item.href}
+                      className={classes.subLink}
+                      style={{ textDecoration: 'none', display: 'block' }}
+                    >
+                      <Text size="sm" fw={500}>
+                        {item.label}
+                      </Text>
+                      <Text size="xs" c="dimmed">
+                        {item.description}
+                      </Text>
+                    </Link>
+                  ))}
+                </HoverCard.Dropdown>
+              </HoverCard>
+            </Group>
+
+            <Group visibleFrom="sm">
+              {user ? (
+                <Menu shadow="md" width={200}>
+                  <Menu.Target>
+                    <UnstyledButton>
+                      <Group gap="xs">
+                        <Avatar src={user.picture} alt={user.name} size="sm" radius="xl" />
+                        <div>
+                          <Text size="sm" fw={500}>
+                            {user.name}
+                          </Text>
+                          <Text size="xs" c="dimmed">
+                            {user.email}
+                          </Text>
+                        </div>
+                      </Group>
+                    </UnstyledButton>
+                  </Menu.Target>
+                  <Menu.Dropdown>
+                    <Menu.Item leftSection={<IconUser size={16} />} disabled>
+                      Profile
+                    </Menu.Item>
+                    <Menu.Divider />
+                    <Menu.Item leftSection={<IconLogout size={16} />} color="red" onClick={logout}>
+                      Logout
+                    </Menu.Item>
+                  </Menu.Dropdown>
+                </Menu>
+              ) : (
+                <Button disabled>Login</Button>
+              )}
+            </Group>
+
+            <Burger
+              opened={drawerOpened}
+              onClick={toggleDrawer}
+              hiddenFrom="sm"
+              aria-label="Toggle navigation menu"
+            />
+          </Group>
+        </Container>
       </header>
 
       <Drawer
