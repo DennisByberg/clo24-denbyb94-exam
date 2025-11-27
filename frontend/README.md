@@ -1,59 +1,44 @@
 # Frontend Documentation
 
+![](../images/ace-group-logo.png)
+
 Developer guide for setting up and working with the frontend codebase. Contains setup instructions, project structure overview, and development workflow conventions.
 
 See the main **[README](../README.md)** for complete tech stack and ADR documentation.
 
 ## 📁 Frontend Structure
 
+**Note:** _Only the most important directories and files are listed below._
+
 ```bash
 frontend/
-├── .husky/               # Git hooks
-├── images/               # Static images and diagrams
 ├── public/               # Public static assets
 ├── src/
 │   ├── app/              # Next.js App Router pages
 │   ├── components/       # React components
 │   ├── constants/        # Application constants
-│   ├── lib/
-│   │   ├── api/          # API client and endpoints
-│   │   └── utils/        # Helper functions
+│   ├── contexts/         # React contexts
+│   ├── hooks/            # Custom React hooks
+│   ├── lib/              # API client and utilities
+│   ├── providers/        # React providers
+│   ├── theme/            # Mantine theme configuration
 │   └── types/            # TypeScript type definitions
-├── .env.example          # Environment variables template
-├── .gitignore            # Git ignore rules
-├── .prettierrc           # Prettier configuration
-├── bun.lock              # Bun lock file
-├── eslint.config.mjs     # ESLint configuration
-├── next.config.ts        # Next.js configuration
 ├── package.json          # Project dependencies
-├── README.md             # (this file)
-└── tsconfig.json         # TypeScript configuration
+│
+└── README.md             # This file
 ```
 
 ## 🗺️ Site Navigation
 
-![Site Navigation Structure](./images/site-navigation-structure-v2.png)
+![Site Navigation Structure](../images/site-navigation-structure-v2.png)
 
 [Edit diagram in Excalidraw](https://excalidraw.com/#json=m3Dmc4u8ZSZGAGFjH_iu9,A8OGVGdCE6UbIjuc1FSyLg)
 
-Main navigation pages:
-
-- **Home** - Landing page
-- **About** - Company information
-- **Gallery** - Image gallery
-- **Bookings**
-  - **Dining & Drinking** - Restaurant booking
-  - **Pool Club & Spa** - Spa services booking
-  - **Conference & Events** - Event space booking
-- **Login** - User authentication
-
 ## 🎨 Color Scheme
 
-Application uses Mantine's color palette with the following semantic colors:
+Application uses a custom Mantine theme with defined color palettes.
 
-- **Success**: `teal.5`
-- **Error**: `red.6`
-- **Loading**: `dimmed` (adapts to dark/light mode)
+See `src/theme/theme.ts` for complete color definitions and usage.
 
 ## ⚙️ Environment Variables
 
