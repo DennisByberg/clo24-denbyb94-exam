@@ -1,0 +1,30 @@
+# === Images ===
+# Restaurant images (stored in Azure Blob Storage)
+images/
+
+# === Scripts ===
+# Temporary or generated scripts (if any)
+# scripts/temp_*
+
+# === Terraform ===
+# Terraform state files
+terraform/*.tfstate
+terraform/*.tfstate.*
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+terraform/crash.log
+terraform/crash.*.log
+
+# Terraform override files
+terraform/override.tf
+terraform/override.tf.json
+terraform/*_override.tf
+terraform/*_override.tf.json
+
+# Terraform CLI config
+terraform/.terraformrc
+terraform/terraform.rc
+
+# Terraform variable files (keep example files)
+terraform/*.tfvars
+!terraform/example.tfvars
