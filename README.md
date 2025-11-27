@@ -18,9 +18,11 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 ```bash
 clo24-denbyb94-exam/
 ├── .github/              # GitHub configuration
+├── .vscode/              # VSCode configuration for workspace
 ├── backend/              # Backend application (Python/FastAPI)
-├── frontend/             # Frontend application (Next.js)
 ├── docs/                 # Documentation
+├── frontend/             # Frontend application (Next.js)
+├── infrastructure/       # Infrastructure resources and IaC
 ├── .env.example          # Environment variables template
 ├── .gitignore            # Git ignore rules
 ├── docker-compose.yml    # Docker services configuration
