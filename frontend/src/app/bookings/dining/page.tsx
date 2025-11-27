@@ -15,7 +15,7 @@ import RestaurantCard from '@/components/RestaurantCard';
 import { apiClient } from '@/lib/api/client';
 import { Restaurant } from '@/types/restaurant';
 
-const AZURE_BLOB_BASE_URL = 'https://essimages.blob.core.windows.net/restaurant-images';
+const AZURE_RESTAURANT_BLOB_URL = process.env.NEXT_PUBLIC_AZURE_BLOB_URL;
 
 export default function DiningPage() {
   const { data: restaurants, isLoading } = useQuery<Restaurant[]>({
@@ -27,7 +27,7 @@ export default function DiningPage() {
     <>
       {/* Hero Section */}
       <Container size="xl">
-        <BackgroundImage src={`${AZURE_BLOB_BASE_URL}/restaurant-hero.jpeg`}>
+        <BackgroundImage src={`${AZURE_RESTAURANT_BLOB_URL}/restaurant-hero.jpeg`}>
           <Box
             p="200px var(--mantine-spacing-md)"
             ta="center"
