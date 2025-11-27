@@ -11,7 +11,7 @@ import {
   BackgroundImage,
 } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
-import RestaurantCard from '@/components/RestaurantCard';
+import RestaurantCard from '@/components/RestaurantCard/RestaurantCard';
 import { apiClient } from '@/lib/api/client';
 import { Restaurant } from '@/types/restaurant';
 

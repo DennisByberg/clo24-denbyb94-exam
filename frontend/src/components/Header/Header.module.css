@@ -1,12 +1,8 @@
-.header {
-  height: 60px;
-}
-
 .logo {
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 600;
   text-decoration: none;
-  color: var(--mantine-color-white);
+  color: var(--mantine-color-yellow-2);
 }
 
 .link {
@@ -28,14 +24,42 @@
 .subLink {
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
   border-radius: var(--mantine-radius-md);
-  color: var(--mantine-color-white);
+  text-decoration: none;
+  display: block;
+  color: var(--mantine-color-yellow-2);
 }
 
 .subLink:hover {
   background-color: var(--mantine-color-dark-7);
 }
 
-/* TODO: Use Mantine breakpoints for responsiveness instead of hardcoded values */
+.dropdownButton {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding-left: var(--mantine-spacing-md);
+  padding-right: var(--mantine-spacing-md);
+  color: var(--mantine-color-white);
+  font-weight: 500;
+  font-size: var(--mantine-font-size-sm);
+}
+
+.dropdownButton:hover {
+  background-color: var(--mantine-color-dark-6);
+}
+
+.mobileDropdownButton {
+  display: flex;
+  align-items: center;
+  height: 42px;
+  width: 100%;
+  padding-left: var(--mantine-spacing-md);
+  padding-right: var(--mantine-spacing-md);
+  color: var(--mantine-color-white);
+  font-weight: 500;
+  font-size: var(--mantine-font-size-sm);
+}
+
 @media (max-width: 768px) {
   .link {
     height: 42px;

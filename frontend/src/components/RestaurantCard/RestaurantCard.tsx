@@ -2,39 +2,24 @@
 
 import { Card, Text, Button, Image, Stack, Box } from '@mantine/core';
 import { IconBook, IconInfoCircle } from '@tabler/icons-react';
+import { useRouter } from 'next/navigation';
 import { Restaurant } from '@/types/restaurant';
+import classes from './RestaurantCard.module.css';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
 }
 
 export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
+  const router = useRouter();
   const [prefix, type] = restaurant.name.split(' ');
 
   return (
     <Card shadow="sm" padding="lg" radius="md" display="flex">
       {/* Restaurant Image */}
-      <Box
-        style={{
-          position: 'relative',
-          borderRadius: 'var(--mantine-radius-md)',
-          overflow: 'hidden',
-          marginBottom: '1rem',
-        }}
-      >
+      <Box className={classes.imageContainer}>
         <Image src={restaurant.image_url || undefined} alt={restaurant.name} h={300} fit="cover" />
-        <Box
-          style={{
-            position: 'absolute',
-            top: '50%',
-            left: '50%',
-            transform: 'translate(-50%, -50%)',
-            textAlign: 'center',
-            width: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
-            padding: 'var(--mantine-spacing-md)',
-          }}
-        >
+        <Box className={classes.imageOverlay}>
           <Text size="22px" fw={400} c="white" lts="2px">
             {prefix}
           </Text>
@@ -53,7 +38,14 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
 
       {/* Buttons */}
       <Stack gap="md">
-        <Button size="md" color="teal" fw={600} lts="1px" leftSection={<IconBook size={18} />}>
+        <Button
+          size="md"
+          color="teal"
+          fw={600}
+          lts="1px"
+          leftSection={<IconBook size={18} />}
+          onClick={() => router.push(`/bookings/dining/${restaurant.id}`)}
+        >
           BOOK
         </Button>
         <Button

@@ -10,7 +10,7 @@ import {
   IconUsers,
   IconClock,
 } from '@tabler/icons-react';
-import HealthCard from '@/components/HealthCard';
+import HealthCard from '@/components/HealthCard/HealthCard';
 
 export default function HealthPage() {
   const { data, error, isLoading } = useQuery({
