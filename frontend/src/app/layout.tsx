@@ -1,4 +1,4 @@
-import { ColorSchemeScript } from '@mantine/core';
+import { ColorSchemeScript, Container } from '@mantine/core';
 import '@mantine/core/styles.css';
 import AppProviders from '@/providers/AppProviders';
 import Header from '@/components/Header/Header';
@@ -26,7 +26,9 @@ export default function RootLayout({
       <body>
         <AppProviders>
           <Header />
-          {children}
+          <Container size={'xl'} py={'xl'}>
+            {children}
+          </Container>
         </AppProviders>
       </body>
     </html>

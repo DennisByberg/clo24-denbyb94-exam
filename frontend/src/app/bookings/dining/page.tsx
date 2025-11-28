@@ -1,15 +1,6 @@
 'use client';
 
-import {
-  Container,
-  Title,
-  SimpleGrid,
-  Stack,
-  Loader,
-  Box,
-  Text,
-  BackgroundImage,
-} from '@mantine/core';
+import { Title, SimpleGrid, Stack, Loader, Box, Text, BackgroundImage } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import RestaurantCard from '@/components/RestaurantCard/RestaurantCard';
 import { apiClient } from '@/lib/api/client';
@@ -26,42 +17,42 @@ export default function DiningPage() {
   return (
     <>
       {/* Hero Section */}
-      <Container size="xl">
-        <BackgroundImage src={`${AZURE_RESTAURANT_BLOB_URL}/restaurant-hero.jpeg`}>
-          <Box
-            p="200px var(--mantine-spacing-md)"
-            ta="center"
-            display="flex"
-            style={{
-              backgroundColor: 'rgba(0, 0, 0, 0.75)',
-              flexDirection: 'column',
-              alignItems: 'center',
-            }}
-          >
-            <Title order={1} size="3rem" c="white" mb="1rem">
-              Dining & Drinking
-            </Title>
-            <Text size="xl" c="white" maw="600px">
-              Discover our exceptional restaurants and reserve your table for an unforgettable
-              culinary experience
-            </Text>
-          </Box>
-        </BackgroundImage>
-      </Container>
+      <BackgroundImage
+        src={`${AZURE_RESTAURANT_BLOB_URL}/restaurant-hero.jpeg`}
+        style={{ borderRadius: '6px 6px 6px 6px' }}
+      >
+        <Box
+          p="200px var(--mantine-spacing-md)"
+          ta="center"
+          display="flex"
+          style={{
+            backgroundColor: 'rgba(0, 0, 0, 0.3)',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+        >
+          <Title order={1} size="3rem" c="white" mb="1rem">
+            Dining & Drinking
+          </Title>
+          <Text size="xl" c="white" maw="600px">
+            Discover our exceptional restaurants and reserve your table for an unforgettable
+            culinary experience
+          </Text>
+        </Box>
+      </BackgroundImage>
 
-      <Container size="xl" py="xl">
-        <Stack gap="xl">
-          {isLoading && <Loader size="lg" display="block" m="0 auto" />}
+      {/* Restaurant List */}
+      <Stack gap="xl" mt="xl">
+        {isLoading && <Loader size="lg" display="block" m="0 auto" />}
 
-          {restaurants && restaurants.length > 0 && (
-            <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
-              {restaurants.map((restaurant) => (
-                <RestaurantCard key={restaurant.id} restaurant={restaurant} />
-              ))}
-            </SimpleGrid>
-          )}
-        </Stack>
-      </Container>
+        {restaurants && restaurants.length > 0 && (
+          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
+            {restaurants.map((restaurant) => (
+              <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+            ))}
+          </SimpleGrid>
+        )}
+      </Stack>
     </>
   );
 }

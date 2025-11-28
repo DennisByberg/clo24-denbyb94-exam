@@ -2,7 +2,24 @@
 
 import { createContext } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import type { AuthContextType, User } from '@/types/auth';
+
+/** User data from backend /api/auth/me endpoint */
+interface User {
+  id: string;
+  email: string;
+  name: string;
+  picture?: string;
+}
+
+/** Authentication context state and methods */
+interface AuthContextType {
+  user: User | null;
+  isLoading: boolean;
+  isError: boolean;
+  refetch: () => void;
+  login: () => void;
+  logout: () => void;
+}
 
 export const AuthContext = createContext<AuthContextType | undefined>(undefined);
 

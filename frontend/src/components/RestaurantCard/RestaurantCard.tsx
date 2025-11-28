@@ -1,62 +1,59 @@
 'use client';
 
 import { Card, Text, Button, Image, Stack, Box } from '@mantine/core';
-import { IconBook, IconInfoCircle } from '@tabler/icons-react';
+import { IconBook } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
-import { Restaurant } from '@/types/restaurant';
-import classes from './RestaurantCard.module.css';
+
+interface Restaurant {
+  id: number;
+  name: string;
+  total_seating: number;
+  image_url: string | null;
+}
 
 interface RestaurantCardProps {
   restaurant: Restaurant;
 }
 
+/**
+ * RestaurantCard component displays a restaurant with image, name, description and booking button
+ * @param restaurant - Restaurant object to display
+ * @returns Card component with restaurant information
+ */
 export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
   const router = useRouter();
-  const [prefix, type] = restaurant.name.split(' ');
 
   return (
-    <Card shadow="sm" padding="lg" radius="md" display="flex">
+    <Card padding={40} bg={'var(--mantine-color-dark-8)'}>
       {/* Restaurant Image */}
-      <Box className={classes.imageContainer}>
-        <Image src={restaurant.image_url || undefined} alt={restaurant.name} h={300} fit="cover" />
-        <Box className={classes.imageOverlay}>
-          <Text size="22px" fw={400} c="white" lts="2px">
-            {prefix}
-          </Text>
-          <Text size="3rem" fw={500} c="white">
-            {type}
+      <Box pos={'relative'}>
+        <Image src={restaurant.image_url || undefined} alt={restaurant.name} h={300} />
+
+        {/* Restaurant Name */}
+        <Box>
+          <Text size={'2rem'} mb={'lg'} mt={'lg'} fw={500} c={'var(--mantine-color-yellow-2)'}>
+            {restaurant.name}
           </Text>
         </Box>
       </Box>
 
       {/* Description */}
-      <Box flex={1}>
-        <Text size="sm" c="dimmed" mb={30}>
+      <Box>
+        <Text size={'sm'} c={'var(--mantine-color-dimmed)'} mb={'2rem'}>
           Experience fine dining at its best with exceptional cuisine and atmosphere
         </Text>
       </Box>
 
       {/* Buttons */}
-      <Stack gap="md">
+      <Stack gap={'md'}>
         <Button
-          size="md"
-          color="teal"
-          fw={600}
-          lts="1px"
+          size={'md'}
+          color={'teal'}
+          lts={'1px'}
           leftSection={<IconBook size={18} />}
           onClick={() => router.push(`/bookings/dining/${restaurant.id}`)}
         >
-          BOOK
-        </Button>
-        <Button
-          size="md"
-          variant="outline"
-          color="teal"
-          fw={600}
-          lts="1px"
-          leftSection={<IconInfoCircle size={18} />}
-        >
-          READ MORE
+          BOOK TABLE
         </Button>
       </Stack>
     </Card>

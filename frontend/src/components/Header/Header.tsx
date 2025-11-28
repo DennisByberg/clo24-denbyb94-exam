@@ -20,15 +20,55 @@ import {
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import { IconChevronDown, IconChevronUp, IconLogout, IconUser } from '@tabler/icons-react';
-import { mainLinks, bookingLinks, adminLinks } from '@/constants/navigation';
 import { useAuth } from '@/hooks/useAuth';
 import classes from './Header.module.css';
+
+interface NavLink {
+  href: string;
+  label: string;
+}
+
+interface NavLinkWithDescription extends NavLink {
+  description: string;
+}
 
 export default function Header() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const [adminLinksOpened, { toggle: toggleAdminLinks }] = useDisclosure(false);
   const { user, logout } = useAuth();
+
+  const mainLinks: NavLink[] = [
+    { href: '/', label: 'Home' },
+    { href: '/about', label: 'About' },
+    { href: '/gallery', label: 'Gallery' },
+  ] as const;
+
+  const bookingLinks: NavLinkWithDescription[] = [
+    {
+      href: '/bookings/dining',
+      label: 'Dining & Drinking',
+      description: 'Reserve a table at our restaurants',
+    },
+    {
+      href: '/bookings/spa',
+      label: 'Pool Club & Spa',
+      description: 'Book spa treatments and pool access',
+    },
+    {
+      href: '/bookings/events',
+      label: 'Conference & Events',
+      description: 'Book spaces for events',
+    },
+  ] as const;
+
+  const adminLinks: NavLinkWithDescription[] = [
+    {
+      href: '/admin/health',
+      label: 'Health Checks',
+      description: 'Monitor system health status',
+    },
+  ] as const;
 
   return (
     <Box>
