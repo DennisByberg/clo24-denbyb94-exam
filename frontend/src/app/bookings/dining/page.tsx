@@ -17,24 +17,21 @@ export default function DiningPage() {
   return (
     <>
       {/* Hero Section */}
-      <BackgroundImage
-        src={`${AZURE_RESTAURANT_BLOB_URL}/restaurant-hero.jpeg`}
-        style={{ borderRadius: '6px 6px 6px 6px' }}
-      >
+      <BackgroundImage src={`${AZURE_RESTAURANT_BLOB_URL}/restaurant-hero.jpeg`}>
         <Box
-          p="200px var(--mantine-spacing-md)"
-          ta="center"
-          display="flex"
+          p={'200px var(--mantine-spacing-md)'}
+          ta={'center'}
+          display={'flex'}
           style={{
             backgroundColor: 'rgba(0, 0, 0, 0.3)',
             flexDirection: 'column',
             alignItems: 'center',
           }}
         >
-          <Title order={1} size="3rem" c="white" mb="1rem">
+          <Title order={1} size={'3rem'} c={'white'} mb={'1rem'}>
             Dining & Drinking
           </Title>
-          <Text size="xl" c="white" maw="600px">
+          <Text size={'xl'} c={'white'} maw={'30rem'}>
             Discover our exceptional restaurants and reserve your table for an unforgettable
             culinary experience
           </Text>
@@ -42,11 +39,11 @@ export default function DiningPage() {
       </BackgroundImage>
 
       {/* Restaurant List */}
-      <Stack gap="xl" mt="xl">
-        {isLoading && <Loader size="lg" display="block" m="0 auto" />}
+      <Stack mt={'xl'}>
+        {isLoading && <Loader color={'var(--mantine-color-yellow-2)'} size={'lg'} m={'0 auto'} />}
 
         {restaurants && restaurants.length > 0 && (
-          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing="lg">
+          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing={'xl'}>
             {restaurants.map((restaurant) => (
               <RestaurantCard key={restaurant.id} restaurant={restaurant} />
             ))}
