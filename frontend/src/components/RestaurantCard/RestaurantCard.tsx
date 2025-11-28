@@ -3,13 +3,7 @@
 import { Card, Text, Button, Image, Stack, Box } from '@mantine/core';
 import { IconBook } from '@tabler/icons-react';
 import { useRouter } from 'next/navigation';
-
-interface Restaurant {
-  id: number;
-  name: string;
-  total_seating: number;
-  image_url: string | null;
-}
+import { Restaurant } from '@/types/restaurant';
 
 interface RestaurantCardProps {
   restaurant: Restaurant;

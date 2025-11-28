@@ -5,14 +5,14 @@ import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'next/navigation';
 import { useState } from 'react';
 import { apiClient } from '@/lib/api/client';
-import { RestaurantDetail } from '@/types/restaurant';
+import { Restaurant } from '@/types/restaurant';
 
 export default function RestaurantBookingPage() {
   const params = useParams();
   const restaurantId = params.id as string;
   const [numberOfGuests, setNumberOfGuests] = useState<number>(2);
 
-  const { data: restaurant, isLoading } = useQuery<RestaurantDetail>({
+  const { data: restaurant, isLoading } = useQuery<Restaurant>({
     queryKey: ['restaurant', restaurantId],
     queryFn: () => apiClient(`/api/restaurants/${restaurantId}`),
   });

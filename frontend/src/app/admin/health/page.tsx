@@ -48,10 +48,10 @@ export default function HealthPage() {
 
   return (
     <>
-      <Title order={1} mb="xl">
+      <Title order={1} mb={'xl'}>
         Health Checks
       </Title>
-      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing="md">
+      <SimpleGrid cols={{ base: 1, sm: 2 }} spacing={'md'}>
         {healthChecks.map((check) => (
           <HealthCard
             key={check.title}
