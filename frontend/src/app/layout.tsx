@@ -1,5 +1,6 @@
 import { ColorSchemeScript, Container } from '@mantine/core';
 import '@mantine/core/styles.css';
+import '@mantine/dates/styles.css';
 import AppProviders from '@/providers/AppProviders';
 import Header from '@/components/Header/Header';
 
