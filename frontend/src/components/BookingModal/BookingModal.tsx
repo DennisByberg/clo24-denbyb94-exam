@@ -17,16 +17,22 @@ export default function BookingModal({
   restaurantName,
   restaurantImage,
 }: BookingModalProps) {
-  const [numberOfGuests, setNumberOfGuests] = useState<number>(2);
-  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const today = new Date();
+  const [numberOfGuests, setNumberOfGuests] = useState<number | null>(null);
+  const [selectedDate, setSelectedDate] = useState<string | null>(
+    today.toISOString().split('T')[0]
+  );
 
   const handleClose = () => {
-    setNumberOfGuests(2);
-    setSelectedDate(null);
+    setNumberOfGuests(null);
+    setSelectedDate(today.toISOString().split('T')[0]);
     onClose();
   };
 
-  const today = new Date();
+  const handleGuestSelection = (num: number) => {
+    setNumberOfGuests(numberOfGuests === num ? null : num);
+  };
+
   const maxDate = new Date();
   maxDate.setDate(maxDate.getDate() + 30);
 
@@ -35,14 +41,14 @@ export default function BookingModal({
       <Stack gap={'lg'} align={'center'}>
         {/* Restaurant Header */}
         <Group gap={'md'} mb={30}>
-          <Avatar src={restaurantImage} size="lg" radius={'sm'} />
-          <Text size="2rem" fw={600}>
+          <Avatar src={restaurantImage} size={'lg'} radius={'sm'} />
+          <Text size={'2rem'} fw={600}>
             {restaurantName}
           </Text>
         </Group>
 
         <div style={{ textAlign: 'left' }}>
-          <Text fw={500} size="sm" mb="xs">
+          <Text fw={500} size={'sm'} mb={'xs'}>
             Number of Guests
           </Text>
           <Button.Group>
@@ -50,9 +56,9 @@ export default function BookingModal({
               <Button
                 key={num}
                 variant={numberOfGuests === num ? 'filled' : 'default'}
-                onClick={() => setNumberOfGuests(num)}
-                color="teal"
-                size="sm"
+                onClick={() => handleGuestSelection(num)}
+                color={'teal'}
+                size={'sm'}
               >
                 {num}
               </Button>
@@ -64,20 +70,20 @@ export default function BookingModal({
         <DatePicker
           size="lg"
           value={selectedDate}
-          onChange={setSelectedDate}
+          onChange={(value) => setSelectedDate(value)}
           minDate={today.toISOString().split('T')[0]}
           maxDate={maxDate.toISOString().split('T')[0]}
         />
         {/* Progress Indicator */}
         <div style={{ width: '100%' }}>
-          <Text size="xs" ta="center" c="dimmed" mb={4}>
-            Step 1 of 3: Select
+          <Text size={'xs'} ta={'center'} c={'dimmed'} mb={4}>
+            Step 1 of 3: Select number of guests and date
           </Text>
-          <Progress value={33} size="sm" color="teal" />
+          <Progress value={33} size={'sm'} color={'teal'} />
         </div>
 
         {/* Book Button */}
-        <Button size="md" color="teal" fullWidth disabled={!selectedDate}>
+        <Button size={'md'} color={'teal'} fullWidth disabled={!selectedDate || !numberOfGuests}>
           Bekräfta bokning
         </Button>
       </Stack>
