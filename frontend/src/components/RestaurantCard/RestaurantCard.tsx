@@ -55,6 +55,7 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
       </Card>
 
       <BookingModal
+        restaurantId={restaurant.id}
         opened={bookingModalOpened}
         onClose={() => setBookingModalOpened(false)}
         restaurantName={restaurant.name}
