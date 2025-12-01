@@ -38,4 +38,4 @@ def get_restaurant(restaurant_id: int, db: Annotated[Session, Depends(get_db)]):
 def get_available_booking_slots(
     restaurant_id: int, date: date, guests: int, db: Annotated[Session, Depends(get_db)]
 ):
-    """TODO: WRTITE DESCRIPTION"""
+    """Get available booking slots for a specific restaurant on a given date that can accommodate the specified number of guests"""
