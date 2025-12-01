@@ -30,39 +30,39 @@ interface NavLink {
   description?: string;
 }
 
+const navLinks: NavLink[] = [
+  { href: '/', label: 'Home' },
+  { href: '/about', label: 'About' },
+  { href: '/gallery', label: 'Gallery' },
+  {
+    href: '/bookings/dining',
+    label: 'Dining & Drinking',
+    description: 'Reserve a table at our restaurants',
+  },
+  {
+    href: '/bookings/spa',
+    label: 'Pool Club & Spa',
+    description: 'Book spa treatments and pool access',
+    disabled: true,
+  },
+  {
+    href: '/bookings/events',
+    label: 'Conference & Events',
+    description: 'Book spaces for events',
+    disabled: true,
+  },
+  {
+    href: '/admin/health',
+    label: 'Health Checks',
+    description: 'Monitor system health status',
+  },
+] as const;
+
 export default function Header() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const [adminLinksOpened, { toggle: toggleAdminLinks }] = useDisclosure(false);
   const { user, logout } = useAuth();
-
-  const navLinks: NavLink[] = [
-    { href: '/', label: 'Home' },
-    { href: '/about', label: 'About' },
-    { href: '/gallery', label: 'Gallery' },
-    {
-      href: '/bookings/dining',
-      label: 'Dining & Drinking',
-      description: 'Reserve a table at our restaurants',
-    },
-    {
-      href: '/bookings/spa',
-      label: 'Pool Club & Spa',
-      description: 'Book spa treatments and pool access',
-      disabled: true,
-    },
-    {
-      href: '/bookings/events',
-      label: 'Conference & Events',
-      description: 'Book spaces for events',
-      disabled: true,
-    },
-    {
-      href: '/admin/health',
-      label: 'Health Checks',
-      description: 'Monitor system health status',
-    },
-  ] as const;
 
   const mainLinks = navLinks.filter((link) => !link.description);
   const bookingLinks = navLinks.filter((link) => link.href.startsWith('/bookings'));
