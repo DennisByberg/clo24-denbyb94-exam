@@ -36,4 +36,10 @@ variable "project" {
 variable "restaurant_images_upload_script" {
   description = "Restaurant images upload script name"
   type        = string
+
+  # Prevent command injection by validating script name format
+  validation {
+    condition     = can(regex("^[a-zA-Z0-9._-]+\\.sh$", var.restaurant_images_upload_script))
+    error_message = "Script name must be alphanumeric with dots, dashes, or underscores, and end with .sh"
+  }
 }

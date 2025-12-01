@@ -58,6 +58,7 @@ resource "azurerm_role_assignment" "blob_contributor" {
 }
 
 # Upload restaurant images to the storage container
+# Runs once when resource is created; re-upload manually if needed
 resource "null_resource" "upload_images" {
   depends_on = [
     azurerm_storage_container.restaurant_images,
@@ -66,9 +67,5 @@ resource "null_resource" "upload_images" {
 
   provisioner "local-exec" {
     command = "bash ${path.module}/../scripts/${var.restaurant_images_upload_script}"
-  }
-
-  triggers = {
-    always_run = timestamp()
   }
 }
