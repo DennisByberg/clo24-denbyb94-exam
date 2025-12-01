@@ -1,10 +1,15 @@
+from datetime import date
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
-from app.schemas import RestaurantDetailResponse, RestaurantResponse
+from app.schemas import (
+    BookingSlotResponse,
+    RestaurantDetailResponse,
+    RestaurantResponse,
+)
 from app.services import RestaurantService
 
 router = APIRouter(prefix="/restaurants", tags=["restaurants"])
@@ -25,3 +30,12 @@ def get_restaurant(restaurant_id: int, db: Annotated[Session, Depends(get_db)]):
         raise HTTPException(status_code=404, detail="Restaurant not found")
 
     return restaurant
+
+
+@router.get(
+    "/{restaurant_id}/available-slots", response_model=list[BookingSlotResponse]
+)
+def get_available_booking_slots(
+    restaurant_id: int, date: date, guests: int, db: Annotated[Session, Depends(get_db)]
+):
+    """TODO: WRTITE DESCRIPTION"""
