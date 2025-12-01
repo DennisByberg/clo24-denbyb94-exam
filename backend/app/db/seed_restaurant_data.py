@@ -5,6 +5,9 @@ from datetime import datetime, timedelta
 from app.db.session import SessionLocal
 from app.models import BookingSlot, Restaurant, RestaurantTable
 
+# NOTE: URLs are hardcoded for simplicity. In production, store only filenames and
+# construct URLs dynamically using environment variables for different environments.
+
 # Configuration
 RESTAURANTS = [
     {
