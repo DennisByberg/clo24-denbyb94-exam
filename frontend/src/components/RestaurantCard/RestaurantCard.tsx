@@ -45,7 +45,7 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
           <Button
             size={'md'}
             color={'teal'}
-            lts={'1px'}
+            style={{ letterSpacing: '1px' }}
             leftSection={<IconBook size={18} />}
             onClick={() => setBookingModalOpened(true)}
           >
