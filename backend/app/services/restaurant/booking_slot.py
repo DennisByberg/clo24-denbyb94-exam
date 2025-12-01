@@ -15,21 +15,21 @@ class BookingSlotService:
     ):
         """Get available booking slots for a restaurant on a specific date with enough seats"""
 
-        return (
-            db.query(BookingSlot)  # Start query with all booking slots
-            .join(RestaurantTable)  # Join to get table information (size, restaurant)
-            .filter(
-                RestaurantTable.restaurant_id == restaurant_id
-            )  # Only this restaurant
-            .filter(
-                func.date(BookingSlot.arrival_date) == selected_date
-            )  # Only selected date
-            .filter(RestaurantTable.seating_count >= guests)  # Table must fit guests
-            .outerjoin(
-                Booking, Booking.booking_slot_id == BookingSlot.id
-            )  # Check for bookings
-            .filter(
-                Booking.id.is_(None)
-            )  # Keep only slots without bookings (available)
-            .all()  # Execute query and return list
+        available_slots = (
+            db.query(BookingSlot)
+            .join(RestaurantTable)
+            .filter(RestaurantTable.restaurant_id == restaurant_id)
+            .filter(func.date(BookingSlot.arrival_date) == selected_date)
+            .filter(RestaurantTable.seating_count >= guests)
+            .outerjoin(Booking, Booking.booking_slot_id == BookingSlot.id)
+            .filter(Booking.id.is_(None))
+            .all()
         )
+
+        unique_times = {}
+        for slot in available_slots:
+            time_key = slot.arrival_date
+            if time_key not in unique_times:
+                unique_times[time_key] = slot
+
+        return sorted(unique_times.values(), key=lambda slot: slot.arrival_date)
