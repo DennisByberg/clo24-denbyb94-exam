@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Annotated
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 
 from app.db.session import get_db
@@ -33,7 +33,10 @@ def get_restaurant(restaurant_id: int, db: Annotated[Session, Depends(get_db)]):
     "/{restaurant_id}/available-slots", response_model=list[BookingSlotResponse]
 )
 def get_available_booking_slots(
-    restaurant_id: int, date: date, guests: int, db: Annotated[Session, Depends(get_db)]
+    restaurant_id: int,
+    date: date,
+    guests: Annotated[int, Query(ge=1, le=100)],
+    db: Annotated[Session, Depends(get_db)],
 ):
     """Get available booking slots for a restaurant on a specific date with enough seats"""
 
