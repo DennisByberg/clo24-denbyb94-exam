@@ -15,7 +15,7 @@ import {
 } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api/client';
-import { formatTime, formatDate } from '@/lib/utils/dateFormatter';
+import { formatTime, formatDate, formatDateForAPI } from '@/lib/utils/dateFormatter';
 import { BookingSlot } from '@/types/booking';
 
 interface BookingModalProps {
@@ -64,16 +64,14 @@ export default function BookingModal({
   const today = new Date();
   const [step, setStep] = useState<number>(1);
   const [numberOfGuests, setNumberOfGuests] = useState<number | null>(null);
-  const [selectedDate, setSelectedDate] = useState<string | null>(
-    today.toISOString().split('T')[0]
-  );
+  const [selectedDate, setSelectedDate] = useState<Date | null>(today);
   const [selectedSlotId, setSelectedSlotId] = useState<number | null>(null);
 
   const { data: availableSlots, isLoading } = useQuery<BookingSlot[]>({
     queryKey: ['available-slots', restaurantId, selectedDate, numberOfGuests],
     queryFn: () =>
       apiClient(
-        `/api/restaurants/${restaurantId}/available-slots?date=${selectedDate}&guests=${numberOfGuests}`
+        `/api/restaurants/${restaurantId}/available-slots?date=${selectedDate ? formatDateForAPI(selectedDate) : ''}&guests=${numberOfGuests}`
       ),
     enabled: numberOfGuests !== null && selectedDate !== null,
   });
@@ -85,7 +83,7 @@ export default function BookingModal({
   const handleClose = () => {
     setStep(1);
     setNumberOfGuests(null);
-    setSelectedDate(today.toISOString().split('T')[0]);
+    setSelectedDate(new Date());
     setSelectedSlotId(null);
     onClose();
   };
@@ -158,9 +156,9 @@ export default function BookingModal({
             <DatePicker
               size={'md'}
               value={selectedDate}
-              onChange={(value) => setSelectedDate(value)}
-              minDate={today.toISOString().split('T')[0]}
-              maxDate={maxDate.toISOString().split('T')[0]}
+              onChange={(value) => setSelectedDate(value ? new Date(value) : null)}
+              minDate={today}
+              maxDate={maxDate}
               c={'yellow.2'}
             />
           </Group>
@@ -271,6 +269,7 @@ export default function BookingModal({
           >
             Back
           </Button>
+          {/* TODO: Implement actual booking submission with POST to backend */}
           <Button
             size={'md'}
             color={'teal'}
@@ -284,6 +283,7 @@ export default function BookingModal({
     </>
   );
 
+  // TODO: Implement renderStep3() - Step 3: Booking confirmation
   return (
     <Modal size={'md'} opened={opened} onClose={handleClose} centered title={restaurantName}>
       {/* Progress Indicator */}
