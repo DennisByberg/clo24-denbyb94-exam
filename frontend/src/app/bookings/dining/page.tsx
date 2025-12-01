@@ -5,8 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 import RestaurantCard from '@/components/RestaurantCard/RestaurantCard';
 import { apiClient } from '@/lib/api/client';
 import { Restaurant } from '@/types/restaurant';
-
-const AZURE_RESTAURANT_BLOB_URL = process.env.NEXT_PUBLIC_AZURE_BLOB_URL;
+import { getImageUrl } from '@/lib/utils/imageHelpers';
 
 export default function DiningPage() {
   const { data: restaurants, isLoading } = useQuery<Restaurant[]>({
@@ -17,7 +16,7 @@ export default function DiningPage() {
   return (
     <>
       {/* Hero Section */}
-      <BackgroundImage src={`${AZURE_RESTAURANT_BLOB_URL}/restaurant-hero.jpeg`}>
+      <BackgroundImage src={getImageUrl('restaurant-hero.jpeg')}>
         <Box
           p={'200px var(--mantine-spacing-md)'}
           ta={'center'}
