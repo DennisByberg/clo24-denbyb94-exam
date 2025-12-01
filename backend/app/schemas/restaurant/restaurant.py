@@ -19,6 +19,7 @@ class RestaurantResponse(BaseModel):
     id: int
     name: str
     total_seating: int
+    image_url: str | None
 
 
 class RestaurantDetailResponse(RestaurantResponse):

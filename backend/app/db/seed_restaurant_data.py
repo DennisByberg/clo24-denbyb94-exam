@@ -1,23 +1,62 @@
-"""Seed database with test data for ESS Restaurant X."""
+"""Seed database with test data for ESS Restaurants."""
 
 from datetime import datetime, timedelta
 
 from app.db.session import SessionLocal
 from app.models import BookingSlot, Restaurant, RestaurantTable
 
+# NOTE: URLs are hardcoded for simplicity. In production, store only filenames and
+# construct URLs dynamically using environment variables for different environments.
+
 # Configuration
-RESTAURANT_NAME = "ESS Restaurant X"
-TABLE_SIZES = [2, 2, 3, 4, 4, 6, 6, 8]
+RESTAURANTS = [
+    {
+        "name": "ACE Burgers",
+        "table_sizes": [2, 2, 4, 4, 6, 8, 10, 12],
+        "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-burgers.jpeg",
+    },
+    {
+        "name": "ACE Sushi",
+        "table_sizes": [2, 2, 3, 4, 4, 6, 6, 8, 10, 12],
+        "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-sushi.jpeg",
+    },
+    {
+        "name": "ACE Pizza",
+        "table_sizes": [2, 4, 4, 6, 8, 10, 12],
+        "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-pizza.jpeg",
+    },
+    {
+        "name": "ACE Steakhouse",
+        "table_sizes": [2, 2, 2, 4, 4, 6, 8, 10],
+        "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-steakhouse.jpeg",
+    },
+    {
+        "name": "ACE Vegan",
+        "table_sizes": [2, 2, 4, 6, 8, 10, 12],
+        "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-vegan.jpeg",
+    },
+    {
+        "name": "ACE Seafood",
+        "table_sizes": [2, 4, 4, 4, 6, 6, 8, 10, 12],
+        "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-seafood.jpeg",
+    },
+]
 DAYS_AHEAD = 30
-LUNCH_TIMES = [(12, 0), (12, 30), (13, 0), (13, 30)]
-DINNER_TIMES = [(18, 0), (18, 30), (19, 0), (19, 30), (20, 0), (20, 30)]
+DINNER_TIMES = [
+    (17, 0),
+    (18, 0),
+    (19, 0),
+    (20, 0),
+    (21, 0),
+    (22, 0),
+]
 
 
 def create_booking_slots(tables, days=DAYS_AHEAD):
     """Generate all booking slots for tables."""
     slots = []
     today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-    times = LUNCH_TIMES + DINNER_TIMES
+    times = DINNER_TIMES
 
     for day in range(days):
         date = today + timedelta(days=day)
@@ -47,29 +86,37 @@ def seed():
         db.query(Restaurant).delete()
         db.commit()
 
-        # Create restaurant
-        restaurant = Restaurant(name=RESTAURANT_NAME, total_seating=sum(TABLE_SIZES))
-        db.add(restaurant)
-        db.commit()
-        print(f"Created restaurant: {restaurant.name}")
+        # Create restaurants and their tables
+        for restaurant_config in RESTAURANTS:
+            # Create restaurant
+            restaurant = Restaurant(
+                name=restaurant_config["name"],
+                total_seating=sum(restaurant_config["table_sizes"]),
+                image_url=restaurant_config["image_url"],
+            )
+            db.add(restaurant)
+            db.commit()
+            print(f"Created restaurant: {restaurant.name}")
 
-        # Create tables
-        tables = [
-            RestaurantTable(restaurant_id=restaurant.id, seating_count=size)
-            for size in TABLE_SIZES
-        ]
-        db.bulk_save_objects(tables)
-        db.commit()
-        print(f"Created {len(tables)} tables")
+            # Create tables
+            tables = [
+                RestaurantTable(restaurant_id=restaurant.id, seating_count=size)
+                for size in restaurant_config["table_sizes"]
+            ]
+            db.bulk_save_objects(tables)
+            db.commit()
+            print(f"Created {len(tables)} tables for {restaurant.name}")
 
-        # Refresh tables to get IDs
-        tables = db.query(RestaurantTable).filter_by(restaurant_id=restaurant.id).all()
+            # Refresh tables to get IDs
+            tables = (
+                db.query(RestaurantTable).filter_by(restaurant_id=restaurant.id).all()
+            )
 
-        # Create booking slots
-        slots = create_booking_slots(tables)
-        db.bulk_save_objects(slots)
-        db.commit()
-        print(f"Created {len(slots)} booking slots")
+            # Create booking slots
+            slots = create_booking_slots(tables)
+            db.bulk_save_objects(slots)
+            db.commit()
+            print(f"Created {len(slots)} booking slots for {restaurant.name}")
 
         print("Seed complete!")
     except Exception as ex:
