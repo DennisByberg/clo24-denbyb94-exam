@@ -26,10 +26,8 @@ import classes from './Header.module.css';
 interface NavLink {
   href: string;
   label: string;
-}
-
-interface NavLinkWithDescription extends NavLink {
-  description: string;
+  disabled?: boolean;
+  description?: string;
 }
 
 export default function Header() {
@@ -38,13 +36,10 @@ export default function Header() {
   const [adminLinksOpened, { toggle: toggleAdminLinks }] = useDisclosure(false);
   const { user, logout } = useAuth();
 
-  const mainLinks: NavLink[] = [
+  const navLinks: NavLink[] = [
     { href: '/', label: 'Home' },
     { href: '/about', label: 'About' },
     { href: '/gallery', label: 'Gallery' },
-  ] as const;
-
-  const bookingLinks: NavLinkWithDescription[] = [
     {
       href: '/bookings/dining',
       label: 'Dining & Drinking',
@@ -54,21 +49,24 @@ export default function Header() {
       href: '/bookings/spa',
       label: 'Pool Club & Spa',
       description: 'Book spa treatments and pool access',
+      disabled: true,
     },
     {
       href: '/bookings/events',
       label: 'Conference & Events',
       description: 'Book spaces for events',
+      disabled: true,
     },
-  ] as const;
-
-  const adminLinks: NavLinkWithDescription[] = [
     {
       href: '/admin/health',
       label: 'Health Checks',
       description: 'Monitor system health status',
     },
   ] as const;
+
+  const mainLinks = navLinks.filter((link) => !link.description);
+  const bookingLinks = navLinks.filter((link) => link.href.startsWith('/bookings'));
+  const adminLinks = navLinks.filter((link) => link.href.startsWith('/admin'));
 
   return (
     <Box>
@@ -81,7 +79,16 @@ export default function Header() {
 
             <Group h={'100%'} gap={0} visibleFrom={'sm'}>
               {mainLinks.map((link) => (
-                <Box key={link.href} component={Link} href={link.href} className={classes.link}>
+                <Box
+                  key={link.href}
+                  component={Link}
+                  href={link.href}
+                  className={classes.link}
+                  style={{
+                    opacity: link.disabled ? 0.5 : 1,
+                    pointerEvents: link.disabled ? 'none' : 'auto',
+                  }}
+                >
                   {link.label}
                 </Box>
               ))}
@@ -105,6 +112,10 @@ export default function Header() {
                       component={Link}
                       href={item.href}
                       className={classes.subLink}
+                      style={{
+                        opacity: item.disabled ? 0.5 : 1,
+                        pointerEvents: item.disabled ? 'none' : 'auto',
+                      }}
                     >
                       <Text size={'sm'} fw={500}>
                         {item.label}
@@ -211,7 +222,11 @@ export default function Header() {
               component={Link}
               href={link.href}
               className={classes.link}
-              onClick={closeDrawer}
+              onClick={!link.disabled ? closeDrawer : undefined}
+              style={{
+                opacity: link.disabled ? 0.5 : 1,
+                pointerEvents: link.disabled ? 'none' : 'auto',
+              }}
             >
               {link.label}
             </Box>
@@ -232,7 +247,11 @@ export default function Header() {
                 component={Link}
                 href={item.href}
                 className={classes.subLink}
-                onClick={closeDrawer}
+                onClick={!item.disabled ? closeDrawer : undefined}
+                style={{
+                  opacity: item.disabled ? 0.5 : 1,
+                  pointerEvents: item.disabled ? 'none' : 'auto',
+                }}
               >
                 <Text size={'sm'} fw={500}>
                   {item.label}
