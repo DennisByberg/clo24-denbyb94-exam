@@ -8,46 +8,52 @@ from app.models import BookingSlot, Restaurant, RestaurantTable
 # Configuration
 RESTAURANTS = [
     {
-        "name": "ESS Burgers",
-        "table_sizes": [2, 2, 4, 4, 6],
+        "name": "ACE Burgers",
+        "table_sizes": [2, 2, 4, 4, 6, 8, 10, 12],
         "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-burgers.jpeg",
     },
     {
-        "name": "ESS Sushi",
-        "table_sizes": [2, 2, 3, 4, 4, 6, 6, 8],
+        "name": "ACE Sushi",
+        "table_sizes": [2, 2, 3, 4, 4, 6, 6, 8, 10, 12],
         "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-sushi.jpeg",
     },
     {
-        "name": "ESS Pizza",
-        "table_sizes": [2, 4, 4, 6, 8, 10],
+        "name": "ACE Pizza",
+        "table_sizes": [2, 4, 4, 6, 8, 10, 12],
         "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-pizza.jpeg",
     },
     {
-        "name": "ESS Steakhouse",
-        "table_sizes": [2, 2, 2, 4, 4],
+        "name": "ACE Steakhouse",
+        "table_sizes": [2, 2, 2, 4, 4, 6, 8, 10],
         "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-steakhouse.jpeg",
     },
     {
-        "name": "ESS Vegan",
-        "table_sizes": [2, 2, 4, 6, 8],
+        "name": "ACE Vegan",
+        "table_sizes": [2, 2, 4, 6, 8, 10, 12],
         "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-vegan.jpeg",
     },
     {
-        "name": "ESS Seafood",
-        "table_sizes": [2, 4, 4, 4, 6, 6],
+        "name": "ACE Seafood",
+        "table_sizes": [2, 4, 4, 4, 6, 6, 8, 10, 12],
         "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-seafood.jpeg",
     },
 ]
 DAYS_AHEAD = 30
-LUNCH_TIMES = [(12, 0), (12, 30), (13, 0), (13, 30)]
-DINNER_TIMES = [(18, 0), (18, 30), (19, 0), (19, 30), (20, 0), (20, 30)]
+DINNER_TIMES = [
+    (17, 0),
+    (18, 0),
+    (19, 0),
+    (20, 0),
+    (21, 0),
+    (22, 0),
+]
 
 
 def create_booking_slots(tables, days=DAYS_AHEAD):
     """Generate all booking slots for tables."""
     slots = []
     today = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
-    times = LUNCH_TIMES + DINNER_TIMES
+    times = DINNER_TIMES
 
     for day in range(days):
         date = today + timedelta(days=day)
