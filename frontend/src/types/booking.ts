@@ -1,8 +1,8 @@
 export interface BookingSlot {
-  slot_id: number;
-  start_time: string;
-  end_time: string;
-  available_tables: number;
+  id: number;
+  table_id: number;
+  arrival_date: string; // ISO datetime
+  departure_date: string; // ISO datetime
 }
 
 export interface BookingRequest {
