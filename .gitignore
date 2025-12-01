@@ -3,6 +3,9 @@
 .envrc
 .env.local
 .env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
 
 # === IDEs & Editors ===
 # VSCode (project-wide settings)

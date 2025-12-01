@@ -5,18 +5,18 @@ services:
   # PostgreSQL Database
   db:
     image: postgres:16-alpine
-    container_name: ess-booking-db
+    container_name: ace-group-booking-db
     restart: unless-stopped
     environment:
       POSTGRES_USER: ${POSTGRES_USER:-admin}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-pass}
-      POSTGRES_DB: ${POSTGRES_DB:-ess_booking_db}
+      POSTGRES_DB: ${POSTGRES_DB:-ace_group_booking_db}
     ports:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-ess_booking_db}"]
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-admin} -d ${POSTGRES_DB:-ace_group_booking_db}"]
       interval: 10s
       timeout: 5s
       retries: 5
@@ -25,10 +25,10 @@ services:
   backend:
     build:
       context: ./backend
-    container_name: ess-booking-backend
+    container_name: ace-group-booking-backend
     restart: unless-stopped
     environment:
-      DATABASE_URL: postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-pass}@db:5432/${POSTGRES_DB:-ess_booking_db}
+      DATABASE_URL: postgresql://${POSTGRES_USER:-admin}:${POSTGRES_PASSWORD:-pass}@db:5432/${POSTGRES_DB:-ace_group_booking_db}
     ports:
       - "8000:8000"
     depends_on:
@@ -37,7 +37,7 @@ services:
     volumes:
       - ./backend:/app
       - /app/.venv  # Preserve container's virtual environment
-    command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+    command: uv run uvicorn app.main:app --host 0.0.0.0 --port 8000
 
 # Named volumes for data persistence
 volumes:

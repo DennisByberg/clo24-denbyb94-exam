@@ -24,15 +24,11 @@ share/python-wheels/
 *.egg
 MANIFEST
 
-# PyInstaller
-*.manifest
-*.spec
-
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Testing
+# === Testing & Coverage ===
 htmlcov/
 .tox/
 .nox/
@@ -47,71 +43,20 @@ coverage.xml
 .pytest_cache/
 cover/
 
-# Translations
-*.mo
-*.pot
-
-# Django
+# === FastAPI / Uvicorn ===
 *.log
-local_settings.py
-db.sqlite3
+
+# === Database ===
+*.db
+*.sqlite
+*.sqlite3
 db.sqlite3-journal
 
-# Flask
-instance/
-.webassets-cache
+# === Alembic Migrations ===
+# Keep alembic/ directory but ignore generated migration files if needed
+# alembic/versions/*.py
 
-# Scrapy
-.scrapy
-
-# Sphinx documentation
-docs/_build/
-
-# PyBuilder
-.pybuilder/
-target/
-
-# Jupyter
-.ipynb_checkpoints
-
-# IPython
-profile_default/
-ipython_config.py
-
-# === Package Managers ===
-# pipenv
-#Pipfile.lock
-
-# UV
-#uv.lock
-
-# poetry
-#poetry.lock
-#poetry.toml
-
-# pdm
-#pdm.lock
-#pdm.toml
-.pdm-python
-.pdm-build/
-
-# pixi
-#pixi.lock
-.pixi
-
-# PEP 582
-__pypackages__/
-
-# === Background Tasks ===
-celerybeat-schedule
-celerybeat.pid
-
-# SageMath
-*.sage.py
-
-# === Environments ===
-.env
-.envrc
+# === Virtual Environments ===
 .venv
 env/
 venv/
@@ -119,13 +64,19 @@ ENV/
 env.bak/
 venv.bak/
 
-# === IDEs & Editors ===
-# Spyder
-.spyderproject
-.spyproject
+# === Package Managers ===
+# UV (uncomment if using uv)
+#uv.lock
 
-# Rope
-.ropeproject
+# Poetry (uncomment if using poetry)
+#poetry.lock
+
+# PDM
+.pdm-python
+.pdm-build/
+
+# PEP 582
+__pypackages__/
 
 # === Static Analysis ===
 # mypy
@@ -133,29 +84,8 @@ venv.bak/
 .dmypy.json
 dmypy.json
 
-# Pyre
-.pyre/
-
-# pytype
-.pytype/
-
 # Ruff
 .ruff_cache/
 
-# === Other Tools ===
-# mkdocs
-/site
-
-# Cython
-cython_debug/
-
-# Abstra
-.abstra/
-
-# PyPI
-.pypirc
-
-# Marimo
-marimo/_static/
-marimo/_lsp/
-__marimo__/
+# pytype
+.pytype/

@@ -1,10 +1,12 @@
 # CLO24 Exam Project - Cloud Development
 
+![ACE Group Logo](./images/ace-group-logo.png)
+
 This repository contains the exam project for the CLO24 Cloud Development course, where students independently deepen and broaden their technical competencies by learning new technologies not previously covered in the program.
 
-**Project:** Full-stack web platform for ESS Group's new facility, transitioning from .NET to Python/FastAPI to prepare for upcoming internship. The project involves building a booking system with user management, deployed on Azure App Service.
+**Project:** Full-stack web platform for a booking system with user management, deployed on Azure App Service. The project involves transitioning from .NET to Python/FastAPI to prepare for an upcoming internship.
 
-> **Note:** This is a simulated project scenario for educational purposes. The facility and its content are fictional and AI-generated.
+> **Note:** This project uses the fictional name "ACE Group" to avoid confusion with the real company "ESS Group" where the internship will take place. The facility, its content, and branding are simulated for educational purposes and AI-generated.
 
 Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/wiki)** for project documentation.
 
@@ -15,17 +17,17 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 
 ## 📁 Project Structure
 
+**Note:** _Only the most important directories and files are listed below._
+
 ```bash
 clo24-denbyb94-exam/
-├── .github/              # GitHub configuration
+├── .github/              # GitHub Actions workflows and configuration
 ├── backend/              # Backend application (Python/FastAPI)
-├── frontend/             # Frontend application (Next.js)
 ├── docs/                 # Documentation
-├── .env.example          # Environment variables template
-├── .gitignore            # Git ignore rules
-├── docker-compose.yml    # Docker services configuration
-├── LICENSE               # MIT License
-└── README.md             # (this file)
+├── frontend/             # Frontend application (Next.js)
+├── infrastructure/       # Infrastructure resources and IaC
+│
+└── README.md             # This file
 ```
 
 ## 🚀 Tech Stack / ADRs
@@ -52,6 +54,7 @@ clo24-denbyb94-exam/
 
 - **[ADR-011: PostgreSQL](docs/adr/ADR-011-postgresql.md)** - Relational database for booking system
 - **[ADR-020: Azure Easy Auth](docs/adr/ADR-020-azure-easy-auth.md)** - Authentication with Google OAuth
+- **[ADR-021: Terraform](docs/adr/ADR-021-terraform.md)** - Infrastructure as Code for Azure resources
 
 ### DevOps & Tooling
 
@@ -60,33 +63,6 @@ clo24-denbyb94-exam/
 - **[ADR-007: Husky](docs/adr/ADR-007-husky.md)** - Git hooks for code quality
 - **[ADR-010: ESLint and Prettier](docs/adr/ADR-010-eslint-prettier.md)** - JavaScript linting and formatting
 - **[ADR-016: Docker](docs/adr/ADR-016-docker.md)** - Containerization
-
-## 🔧 Making Changes
-
-1. **Create a new branch:**
-
-   ```bash
-   git checkout -b feature/your-feature-name
-   ```
-
-2. **Make your changes** in the relevant directory
-
-3. **Test locally** using the commands in the respective README files
-
-4. **Commit your changes:**
-
-   ```bash
-   git add .
-   git commit -m "feat: your feature description #<issue number>"
-   ```
-
-   Pre-commit hooks will automatically run ESLint and Prettier (frontend only).
-
-5. **Push and create PR:**
-
-   ```bash
-   git push origin feature/your-feature-name
-   ```
 
 ## ⚙️ Environment Variables
 
