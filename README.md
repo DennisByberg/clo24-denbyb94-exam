@@ -56,6 +56,7 @@ clo24-denbyb94-exam/
 - **[ADR-020: Azure Easy Auth](docs/adr/ADR-020-azure-easy-auth.md)** - Authentication with Google OAuth
 - **[ADR-021: Terraform](docs/adr/ADR-021-terraform.md)** - Infrastructure as Code for Azure resources
 - **[ADR-022: Azure Blob Storage](docs/adr/ADR-022-azure-blob-storage.md)** - Restaurant image storage
+- **[ADR-023: Azure App Service](docs/adr/ADR-023-azure-app-service.md)** - Deployment platform for backend
 
 ### DevOps & Tooling
 
