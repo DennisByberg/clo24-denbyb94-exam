@@ -18,18 +18,25 @@ The booking platform needs a solution for storing and serving restaurant images.
 
 ## Considered Alternatives
 
-### Alternative 1: GitHub Repository Storage
+No other alternatives were seriously considered. Azure Blob Storage was the obvious choice given:
 
-- **Pros:**
-  - Simple - files committed with code
-  - No additional service needed
-  - Version controlled
-- **Cons:**
-  - Takes up too much repository space
-  - Not designed for binary files
-  - Poor performance for serving images
-  - Makes git operations slow with many images
-  - Not scalable
+- Already using Azure App Service and infrastructure
+- Need to avoid bloating Git repository with binary files
+- Want to keep everything in Azure ecosystem
+
+For reference, other storage approaches exist but were not evaluated:
+
+### GitHub Repository Storage
+
+Would bloat repository with binary files - not designed for image storage at scale.
+
+### AWS S3 or Google Cloud Storage
+
+Third-party cloud storage - unnecessary when already using Azure infrastructure.
+
+### Database Storage
+
+Would bloat PostgreSQL database - databases not designed for binary file storage.
 
 ## Decision
 
