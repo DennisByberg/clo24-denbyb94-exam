@@ -63,12 +63,22 @@ variable "postgresql_admin_username" {
   description = "PostgreSQL administrator username"
   type        = string
   sensitive   = true
+
+  validation {
+    condition     = can(regex("^(?!pg_)[a-zA-Z][a-zA-Z0-9-]{0,62}$", var.postgresql_admin_username))
+    error_message = "Username must be 1-63 characters, start with a letter, contain only alphanumeric characters and hyphens, and cannot start with 'pg_'"
+  }
 }
 
 variable "postgresql_admin_password" {
   description = "PostgreSQL administrator password"
   type        = string
   sensitive   = true
+
+  validation {
+    condition     = can(regex("^.{8,128}$", var.postgresql_admin_password))
+    error_message = "Password must be between 8 and 128 characters"
+  }
 }
 
 variable "postgresql_database_name" {
