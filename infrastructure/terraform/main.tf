@@ -97,13 +97,7 @@ resource "azurerm_linux_web_app" "backend" {
     application_stack {
       python_version = "3.13"
     }
-    always_on         = true
-    startup_command   = "uv run uvicorn app.main:app --host 0.0.0.0 --port 8000"
-    health_check_path = "/health"
-
-    cors {
-      allowed_origins = ["https://${azurerm_static_web_app.frontend.default_host_name}"]
-    }
+    always_on = true
   }
 
   app_settings = {
@@ -113,6 +107,7 @@ resource "azurerm_linux_web_app" "backend" {
     "MOCK_AUTH"            = "false"
     "ALLOWED_ORIGINS"      = "https://${azurerm_static_web_app.frontend.default_host_name}"
     "DATABASE_URL"         = "postgresql://${var.postgresql_admin_username}:${var.postgresql_admin_password}@${azurerm_postgresql_flexible_server.main.fqdn}:5432/${var.postgresql_database_name}?sslmode=require"
+    "STARTUP_COMMAND"      = "uv run uvicorn app.main:app --host 0.0.0.0 --port 8000"
   }
 
   identity {

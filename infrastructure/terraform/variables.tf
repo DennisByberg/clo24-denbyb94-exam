@@ -65,7 +65,10 @@ variable "postgresql_admin_username" {
   sensitive   = true
 
   validation {
-    condition     = can(regex("^(?!pg_)[a-zA-Z][a-zA-Z0-9-]{0,62}$", var.postgresql_admin_username))
+    condition = (
+      can(regex("^[a-zA-Z][a-zA-Z0-9-]{0,62}$", var.postgresql_admin_username)) &&
+      !can(regex("^pg_", var.postgresql_admin_username))
+    )
     error_message = "Username must be 1-63 characters, start with a letter, contain only alphanumeric characters and hyphens, and cannot start with 'pg_'"
   }
 }
