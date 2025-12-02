@@ -55,6 +55,7 @@ clo24-denbyb94-exam/
 - **[ADR-011: PostgreSQL](docs/adr/ADR-011-postgresql.md)** - Relational database for booking system
 - **[ADR-020: Azure Easy Auth](docs/adr/ADR-020-azure-easy-auth.md)** - Authentication with Google OAuth
 - **[ADR-021: Terraform](docs/adr/ADR-021-terraform.md)** - Infrastructure as Code for Azure resources
+- **[ADR-022: Azure Blob Storage](docs/adr/ADR-022-azure-blob-storage.md)** - Restaurant image storage
 
 ### DevOps & Tooling
 
