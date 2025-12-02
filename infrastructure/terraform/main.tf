@@ -91,6 +91,7 @@ resource "azurerm_linux_web_app" "backend" {
   resource_group_name = azurerm_resource_group.main.name
   location            = var.location
   service_plan_id     = azurerm_service_plan.backend.id
+  https_only          = true
 
   site_config {
     application_stack {
@@ -101,6 +102,7 @@ resource "azurerm_linux_web_app" "backend" {
 
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+    "GOOGLE_CLIENT_SECRET"                = var.google_oauth_client_secret
   }
 
   identity {
@@ -157,7 +159,12 @@ resource "azurerm_postgresql_flexible_server_database" "main" {
   collation = "en_US.utf8"
 }
 
-# PostgreSQL Firewall Rule - Allow App Service
+# PostgreSQL Firewall Rule - Allow Azure services
+# Note: 0.0.0.0 is a special Azure value that allows access from Azure services
+# Security: This allows any Azure service to attempt connection. For production:
+# - Use Private Endpoint/VNet Integration (requires Premium tier App Service)
+# - Or restrict to specific App Service outbound IPs
+# - Current B1 tier limits secure networking options
 resource "azurerm_postgresql_flexible_server_firewall_rule" "app_service" {
   name             = "allow-app-service"
   server_id        = azurerm_postgresql_flexible_server.main.id
@@ -166,6 +173,7 @@ resource "azurerm_postgresql_flexible_server_firewall_rule" "app_service" {
 }
 
 # Static Web App for Frontend
+# Note: Location hardcoded to "West Europe" - Free tier only available in: West US 2, Central US, East US 2, West Europe, East Asia
 resource "azurerm_static_web_app" "frontend" {
   name                = var.static_web_app_name
   resource_group_name = azurerm_resource_group.main.name
