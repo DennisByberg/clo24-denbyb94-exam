@@ -43,3 +43,52 @@ variable "restaurant_images_upload_script" {
     error_message = "Script name must be alphanumeric with dots, dashes, or underscores, and end with .sh"
   }
 }
+
+variable "app_service_plan_name" {
+  description = "App Service Plan name"
+  type        = string
+}
+
+variable "app_service_name" {
+  description = "App Service name"
+  type        = string
+}
+
+variable "postgresql_server_name" {
+  description = "PostgreSQL Flexible Server name"
+  type        = string
+}
+
+variable "postgresql_admin_username" {
+  description = "PostgreSQL administrator username"
+  type        = string
+  sensitive   = true
+}
+
+variable "postgresql_admin_password" {
+  description = "PostgreSQL administrator password"
+  type        = string
+  sensitive   = true
+}
+
+variable "postgresql_database_name" {
+  description = "PostgreSQL database name"
+  type        = string
+}
+
+variable "static_web_app_name" {
+  description = "Static Web App name"
+  type        = string
+}
+
+variable "google_oauth_client_id" {
+  description = "Google OAuth client ID for Easy Auth"
+  type        = string
+  sensitive   = true
+}
+
+variable "google_oauth_client_secret" {
+  description = "Google OAuth client secret for Easy Auth"
+  type        = string
+  sensitive   = true
+}
