@@ -26,7 +26,17 @@ export async function apiClient(endpoint: string, options?: RequestInit) {
   });
 
   if (!response.ok) {
-    throw new ApiError(response.status, `API error: ${response.statusText}`);
+    // Try to get error message from response body
+    let errorMessage = `API error: ${response.statusText}`;
+    try {
+      const errorData = await response.json();
+      if (errorData.detail) {
+        errorMessage = errorData.detail;
+      }
+    } catch {
+      // If parsing fails, use statusText
+    }
+    throw new ApiError(response.status, errorMessage);
   }
 
   return response.json();
