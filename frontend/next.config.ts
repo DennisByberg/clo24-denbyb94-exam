@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'essgroupstorage.blob.core.windows.net',
+        hostname: 'acegroupstorage.blob.core.windows.net',
         pathname: '/restaurant-images/**',
       },
     ],
