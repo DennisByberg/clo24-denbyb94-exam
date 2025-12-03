@@ -1,3 +1,6 @@
+from datetime import date
+from typing import Literal
+
 from fastapi import HTTPException
 from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, joinedload
@@ -8,6 +11,62 @@ from app.schemas import BookingRequest, BookingResponse
 
 class BookingService:
     """Business logic for booking operations"""
+
+    @staticmethod
+    def get_user_bookings(
+        db: Session, user_id: str, filter: Literal["upcoming", "past"] | None
+    ) -> list[BookingResponse]:
+        """
+        Get all bookings for a user with optional filtering.
+
+        Args:
+            db: Database session
+            user_id: ID of the user
+            filter: Optional filter - "upcoming" for future bookings, "past" for past bookings
+
+        Returns:
+            List of BookingResponse objects with nested restaurant, table, and slot information
+        """
+        today = date.today()
+
+        query = db.query(Booking).filter(Booking.user_id == user_id)
+
+        # Apply filter if provided
+        if filter == "upcoming":
+            query = query.join(BookingSlot).filter(BookingSlot.arrival_date >= today)
+        elif filter == "past":
+            query = query.join(BookingSlot).filter(BookingSlot.arrival_date < today)
+
+        bookings = query.all()
+
+        # Convert each booking to BookingResponse
+        result = []
+        for booking in bookings:
+            booking_slot = (
+                db.query(BookingSlot)
+                .filter(BookingSlot.id == booking.booking_slot_id)
+                .first()
+            )
+            restaurant_table = (
+                db.query(RestaurantTable)
+                .options(joinedload(RestaurantTable.restaurant))
+                .filter(RestaurantTable.id == booking_slot.table_id)  # type: ignore
+                .first()
+            )
+
+            result.append(
+                BookingResponse(
+                    id=booking.id,  # type: ignore
+                    user_id=booking.user_id,  # type: ignore
+                    slot_id=booking.booking_slot_id,  # type: ignore
+                    guest_count=booking.guest_count,  # type: ignore
+                    arrival_date=booking_slot.arrival_date,  # type: ignore
+                    departure_date=booking_slot.departure_date,  # type: ignore
+                    restaurant_name=restaurant_table.restaurant.name,  # type: ignore
+                )
+            )
+
+        return result
 
     @staticmethod
     def create_booking(
