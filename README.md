@@ -14,6 +14,7 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 
 - **[Frontend Documentation](frontend/README.md)** - Frontend setup and development
 - **[Backend Documentation](backend/README.md)** - Backend setup and development
+- **[Infrastructure Documentation](infrastructure/README.md)** - Infrastructure and deployment
 
 ## 📁 Project Structure
 
