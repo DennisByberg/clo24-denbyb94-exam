@@ -1,3 +1,4 @@
+from .booking import BookingRequest, BookingResponse
 from .booking_slot import BookingSlotResponse
 from .restaurant import (
     RestaurantDetailResponse,
@@ -10,4 +11,6 @@ __all__ = [
     "RestaurantTableResponse",
     "RestaurantDetailResponse",
     "BookingSlotResponse",
+    "BookingRequest",
+    "BookingResponse",
 ]
