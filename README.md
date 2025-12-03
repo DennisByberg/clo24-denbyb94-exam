@@ -14,6 +14,7 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 
 - **[Frontend Documentation](frontend/README.md)** - Frontend setup and development
 - **[Backend Documentation](backend/README.md)** - Backend setup and development
+- **[Infrastructure Documentation](infrastructure/README.md)** - Infrastructure and deployment
 
 ## 📁 Project Structure
 
@@ -22,9 +23,11 @@ Visit the **[Project Wiki](https://github.com/DennisByberg/clo24-denbyb94-exam/w
 ```bash
 clo24-denbyb94-exam/
 ├── .github/              # GitHub Actions workflows and configuration
+├── .vscode/              # VS Code workspace settings
 ├── backend/              # Backend application (Python/FastAPI)
 ├── docs/                 # Documentation
 ├── frontend/             # Frontend application (Next.js)
+├── images/               # Project images and assets
 ├── infrastructure/       # Infrastructure resources and IaC
 │
 └── README.md             # This file

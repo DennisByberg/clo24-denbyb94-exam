@@ -13,7 +13,11 @@ See the main **[README](../README.md)** for complete tech stack and ADR document
 ```bash
 infrastructure/
 ├── scripts/              # Utility scripts for resource management
-├── terraform/            # Terraform configuration files
+├── terraform/
+│   ├── main.tf           # Main Terraform configuration
+│   ├── outputs.tf        # Output values
+│   ├── variables.tf      # Variable definitions
+│   └── terraform.tfvars  # Variable values (not committed)
 │
 └── README.md             # This file
 ```
@@ -25,6 +29,12 @@ The Terraform configuration provisions the following Azure resources:
 - **Resource Group** - Container for all project resources
 - **Storage Account** - Blob storage for restaurant images
 - **Storage Container** - Public blob container for restaurant images
+- **App Service Plan** - Linux hosting plan for backend (B1 tier)
+- **App Service** - Backend API (Python 3.13, FastAPI) with Google OAuth authentication
+- **PostgreSQL Flexible Server** - Database server (version 16, B_Standard_B1ms)
+- **PostgreSQL Database** - Application database with UTF8 encoding
+- **PostgreSQL Firewall Rule** - Allow Azure services to connect
+- **Static Web App** - Frontend hosting (Next.js, Free tier)
 
 ## 🚀 Quick Start
 

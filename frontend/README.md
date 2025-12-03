@@ -12,18 +12,25 @@ See the main **[README](../README.md)** for complete tech stack and ADR document
 
 ```bash
 frontend/
+├── .husky/               # Git hooks (pre-commit, etc.)
 ├── public/               # Public static assets
 ├── src/
 │   ├── app/              # Next.js App Router pages
 │   ├── components/       # React components
-│   ├── constants/        # Application constants
 │   ├── contexts/         # React contexts
 │   ├── hooks/            # Custom React hooks
-│   ├── lib/              # API client and utilities
+│   ├── lib/
+│   │   ├── api/          # API client and endpoints
+│   │   └── utils/        # Utility functions
 │   ├── providers/        # React providers
 │   ├── theme/            # Mantine theme configuration
 │   └── types/            # TypeScript type definitions
+├── .prettierrc           # Prettier configuration
+├── bun.lock              # Locked dependency versions
+├── eslint.config.mjs     # ESLint configuration
+├── next.config.ts        # Next.js configuration
 ├── package.json          # Project dependencies
+├── tsconfig.json         # TypeScript configuration
 │
 └── README.md             # This file
 ```
@@ -76,3 +83,39 @@ See `.env.example` for required configuration.
    ```
 
 Open [http://localhost:3000](http://localhost:3000) to see the app.
+
+## 🔌 API Communication
+
+The frontend communicates with the backend via the `apiClient()` wrapper located in `src/lib/api/client.ts`.
+
+**Base URL:** `http://localhost:8000/api`
+
+**Example usage:**
+
+```typescript
+import { apiClient } from '@/lib/api/client';
+
+const response = await apiClient('/restaurants');
+```
+
+The API client handles:
+
+- Error handling and standardized error messages
+- Request/response interceptors
+- Base URL configuration
+
+## 🔧 Code Quality
+
+Code is automatically formatted and linted using Prettier and ESLint when configured in VS Code.
+
+**Configure in `.vscode/settings.json`:**
+
+```json
+{
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "editor.formatOnSave": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit"
+  }
+}
+```

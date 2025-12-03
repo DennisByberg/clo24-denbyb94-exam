@@ -1,11 +1,11 @@
-<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.1.0">
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/142.0.0.0 Safari/537.36" version="29.1.1">
   <diagram name="Sida-1" id="RwgLw9kTsbv2yGeQKE7x">
-    <mxGraphModel dx="1171" dy="1347" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="1348" dy="1179" grid="0" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
         <mxCell id="JjBG1GQE_xSwxrLHh9-A-7" parent="1" style="shape=table;startSize=30;container=1;collapsible=1;childLayout=tableLayout;fixedRows=1;rowLines=0;fontStyle=1;align=center;resizeLast=1;html=1;fillColor=#0050ef;fontColor=#ffffff;strokeColor=#001DBC;" value="restaurant" vertex="1">
-          <mxGeometry height="121.17" width="160" x="280" y="160" as="geometry" />
+          <mxGeometry height="152.17000000000002" width="160" x="280" y="160" as="geometry" />
         </mxCell>
         <mxCell id="JjBG1GQE_xSwxrLHh9-A-8" parent="JjBG1GQE_xSwxrLHh9-A-7" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=1;" value="" vertex="1">
           <mxGeometry height="30" width="160" y="30" as="geometry" />
@@ -42,6 +42,19 @@
           </mxGeometry>
         </mxCell>
         <mxCell id="JjBG1GQE_xSwxrLHh9-A-16" parent="JjBG1GQE_xSwxrLHh9-A-14" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" value="total_seating" vertex="1">
+          <mxGeometry height="31" width="130" x="30" as="geometry">
+            <mxRectangle height="31" width="130" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x70qw-f4hbXxD685VIRK-1" parent="JjBG1GQE_xSwxrLHh9-A-7" style="shape=tableRow;horizontal=0;startSize=0;swimlaneHead=0;swimlaneBody=0;fillColor=none;collapsible=0;dropTarget=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;top=0;left=0;right=0;bottom=0;" value="" vertex="1">
+          <mxGeometry height="31" width="160" y="121" as="geometry" />
+        </mxCell>
+        <mxCell id="x70qw-f4hbXxD685VIRK-2" parent="x70qw-f4hbXxD685VIRK-1" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;editable=1;overflow=hidden;whiteSpace=wrap;html=1;" value="" vertex="1">
+          <mxGeometry height="31" width="30" as="geometry">
+            <mxRectangle height="31" width="30" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="x70qw-f4hbXxD685VIRK-3" parent="x70qw-f4hbXxD685VIRK-1" style="shape=partialRectangle;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;overflow=hidden;whiteSpace=wrap;html=1;" value="image_url" vertex="1">
           <mxGeometry height="31" width="130" x="30" as="geometry">
             <mxRectangle height="31" width="130" as="alternateBounds" />
           </mxGeometry>

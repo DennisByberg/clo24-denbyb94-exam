@@ -1,12 +1,14 @@
-# Multi-purpose Dockerfile for FastAPI application (development and production)
+# Dockerfile for FastAPI application development
 # Uses Python 3.13 with uv package manager for fast dependency installation
-# Exposes port 8000 and runs FastAPI with Uvicorn ASGI server
+# Configured for Docker Compose local development with hot reload via volume mounts
 
 FROM python:3.13-slim
 
 WORKDIR /app
 
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+ENV UV_LINK_MODE=copy
 
 COPY pyproject.toml uv.lock ./
 
