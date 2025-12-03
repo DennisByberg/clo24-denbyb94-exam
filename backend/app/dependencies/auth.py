@@ -21,13 +21,22 @@ async def get_current_user(
 
     # Development mode: return mock user for testing without Azure Easy Auth
     if settings.mock_auth:
-        mock_user = UserResponse(
-            id="mock-user-123",
-            name="Test User",
-            email="mock_mail@example.com",
-            role="customer",
-        )
-        return mock_user
+        # Check if mock user exists in DB, create if not
+        mock_user_id = "mock-user-123"
+        user = db.query(User).filter(User.id == mock_user_id).first()
+
+        if not user:
+            user = User(
+                id=mock_user_id,
+                name="Test User",
+                email="mock_mail@example.com",
+                role="customer",
+            )
+            db.add(user)
+            db.commit()
+            db.refresh(user)
+
+        return UserResponse.model_validate(user)
 
     # Production mode: validate Azure Easy Auth headers
     if not x_ms_client_principal_id:
