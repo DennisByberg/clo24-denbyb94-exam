@@ -13,6 +13,9 @@ See the main **[README](../README.md)** for complete tech stack and ADR document
 ```bash
 backend/
 ├── alembic/              # Database migrations
+│   ├── versions/         # Migration scripts
+│   ├── env.py            # Migration environment configuration
+│   └── script.py.mako    # Migration template
 ├── app/
 │   ├── db/               # Database configuration and session
 │   ├── dependencies/     # Dependency injection
@@ -22,8 +25,11 @@ backend/
 │   ├── services/         # Business logic
 │   ├── config.py         # Application configuration
 │   └── main.py           # FastAPI application entry point
+├── .python-version       # Python version specification
 ├── alembic.ini           # Alembic configuration
+├── Dockerfile            # Docker container configuration for backend
 ├── pyproject.toml        # Project dependencies and configuration
+├── uv.lock               # Locked dependency versions
 │
 └── README.md             # This file
 ```
@@ -68,25 +74,46 @@ uv run python -m app.db.seed_restaurant_data
 
 **Note:** Running the seed script multiple times is safe - it clears old data before creating new data.
 
+## 📖 API Documentation
+
+FastAPI automatically generates interactive API documentation at [http://localhost:8000/docs](http://localhost:8000/docs) (Swagger UI).
+
+## 🗄️ Database Migrations
+
+From `clo24-denbyb94-exam/backend`:  
+**Create a new migration after schema changes:**
+
+```bash
+uv run alembic revision --autogenerate -m "description of changes"
+```
+
+**Apply the new migration:**
+
+```bash
+uv run alembic upgrade head
+```
+
+**Rollback the last migration:**
+
+```bash
+uv run alembic downgrade -1
+```
+
 ## 🔧 Code Quality
 
-From `clo24-denbyb94-exam/backend`:  
-**Lint code:**
+Code is automatically formatted and linted using Ruff when configured as default formatter in VS Code.
 
-```bash
-uv run ruff check .
-```
+**Configure in `.vscode/settings.json`:**
 
-From `clo24-denbyb94-exam/backend`:  
-**Format code:**
-
-```bash
-uv run ruff format .
-```
-
-From `clo24-denbyb94-exam/backend`:  
-**Auto-fix linting issues:**
-
-```bash
-uv run ruff check --fix .
+```json
+{
+  "[python]": {
+    "editor.defaultFormatter": "charliermarsh.ruff",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll": "explicit",
+      "source.organizeImports": "explicit"
+    }
+  }
+}
 ```
