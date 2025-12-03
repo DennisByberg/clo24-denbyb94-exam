@@ -13,10 +13,11 @@ import {
   IconArrowLeft,
   IconCheck,
 } from '@tabler/icons-react';
-import { useQuery } from '@tanstack/react-query';
-import { apiClient } from '@/lib/api/client';
+import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import { apiClient, ApiError } from '@/lib/api/client';
+import { createBooking } from '@/lib/api/bookings';
 import { formatTime, formatDate, formatDateForAPI } from '@/lib/utils/dateFormatter';
-import { BookingSlot } from '@/types/booking';
+import { BookingSlot, BookingResponse } from '@/types/booking';
 
 interface BookingModalProps {
   opened: boolean;
@@ -66,6 +67,31 @@ export default function BookingModal({
   const [numberOfGuests, setNumberOfGuests] = useState<number | null>(null);
   const [selectedDate, setSelectedDate] = useState<Date | null>(today);
   const [selectedSlotId, setSelectedSlotId] = useState<number | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [bookingResult, setBookingResult] = useState<BookingResponse | null>(null);
+
+  const queryClient = useQueryClient();
+
+  const bookingMutation = useMutation({
+    mutationFn: createBooking,
+    onSuccess: (data) => {
+      setBookingResult(data);
+      setErrorMessage(null);
+      queryClient.invalidateQueries({ queryKey: ['available-slots'] });
+      setStep(3);
+    },
+    onError: (error: ApiError) => {
+      if (error.status === 400) {
+        setErrorMessage('Too many guests for this table. Please select fewer guests.');
+      } else if (error.status === 404) {
+        setErrorMessage('Time slot no longer available. Please select another time.');
+      } else if (error.status === 409) {
+        setErrorMessage('This time is already booked. Please select another time.');
+      } else {
+        setErrorMessage('An unexpected error occurred. Please try again later.');
+      }
+    },
+  });
 
   const { data: availableSlots, isLoading } = useQuery<BookingSlot[]>({
     queryKey: ['available-slots', restaurantId, selectedDate, numberOfGuests],
@@ -85,15 +111,23 @@ export default function BookingModal({
     setNumberOfGuests(null);
     setSelectedDate(new Date());
     setSelectedSlotId(null);
+    setErrorMessage(null);
+    setBookingResult(null);
     onClose();
   };
 
   const handleGuestSelection = (num: number) => {
     setNumberOfGuests(numberOfGuests === num ? null : num);
+    setSelectedSlotId(null);
   };
 
   const handleTimeSelection = (slotId: number) => {
     setSelectedSlotId(selectedSlotId === slotId ? null : slotId);
+  };
+
+  const handleDateChange = (value: Date | string | null) => {
+    setSelectedDate(value ? new Date(value) : null);
+    setSelectedSlotId(null);
   };
 
   const renderRestaurantImage = () => (
@@ -156,7 +190,7 @@ export default function BookingModal({
             <DatePicker
               size={'md'}
               value={selectedDate}
-              onChange={(value) => setSelectedDate(value ? new Date(value) : null)}
+              onChange={handleDateChange}
               minDate={today}
               maxDate={maxDate}
               c={'yellow.2'}
@@ -266,24 +300,102 @@ export default function BookingModal({
             variant={'default'}
             onClick={() => setStep(1)}
             leftSection={<IconArrowLeft size={18} />}
+            disabled={bookingMutation.isPending}
           >
             Back
           </Button>
-          {/* TODO: Implement actual booking submission with POST to backend */}
           <Button
             size={'md'}
             color={'teal'}
-            onClick={() => setStep(3)}
+            onClick={() => {
+              if (selectedSlotId && numberOfGuests) {
+                bookingMutation.mutate({
+                  slot_id: selectedSlotId,
+                  guest_count: numberOfGuests,
+                });
+              }
+            }}
             rightSection={<IconCheck size={18} />}
+            loading={bookingMutation.isPending}
           >
             Confirm Booking
           </Button>
         </Group>
+
+        {/* Error Message */}
+        {errorMessage && (
+          <Text c={'red'} size={'sm'} mt={'md'} ta={'center'}>
+            {errorMessage}
+          </Text>
+        )}
       </Stack>
     </>
   );
 
-  // TODO: Implement renderStep3() - Step 3: Booking confirmation
+  const renderStep3 = () => (
+    <>
+      {renderRestaurantImage()}
+      <Stack align={'center'} gap={'xl'}>
+        {/* Success Icon */}
+        <IconCheck size={80} color="var(--mantine-color-teal-6)" />
+
+        {/* Success Message */}
+        <Stack align={'center'} gap={'xs'}>
+          <Text size={'xl'} fw={700} c={'teal'}>
+            Booking Confirmed!
+          </Text>
+          <Text size={'sm'} c={'dimmed'}>
+            Your booking has been registered
+          </Text>
+        </Stack>
+
+        {/* Booking Details */}
+        {bookingResult && (
+          <Stack w={'100%'} p={'sm'} bg={'dark.8'}>
+            <Group justify={'space-between'}>
+              <Text size={'sm'} c={'dimmed'}>
+                Booking Number
+              </Text>
+              <Text size={'sm'} fw={500}>
+                #{bookingResult.id}
+              </Text>
+            </Group>
+            <Group justify={'space-between'}>
+              <Text size={'sm'} c={'dimmed'}>
+                Restaurant
+              </Text>
+              <Text size={'sm'} fw={500}>
+                {bookingResult.restaurant_name}
+              </Text>
+            </Group>
+            <Group justify={'space-between'}>
+              <Text size={'sm'} c={'dimmed'}>
+                Number of Guests
+              </Text>
+              <Text size={'sm'} fw={500}>
+                {bookingResult.guest_count} {bookingResult.guest_count === 1 ? 'person' : 'people'}
+              </Text>
+            </Group>
+            <Group justify={'space-between'}>
+              <Text size={'sm'} c={'dimmed'}>
+                Time
+              </Text>
+              <Text size={'sm'} fw={500}>
+                {formatTime(bookingResult.arrival_date)} -{' '}
+                {formatTime(bookingResult.departure_date)}
+              </Text>
+            </Group>
+          </Stack>
+        )}
+
+        {/* Close Button */}
+        <Button size={'md'} color={'teal'} onClick={handleClose} fullWidth>
+          Close
+        </Button>
+      </Stack>
+    </>
+  );
+
   return (
     <Modal size={'md'} opened={opened} onClose={handleClose} centered title={restaurantName}>
       {/* Progress Indicator */}
@@ -292,8 +404,10 @@ export default function BookingModal({
       </Text>
       <Progress value={getProgressValue(step)} size={'sm'} color={'teal'} mb={'md'} />
 
+      {/* Render Steps */}
       {step === 1 && renderStep1()}
       {step === 2 && renderStep2()}
+      {step === 3 && renderStep3()}
     </Modal>
   );
 }
