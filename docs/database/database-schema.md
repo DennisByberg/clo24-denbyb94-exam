@@ -23,7 +23,7 @@
 
 - One booking = one table + one time slot
 - Time slots contain date + time (DATETIME)
-- Max 20 guests per table
+- Max 100 guests per table
 - No double bookings (same table + same time)
 - MVP: 1 restaurant, schema supports multiple
 
@@ -55,11 +55,11 @@
 
 ### restaurant_table
 
-| Column          | Type    | Constraints                                                 | Description      |
-| --------------- | ------- | ----------------------------------------------------------- | ---------------- |
-| `id`            | INTEGER | PRIMARY KEY, AUTOINCREMENT                                  | Unique ID        |
-| `restaurant_id` | INTEGER | FOREIGN KEY (restaurant.id), NOT NULL                       | Which restaurant |
-| `seating_count` | INTEGER | NOT NULL, CHECK (seating_count > 0 AND seating_count <= 20) | Table capacity   |
+| Column          | Type    | Constraints                                                  | Description      |
+| --------------- | ------- | ------------------------------------------------------------ | ---------------- |
+| `id`            | INTEGER | PRIMARY KEY, AUTOINCREMENT                                   | Unique ID        |
+| `restaurant_id` | INTEGER | FOREIGN KEY (restaurant.id), NOT NULL                        | Which restaurant |
+| `seating_count` | INTEGER | NOT NULL, CHECK (seating_count > 0 AND seating_count <= 100) | Table capacity   |
 
 ---
 
