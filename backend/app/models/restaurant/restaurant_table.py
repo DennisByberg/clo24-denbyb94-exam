@@ -13,4 +13,4 @@ class RestaurantTable(Base):
 
     restaurant = relationship("Restaurant", back_populates="tables")
 
-    __table_args__ = (CheckConstraint("seating_count > 0 AND seating_count <= 20"),)
+    __table_args__ = (CheckConstraint("seating_count > 0 AND seating_count <= 100"),)
