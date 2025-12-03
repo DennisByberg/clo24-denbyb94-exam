@@ -88,6 +88,26 @@ uv run python -m app.db.seed_restaurant_data
 
 FastAPI automatically generates interactive API documentation at [http://localhost:8000/docs](http://localhost:8000/docs) (Swagger UI).
 
+### Available Endpoints
+
+**Authentication:**
+
+- `GET /api/auth/me` - Get current user
+
+**Restaurants:**
+
+- `GET /api/restaurants` - List all restaurants
+- `GET /api/restaurants/{id}` - Get restaurant details
+- `GET /api/restaurants/{id}/available-slots` - Get available booking slots
+
+**Bookings:**
+
+- `POST /api/bookings` - Create new booking
+
+**Health:**
+
+- `GET /health` - Health check endpoint
+
 ## 🗄️ Database Migrations
 
 From `clo24-denbyb94-exam/backend`:  

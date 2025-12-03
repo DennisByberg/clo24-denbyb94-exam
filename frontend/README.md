@@ -100,9 +100,10 @@ const response = await apiClient('/restaurants');
 
 The API client handles:
 
-- Error handling and standardized error messages
+- Error handling with detailed error messages from backend
 - Request/response interceptors
 - Base URL configuration
+- JSON parsing of error details
 
 ## 🔧 Code Quality
 
