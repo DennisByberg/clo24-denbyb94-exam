@@ -1,8 +1,8 @@
 export interface BookingSlot {
   id: number;
   table_id: number;
-  arrival_date: string; // ISO datetime
-  departure_date: string; // ISO datetime
+  arrival_date: string;
+  departure_date: string;
 }
 
 export interface BookingRequest {
