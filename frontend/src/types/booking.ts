@@ -6,18 +6,16 @@ export interface BookingSlot {
 }
 
 export interface BookingRequest {
-  restaurant_id: number;
   slot_id: number;
-  number_of_guests: number;
+  guest_count: number;
 }
 
-export interface Booking {
+export interface BookingResponse {
   id: number;
-  user_id: number;
+  user_id: string;
   slot_id: number;
-  number_of_guests: number;
-  created_at: string;
-  restaurant_name?: string;
-  start_time?: string;
-  end_time?: string;
+  guest_count: number;
+  arrival_date: string;
+  departure_date: string;
+  restaurant_name: string;
 }
