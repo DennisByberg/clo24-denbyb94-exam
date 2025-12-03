@@ -1,4 +1,5 @@
 from fastapi import HTTPException
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.orm import Session, joinedload
 
 from app.models import Booking, BookingSlot, RestaurantTable
@@ -12,30 +13,48 @@ class BookingService:
     def create_booking(
         db: Session, user_id: str, request: BookingRequest
     ) -> BookingResponse:
-        """Create a new booking for a user"""
+        """
+        Create a new booking for a user.
 
-        # Get the booking slot to verify it exists
-        booking_slot: BookingSlot | None = (
-            db.query(BookingSlot).filter(BookingSlot.id == request.slot_id).first()
-        )
+        Validates that:
+        - The booking slot exists
+        - The restaurant table exists
+        - Guest count doesn't exceed table seating capacity
+        - The slot is not already booked
 
-        # Validate that the booking slot exists
-        if not booking_slot:
-            raise HTTPException(status_code=404, detail="Slot not found")
+        Args:
+            db: Database session
+            user_id: ID of the user creating the booking
+            request: Booking request containing slot_id and guest_count
 
-        # Get the restaurant table (with restaurant data) to validate capacity and get restaurant name
-        restaurant_table: RestaurantTable | None = (
-            db.query(RestaurantTable)
-            .options(joinedload(RestaurantTable.restaurant))
-            .filter(RestaurantTable.id == booking_slot.table_id)
+        Returns:
+            BookingResponse with created booking details
+
+        Raises:
+            HTTPException(404): If slot or table not found
+            HTTPException(400): If guest count exceeds table capacity
+            HTTPException(409): If slot is already booked
+        """
+
+        # Get the booking slot with table and restaurant in a single query
+        booking_slot: BookingSlot = (
+            db.query(BookingSlot)
+            .options(
+                joinedload(BookingSlot.table).joinedload(RestaurantTable.restaurant)
+            )
+            .filter(BookingSlot.id == request.slot_id)
             .first()
         )
 
-        # Lägg till detta:
+        if not booking_slot:
+            raise HTTPException(status_code=404, detail="Slot not found")
+
+        # Get the table from the loaded relationship
+        restaurant_table: RestaurantTable = booking_slot.table  # type: ignore
+
         if not restaurant_table:
             raise HTTPException(status_code=404, detail="Table not found")
 
-        # Validate that guest count doesn't exceed table capacity
         if request.guest_count > restaurant_table.seating_count:  # type: ignore
             raise HTTPException(
                 status_code=400, detail="Too many guests for this table"
@@ -56,9 +75,14 @@ class BookingService:
             guest_count=request.guest_count,
         )
 
-        db.add(new_booking)
-        db.commit()
-        db.refresh(new_booking)
+        # Attempt to save - database will reject if slot already booked (race condition protection)
+        try:
+            db.add(new_booking)
+            db.commit()
+            db.refresh(new_booking)
+        except IntegrityError:
+            db.rollback()
+            raise HTTPException(status_code=409, detail="Booking already exists")
 
         return BookingResponse(
             id=new_booking.id,  # type: ignore
