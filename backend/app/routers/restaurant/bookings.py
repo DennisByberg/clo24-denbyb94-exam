@@ -18,5 +18,24 @@ def create_booking(
     current_user: Annotated[User, Depends(get_current_user)],
     db: Annotated[Session, Depends(get_db)],
 ):
-    """Create a booking"""
+    """
+    Create a new booking for the authenticated user.
+
+    Args:
+        request: Booking details including slot_id and guest_count
+        current_user: Authenticated user making the booking
+        db: Database session
+
+    Returns:
+        BookingResponse with booking details and restaurant information
+
+    Raises:
+        404: If slot or table not found
+        400: If guest count exceeds table capacity
+        409: If slot is already booked
+
+    Important:
+        - Slots can only be booked once.
+        - Guest count must not exceed table capacity.
+    """
     return BookingService.create_booking(db, current_user.id, request)  # type: ignore
