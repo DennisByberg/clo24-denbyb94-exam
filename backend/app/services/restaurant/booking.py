@@ -36,21 +36,22 @@ class BookingService:
             HTTPException(409): If slot is already booked
         """
 
-        # Get the booking slot with table and restaurant in a single query
-        booking_slot: BookingSlot = (
-            db.query(BookingSlot)
-            .options(
-                joinedload(BookingSlot.table).joinedload(RestaurantTable.restaurant)
-            )
-            .filter(BookingSlot.id == request.slot_id)
-            .first()
+        # Get the booking slot to verify it exists
+        booking_slot: BookingSlot | None = (
+            db.query(BookingSlot).filter(BookingSlot.id == request.slot_id).first()
         )
 
+        # Validate that the booking slot exists
         if not booking_slot:
             raise HTTPException(status_code=404, detail="Slot not found")
 
-        # Get the table from the loaded relationship
-        restaurant_table: RestaurantTable = booking_slot.table  # type: ignore
+        # Get the restaurant table (with restaurant data) to validate capacity and get restaurant name
+        restaurant_table: RestaurantTable | None = (
+            db.query(RestaurantTable)
+            .options(joinedload(RestaurantTable.restaurant))
+            .filter(RestaurantTable.id == booking_slot.table_id)
+            .first()
+        )
 
         if not restaurant_table:
             raise HTTPException(status_code=404, detail="Table not found")
