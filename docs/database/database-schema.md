@@ -24,7 +24,9 @@
 - One booking = one table + one time slot
 - Time slots contain date + time (DATETIME)
 - Max 100 guests per table
-- No double bookings (same table + same time)
+- No double bookings (same slot - enforced by unique constraint)
+- Users cannot have overlapping bookings at the same restaurant
+- Users can book multiple restaurants simultaneously
 - MVP: 1 restaurant, schema supports multiple
 
 ---
@@ -82,8 +84,10 @@
 | ----------------- | ------------ | -------------------------------------------------- | ---------------- |
 | `id`              | INTEGER      | PRIMARY KEY, AUTOINCREMENT                         | Unique ID        |
 | `user_id`         | VARCHAR(255) | FOREIGN KEY (user.id), NOT NULL                    | Logged in user   |
-| `booking_slot_id` | INTEGER      | FOREIGN KEY (restaurant_booking_slot.id), NOT NULL | Which time slot  |
+| `booking_slot_id` | INTEGER      | FOREIGN KEY (restaurant_booking_slot.id), NOT NULL, UNIQUE | Which time slot  |
 | `guest_count`     | INTEGER      | NOT NULL, CHECK (guest_count > 0)                  | Number of guests |
+
+**Constraint:** UNIQUE on `booking_slot_id` prevents double bookings
 
 ---
 

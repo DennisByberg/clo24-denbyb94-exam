@@ -14,6 +14,7 @@ import {
   IconCheck,
 } from '@tabler/icons-react';
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query';
+import confetti from 'canvas-confetti';
 import { apiClient, ApiError } from '@/lib/api/client';
 import { createBooking } from '@/lib/api/bookings';
 import { formatTime, formatDate, formatDateForAPI } from '@/lib/utils/dateFormatter';
@@ -32,11 +33,11 @@ const GUEST_OPTIONS = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 const getStepText = (step: number): string => {
   switch (step) {
     case 1:
-      return 'Step 1: Select number of guests and date';
+      return 'Step 1/3: Select number of guests and date';
     case 2:
-      return 'Step 2: Confirm your booking';
+      return 'Step 2/3: Confirm your booking';
     case 3:
-      return 'Step 3: Booking confirmed';
+      return 'Step 3/3: Booking confirmed';
     default:
       return '';
   }
@@ -79,6 +80,13 @@ export default function BookingModal({
       setErrorMessage(null);
       queryClient.invalidateQueries({ queryKey: ['available-slots'] });
       setStep(3);
+
+      // Trigger confetti celebration
+      confetti({
+        particleCount: 200,
+        spread: 100,
+        origin: { y: 0.6 },
+      });
     },
     onError: (error: ApiError) => {
       if (error.status === 400) {
@@ -86,7 +94,11 @@ export default function BookingModal({
       } else if (error.status === 404) {
         setErrorMessage('Time slot no longer available. Please select another time.');
       } else if (error.status === 409) {
-        setErrorMessage('This time is already booked. Please select another time.');
+        // - User has overlapping booking
+        // - Slot already booked by someone else
+        setErrorMessage(
+          error.message || 'This time is already booked. Please select another time.'
+        );
       } else {
         setErrorMessage('An unexpected error occurred. Please try again later.');
       }
@@ -298,7 +310,10 @@ export default function BookingModal({
           <Button
             size={'md'}
             variant={'default'}
-            onClick={() => setStep(1)}
+            onClick={() => {
+              setStep(1);
+              setErrorMessage(null);
+            }}
             leftSection={<IconArrowLeft size={18} />}
             disabled={bookingMutation.isPending}
           >

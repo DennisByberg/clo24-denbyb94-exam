@@ -20,6 +20,7 @@ class BookingService:
         - The booking slot exists
         - The restaurant table exists
         - Guest count doesn't exceed table seating capacity
+        - User doesn't have overlapping bookings at the same restaurant
         - The slot is not already booked
 
         Args:
@@ -33,7 +34,7 @@ class BookingService:
         Raises:
             HTTPException(404): If slot or table not found
             HTTPException(400): If guest count exceeds table capacity
-            HTTPException(409): If slot is already booked
+            HTTPException(409): If user has overlapping booking or slot is already booked
         """
 
         # Get the booking slot to verify it exists
@@ -59,6 +60,28 @@ class BookingService:
         if request.guest_count > restaurant_table.seating_count:  # type: ignore
             raise HTTPException(
                 status_code=400, detail="Too many guests for this table"
+            )
+
+        # Check if user has overlapping bookings at the same restaurant
+        overlapping_booking = (
+            db.query(Booking)
+            .join(BookingSlot)
+            .join(RestaurantTable, RestaurantTable.id == BookingSlot.table_id)
+            .filter(Booking.user_id == user_id)
+            .filter(RestaurantTable.restaurant_id == restaurant_table.restaurant_id)
+            .filter(
+                # Check for time overlap: new slot overlaps if it starts before existing ends
+                # AND ends after existing starts
+                BookingSlot.arrival_date < booking_slot.departure_date,
+                BookingSlot.departure_date > booking_slot.arrival_date,
+            )
+            .first()
+        )
+
+        if overlapping_booking:
+            raise HTTPException(
+                status_code=409,
+                detail="You already have a booking at this restaurant during this time period",
             )
 
         # Check if the slot is already booked
