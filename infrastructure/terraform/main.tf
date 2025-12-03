@@ -69,3 +69,139 @@ resource "null_resource" "upload_images" {
     command = "bash ${path.module}/../scripts/${var.restaurant_images_upload_script}"
   }
 }
+
+# App Service Plan for Backend
+resource "azurerm_service_plan" "backend" {
+  name                = var.app_service_plan_name
+  resource_group_name = azurerm_resource_group.main.name
+  location            = var.location
+  os_type             = "Linux"
+  sku_name            = "B1"
+
+  tags = {
+    managed-by  = var.managed_by_tag
+    environment = var.environment
+    project     = var.project
+  }
+}
+
+# App Service for Backend (Python 3.13)
+resource "azurerm_linux_web_app" "backend" {
+  name                = var.app_service_name
+  resource_group_name = azurerm_resource_group.main.name
+  location            = var.location
+  service_plan_id     = azurerm_service_plan.backend.id
+  https_only          = true
+
+  site_config {
+    application_stack {
+      python_version = "3.13"
+    }
+    always_on = true
+  }
+
+  app_settings = {
+    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+    # TODO: For production, use Key Vault reference: @Microsoft.KeyVault(SecretUri=...)
+    "GOOGLE_CLIENT_SECRET" = var.google_oauth_client_secret
+    "MOCK_AUTH"            = "false"
+    "ALLOWED_ORIGINS"      = "https://${azurerm_static_web_app.frontend.default_host_name}"
+    "DATABASE_URL"         = "postgresql://${var.postgresql_admin_username}:${var.postgresql_admin_password}@${azurerm_postgresql_flexible_server.main.fqdn}:5432/${var.postgresql_database_name}?sslmode=require"
+    "STARTUP_COMMAND"      = "uv run uvicorn app.main:app --host 0.0.0.0 --port 8000"
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
+
+  auth_settings_v2 {
+    auth_enabled           = true
+    require_authentication = true
+    unauthenticated_action = "RedirectToLoginPage"
+
+    login {
+      token_store_enabled = true
+    }
+
+    google_v2 {
+      client_id                  = var.google_oauth_client_id
+      client_secret_setting_name = "GOOGLE_CLIENT_SECRET"
+      allowed_audiences          = []
+      login_scopes               = ["openid", "profile", "email"]
+    }
+  }
+
+  tags = {
+    managed-by  = var.managed_by_tag
+    environment = var.environment
+    project     = var.project
+  }
+}
+
+# PostgreSQL Flexible Server
+resource "azurerm_postgresql_flexible_server" "main" {
+  name                   = var.postgresql_server_name
+  resource_group_name    = azurerm_resource_group.main.name
+  location               = var.location
+  version                = "16"
+  administrator_login    = var.postgresql_admin_username
+  administrator_password = var.postgresql_admin_password
+  storage_mb             = 32768
+  sku_name               = "B_Standard_B1ms"
+  # Explicitly enable public network access (required for B1 App Service to connect)
+  # For production, use Private Endpoint with Premium tier App Service
+  public_network_access_enabled = true
+
+  backup_retention_days        = 7
+  geo_redundant_backup_enabled = false # true for production
+
+  tags = {
+    managed-by  = var.managed_by_tag
+    environment = var.environment
+    project     = var.project
+  }
+}
+
+# PostgreSQL Database
+# Note: Database is created empty. Run Alembic migrations after deployment:
+# - Manually: alembic upgrade head
+# - Via GitHub Actions: Add migration step in deployment workflow
+# - Or via App Service SSH: Connect and run migrations
+resource "azurerm_postgresql_flexible_server_database" "main" {
+  name      = var.postgresql_database_name
+  server_id = azurerm_postgresql_flexible_server.main.id
+  charset   = "UTF8"
+  collation = "en_US.utf8"
+}
+
+# PostgreSQL Firewall Rule - Allow Azure services
+# Note: 0.0.0.0 is a special Azure value that allows access from Azure services
+# Security: This allows any Azure service to attempt connection. For production:
+# - Use Private Endpoint/VNet Integration (requires Premium tier App Service)
+# - Or restrict to specific App Service outbound IPs
+# - Current B1 tier limits secure networking options
+resource "azurerm_postgresql_flexible_server_firewall_rule" "app_service" {
+  name             = "allow-app-service"
+  server_id        = azurerm_postgresql_flexible_server.main.id
+  start_ip_address = "0.0.0.0"
+  end_ip_address   = "0.0.0.0"
+}
+
+# Static Web App for Frontend
+# Note: Location hardcoded to "West Europe" - Free tier only available in: West US 2, Central US, East US 2, West Europe, East Asia
+# Configuration: Frontend requires environment variables set via GitHub Actions or Azure Portal:
+# - NEXT_PUBLIC_API_URL: Backend App Service URL (from output app_service_url)
+# - NEXT_PUBLIC_AZURE_BLOB_URL: Storage blob endpoint (from output storage_account_primary_blob_endpoint)
+resource "azurerm_static_web_app" "frontend" {
+  name                = var.static_web_app_name
+  resource_group_name = azurerm_resource_group.main.name
+  location            = "West Europe"
+  sku_tier            = "Free"
+  sku_size            = "Free"
+
+  tags = {
+    managed-by  = var.managed_by_tag
+    environment = var.environment
+    project     = var.project
+  }
+}

@@ -1,9 +1,8 @@
 #!/bin/bash
 
 # Uploads all restaurant images to Azure Blob Storage
-# Usage: STORAGE_ACCOUNT_NAME=essgroupstorage ./upload-restaurant-images.sh
 
-STORAGE_ACCOUNT_NAME="${STORAGE_ACCOUNT_NAME:-essgroupstorage}"
+STORAGE_ACCOUNT_NAME="${STORAGE_ACCOUNT_NAME:-acegroupstorage}"
 
 az storage blob upload-batch \
   --account-name "$STORAGE_ACCOUNT_NAME" \
