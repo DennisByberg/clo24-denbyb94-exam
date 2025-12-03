@@ -378,6 +378,14 @@ export default function BookingModal({
             </Group>
             <Group justify={'space-between'}>
               <Text size={'sm'} c={'dimmed'}>
+                Date
+              </Text>
+              <Text size={'sm'} fw={500}>
+                {formatDate(new Date(bookingResult.arrival_date))}
+              </Text>
+            </Group>
+            <Group justify={'space-between'}>
+              <Text size={'sm'} c={'dimmed'}>
                 Time
               </Text>
               <Text size={'sm'} fw={500}>
