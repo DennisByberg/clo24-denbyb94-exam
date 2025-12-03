@@ -1,4 +1,4 @@
-# Restaurant Booking - Database Schema Design
+# Database Schema Design
 
 **Tech:** PostgreSQL + SQLAlchemy + Alembic  
 **Auth:** Azure Easy Auth (Google OAuth)

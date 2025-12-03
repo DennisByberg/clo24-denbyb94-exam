@@ -34,6 +34,16 @@ backend/
 └── README.md             # This file
 ```
 
+## 🗄️ Database Schema
+
+![Database Schema](../images/database-er-diagram-v3.png)
+
+- **`user`** - User accounts with Google OAuth authentication
+- **`restaurant`** - Restaurant information and metadata
+- **`restaurant_table`** - Tables available at each restaurant
+- **`restaurant_booking_slot`** - Available time slots for bookings
+- **`restaurant_booking`** - Customer bookings linking users, slots, and tables
+
 ## ⚙️ Environment Variables
 
 See `.env.example` for required configuration.
