@@ -19,7 +19,13 @@ import {
   UnstyledButton,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
-import { IconChevronDown, IconChevronUp, IconLogout, IconUser } from '@tabler/icons-react';
+import {
+  IconCalendar,
+  IconChevronDown,
+  IconChevronUp,
+  IconLogout,
+  IconUser,
+} from '@tabler/icons-react';
 import { useAuth } from '@/hooks/useAuth';
 import classes from './Header.module.css';
 
@@ -62,7 +68,7 @@ export default function Header() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const [adminLinksOpened, { toggle: toggleAdminLinks }] = useDisclosure(false);
-  const { user, logout } = useAuth();
+  const { user, login, logout } = useAuth();
 
   const mainLinks = navLinks.filter((link) => !link.description);
   const bookingLinks = navLinks.filter((link) => link.href.startsWith('/bookings'));
@@ -182,6 +188,13 @@ export default function Header() {
                     <Menu.Item leftSection={<IconUser size={16} />} disabled>
                       Profile
                     </Menu.Item>
+                    <Menu.Item
+                      leftSection={<IconCalendar size={16} />}
+                      component={Link}
+                      href={'/my-bookings'}
+                    >
+                      My Bookings
+                    </Menu.Item>
                     <Menu.Divider />
                     <Menu.Item
                       leftSection={<IconLogout size={16} />}
@@ -193,7 +206,7 @@ export default function Header() {
                   </Menu.Dropdown>
                 </Menu>
               ) : (
-                <Button disabled>Login</Button>
+                <Button onClick={login}>Login</Button>
               )}
             </Group>
 
@@ -298,7 +311,7 @@ export default function Header() {
                 Logout
               </Button>
             ) : (
-              <Button disabled>Login</Button>
+              <Button onClick={login}>Login</Button>
             )}
           </Group>
         </ScrollArea>
