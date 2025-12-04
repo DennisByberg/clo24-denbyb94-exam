@@ -94,7 +94,7 @@ export default function Header() {
                 <IconCards size={36} />
                 <Text component={'span'} fw={600}>
                   ACE{' '}
-                  <Text component={'span'} c="red.7" fw={600}>
+                  <Text component={'span'} c={'red'} fw={600}>
                     GROUP
                   </Text>
                 </Text>
