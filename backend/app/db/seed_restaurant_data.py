@@ -13,32 +13,32 @@ RESTAURANTS = [
     {
         "name": "ACE Burgers",
         "table_sizes": [2, 2, 4, 4, 6, 8, 10, 12],
-        "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-burgers.jpeg",
+        "image_url": "https://acegroupstorage.blob.core.windows.net/restaurant-images/restaurant-burgers.jpeg",
     },
     {
         "name": "ACE Sushi",
         "table_sizes": [2, 2, 3, 4, 4, 6, 6, 8, 10, 12],
-        "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-sushi.jpeg",
+        "image_url": "https://acegroupstorage.blob.core.windows.net/restaurant-images/restaurant-sushi.jpeg",
     },
     {
         "name": "ACE Pizza",
         "table_sizes": [2, 4, 4, 6, 8, 10, 12],
-        "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-pizza.jpeg",
+        "image_url": "https://acegroupstorage.blob.core.windows.net/restaurant-images/restaurant-pizza.jpeg",
     },
     {
         "name": "ACE Steakhouse",
         "table_sizes": [2, 2, 2, 4, 4, 6, 8, 10],
-        "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-steakhouse.jpeg",
+        "image_url": "https://acegroupstorage.blob.core.windows.net/restaurant-images/restaurant-steakhouse.jpeg",
     },
     {
         "name": "ACE Vegan",
         "table_sizes": [2, 2, 4, 6, 8, 10, 12],
-        "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-vegan.jpeg",
+        "image_url": "https://acegroupstorage.blob.core.windows.net/restaurant-images/restaurant-vegan.jpeg",
     },
     {
         "name": "ACE Seafood",
         "table_sizes": [2, 4, 4, 4, 6, 6, 8, 10, 12],
-        "image_url": "https://essgroupstorage.blob.core.windows.net/restaurant-images/restaurant-seafood.jpeg",
+        "image_url": "https://acegroupstorage.blob.core.windows.net/restaurant-images/restaurant-seafood.jpeg",
     },
 ]
 DAYS_AHEAD = 30

@@ -7,11 +7,9 @@ class Booking(Base):
     __tablename__ = "restaurant_booking"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
-    user_id = Column(
-        String(255), ForeignKey("user.id"), nullable=False
-    )  # Google OAuth ID
+    user_id = Column(String(255), ForeignKey("user.id"), nullable=False)
     booking_slot_id = Column(
-        Integer, ForeignKey("restaurant_booking_slot.id"), nullable=False
+        Integer, ForeignKey("restaurant_booking_slot.id"), nullable=False, unique=True
     )
     guest_count = Column(Integer, nullable=False)
 

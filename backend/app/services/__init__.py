@@ -1,3 +1,3 @@
-from .restaurant import BookingSlotService, RestaurantService
+from .restaurant import BookingService, BookingSlotService, RestaurantService
 
-__all__ = ["RestaurantService", "BookingSlotService"]
+__all__ = ["RestaurantService", "BookingSlotService", "BookingService"]
