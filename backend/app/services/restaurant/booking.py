@@ -14,7 +14,7 @@ class BookingService:
 
     @staticmethod
     def get_user_bookings(
-        db: Session, user_id: str, filter: Literal["upcoming", "past"] | None
+        db: Session, user_id: str, booking_filter: Literal["upcoming", "past"] | None
     ) -> list[BookingResponse]:
         """
         Get all bookings for a user with optional filtering.
@@ -22,7 +22,7 @@ class BookingService:
         Args:
             db: Database session
             user_id: ID of the user
-            filter: Optional filter - "upcoming" for future bookings, "past" for past bookings
+            booking_filter: Optional filter - "upcoming" for future bookings, "past" for past bookings
 
         Returns:
             List of BookingResponse objects with nested restaurant, table, and slot information
@@ -32,9 +32,9 @@ class BookingService:
         query = db.query(Booking).filter(Booking.user_id == user_id)
 
         # Apply filter if provided
-        if filter == "upcoming":
+        if booking_filter == "upcoming":
             query = query.join(BookingSlot).filter(BookingSlot.arrival_date >= today)
-        elif filter == "past":
+        elif booking_filter == "past":
             query = query.join(BookingSlot).filter(BookingSlot.arrival_date < today)
 
         bookings = query.all()

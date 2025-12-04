@@ -16,7 +16,7 @@ router = APIRouter(prefix="/bookings", tags=["bookings"])
 def get_bookings(
     db: Annotated[Session, Depends(get_db)],
     current_user: Annotated[User, Depends(get_current_user)],
-    filter: Literal["upcoming", "past"] | None = None,
+    booking_filter: Literal["upcoming", "past"] | None = None,
 ):
     """
     Get all bookings for the authenticated user.
@@ -24,12 +24,12 @@ def get_bookings(
     Args:
         db: Database session
         current_user: Authenticated user requesting their bookings
-        filter: Optional filter - "upcoming" for future bookings, "past" for past bookings, None for all
+        booking_filter: Optional filter - "upcoming" for future bookings, "past" for past bookings, None for all
 
     Returns:
         List of BookingResponse with booking details and restaurant information
     """
-    return BookingService.get_user_bookings(db, current_user.id, filter)  # type: ignore
+    return BookingService.get_user_bookings(db, current_user.id, booking_filter)  # type: ignore
 
 
 @router.post("", response_model=BookingResponse, status_code=201)
