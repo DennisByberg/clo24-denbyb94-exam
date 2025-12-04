@@ -34,7 +34,7 @@ export default function RootLayout({
       <body className={firaSans.className}>
         <AppProviders>
           <Header />
-          <Container size={'lg'} py={'xl'}>
+          <Container size={'md'} py={'xl'}>
             {children}
           </Container>
         </AppProviders>
