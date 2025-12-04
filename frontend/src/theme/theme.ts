@@ -13,7 +13,6 @@ export const theme = createTheme({
   fontFamily:
     'var(--font-fira-sans), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
   colors: {
-    // Primary brand color (red)
     red: [
       BRAND_WHITE, // 0
       'rgb(240, 140, 143)', // 1
@@ -26,7 +25,6 @@ export const theme = createTheme({
       'rgb(180, 24, 26)', // 8
       'rgb(150, 20, 22)', // 9
     ],
-    // Dark theme colors (based on brand black)
     dark: [
       BRAND_WHITE, // 0 - Text Color
       'rgb(120, 120, 120)', // 1
