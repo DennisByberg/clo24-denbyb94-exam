@@ -7,6 +7,7 @@ import Header from '@/components/Header/Header';
 
 const firaSans = Fira_Sans({
   weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
   subsets: ['latin'],
   variable: '--font-fira-sans',
 });
