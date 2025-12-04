@@ -1,11 +1,11 @@
 'use client';
 
-import { Title, SimpleGrid, Stack, Loader, Box, Text, BackgroundImage } from '@mantine/core';
+import { SimpleGrid, Stack, Loader } from '@mantine/core';
 import { useQuery } from '@tanstack/react-query';
 import RestaurantCard from '@/components/RestaurantCard/RestaurantCard';
 import { apiClient } from '@/lib/api/client';
 import { Restaurant } from '@/types/restaurant';
-import { getImageUrl } from '@/lib/utils/imageHelpers';
+import { PageHeading } from '../../../components/PageHeading/PageHeading';
 
 export default function DiningPage() {
   const { data: restaurants, isLoading } = useQuery<Restaurant[]>({
@@ -15,29 +15,14 @@ export default function DiningPage() {
 
   return (
     <>
-      {/* Hero Section */}
-      <BackgroundImage src={getImageUrl('restaurant-hero.jpeg')}>
-        <Box
-          p={'200px var(--mantine-spacing-md)'}
-          ta={'center'}
-          display={'flex'}
-          style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Title order={1} size={'3rem'} c={'white'} mb={'1rem'}>
-            Dining & Drinking
-          </Title>
-          <Text size={'xl'} c={'white'} maw={'30rem'}>
-            Discover our exceptional restaurants and reserve your table for an unforgettable
-            culinary experience
-          </Text>
-        </Box>
-      </BackgroundImage>
+      <PageHeading
+        order={1}
+        title={'Fine Dining Experiences'}
+        description={`Discover our collection of world-class restaurants. 
+        From intimate dining to grand celebrations, each venue offers 
+        a unique culinary journey crafted by award-winning chefs.`}
+      />
 
-      {/* Restaurant List */}
       <Stack mt={'xl'}>
         {isLoading && <Loader color={'var(--mantine-color-yellow-2)'} size={'lg'} m={'0 auto'} />}
 
