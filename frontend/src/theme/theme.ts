@@ -5,26 +5,25 @@ const BRAND_RED = 'rgb(209, 28, 31)';
 const BRAND_WHITE = 'rgb(245, 245, 240)';
 const BRAND_BLACK = 'rgb(13,13,13)';
 
-// Defaults
-const RED_DEFAULT = 'rgb(215, 44, 47)';
-
 export const theme = createTheme({
   primaryColor: 'red',
   fontFamily:
     'var(--font-fira-sans), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
   colors: {
+    // Primary brand color (red)
     red: [
       BRAND_WHITE, // 0
       'rgb(240, 140, 143)', // 1
       'rgb(235, 120, 123)', // 2
       'rgb(230, 100, 103)', // 3
-      'rgb(225, 80, 83)', // 4
+      BRAND_RED, // 4 - Default
       'rgb(220, 60, 63)', // 5
-      RED_DEFAULT, // 6
-      BRAND_RED, // 7
+      'rgb(215, 44, 47)', // 6
+      'rgb(200, 40, 43)', // 7
       'rgb(180, 24, 26)', // 8
       'rgb(150, 20, 22)', // 9
     ],
+    // Dark theme colors (based on brand black)
     dark: [
       BRAND_WHITE, // 0 - Text Color
       'rgb(120, 120, 120)', // 1
