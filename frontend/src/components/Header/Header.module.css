@@ -72,4 +72,8 @@
     height: 42px;
     width: 100%;
   }
+
+  .link::after {
+    display: none;
+  }
 }
