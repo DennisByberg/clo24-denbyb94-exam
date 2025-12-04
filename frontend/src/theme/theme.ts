@@ -1,33 +1,53 @@
 import { createTheme } from '@mantine/core';
 
+// Brand Colors
+const BRAND_RED = 'rgba(209, 28, 31, 1)';
+const BRAND_WHITE = 'rgba(245, 245, 240, 1)';
+const BRAND_BLACK = 'rgba(6, 5, 6, 1)';
+
 export const theme = createTheme({
-  primaryColor: 'dark',
+  primaryColor: 'brand',
   fontFamily:
     'var(--font-fira-sans), -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif',
   colors: {
-    dark: [
-      'rgba(213, 215, 224, 1)', // 0
-      'rgba(172, 174, 191, 1)', // 1
-      'rgba(140, 143, 163, 1)', // 2
-      'rgba(102, 105, 128, 1)', // 3
-      'rgba(77, 79, 102, 1)', // 4
-      'rgba(52, 53, 74, 1)', // 5
-      'rgba(31, 33, 42, 1)', // 6
-      'rgba(22, 22, 28, 1)', // 7 - (Page Background)
-      'rgba(20, 19, 26, 1)', // 8
-      '#000000ff', // 9
+    // Primary brand color (red)
+    brand: [
+      '#fde8e9', // 0 - Lightest
+      '#f9c9cb', // 1
+      '#f5a9ad', // 2
+      '#f18a8f', // 3
+      '#ed6b71', // 4
+      '#e94c53', // 5
+      '#e52d35', // 6
+      BRAND_RED, // 7 - Base brand red
+      '#b51619', // 8
+      '#9f1316', // 9 - Darkest
     ],
-    yellow: [
-      '#fff9db', // 0
-      '#fff3bf', // 1
-      '#ffec99', // 2 - (Text)
-      '#ffe066', // 3
-      '#ffd43b', // 4
-      '#fcc419', // 5
-      '#fab005', // 6
-      '#f59f00', // 7
-      '#f08c00', // 8 - (Default)
-      '#e67700', // 9
+    // Light theme colors (based on brand white)
+    light: [
+      BRAND_WHITE, // 0 - Base light color
+      '#f5f0e8', // 1
+      '#ebe3d6', // 2
+      '#e1d6c4', // 3
+      '#d7c9b2', // 4
+      '#cdbca0', // 5
+      '#c3af8e', // 6
+      '#b9a27c', // 7
+      '#af956a', // 8
+      '#a58858', // 9
+    ],
+    // Dark theme colors (based on brand black)
+    dark: [
+      BRAND_WHITE, // 0 - Lightest (245, 245, 240)
+      'rgba(115, 115, 115, 1)', // 1
+      'rgba(95, 95, 95, 1)', // 2
+      'rgba(75, 75, 75, 1)', // 3
+      'rgba(55, 55, 55, 1)', // 4
+      'rgba(35, 35, 35, 1)', // 5
+      'rgba(15, 15, 15, 1)', // 6
+      BRAND_BLACK, // 7 - Base brand black (6, 5, 6)
+      'rgba(5, 4, 5, 1)', // 8
+      'rgba(0, 0, 0, 1)', // 9 - Darkest
     ],
   },
 });
