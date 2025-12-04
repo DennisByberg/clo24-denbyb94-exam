@@ -1,8 +1,8 @@
 'use client';
 
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import {
-  ActionIcon,
   Avatar,
   Box,
   Burger,
@@ -19,17 +19,15 @@ import {
   Stack,
   Text,
   UnstyledButton,
-  useMantineColorScheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
   IconCalendar,
+  IconCards,
   IconChevronDown,
   IconChevronUp,
   IconHeartRateMonitor,
   IconLogout,
-  IconMoon,
-  IconSun,
   IconUser,
 } from '@tabler/icons-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -74,7 +72,7 @@ export default function Header() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const { user, login, logout } = useAuth();
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
+  const pathname = usePathname();
 
   const mainLinks = navLinks.filter((link) => !link.description);
   const bookingLinks = navLinks.filter((link) => link.href.startsWith('/bookings'));
@@ -82,10 +80,25 @@ export default function Header() {
   return (
     <Box>
       <Box component={'header'} h={60}>
-        <Container size={'lg'} h={'100%'}>
+        <Container size={'md'} h={'100%'}>
           <Group justify={'space-between'} h={'100%'}>
-            <Box component={Link} href={'/'} className={classes.logo}>
-              ACE GROUP
+            <Box
+              c={'var(--mantine-color-text)'}
+              td={'none'}
+              fw={600}
+              component={Link}
+              href={'/'}
+              className={classes.logo}
+            >
+              <Group gap={'xs'}>
+                <IconCards size={36} />
+                <Text component={'span'} fw={600}>
+                  ACE{' '}
+                  <Text component={'span'} c="brand.7" fw={600}>
+                    GROUP
+                  </Text>
+                </Text>
+              </Group>
             </Box>
 
             <Group h={'100%'} gap={0} visibleFrom={'sm'}>
@@ -94,11 +107,8 @@ export default function Header() {
                   key={link.href}
                   component={Link}
                   href={link.href}
-                  className={classes.link}
-                  style={{
-                    opacity: link.disabled ? 0.5 : 1,
-                    pointerEvents: link.disabled ? 'none' : 'auto',
-                  }}
+                  className={`${classes.link} ${link.disabled ? classes.linkDisabled : ''}`}
+                  data-active={pathname === link.href || undefined}
                 >
                   {link.label}
                 </Box>
@@ -106,7 +116,10 @@ export default function Header() {
 
               <HoverCard width={300} position={'bottom'} radius={'md'} shadow={'md'} withinPortal>
                 <HoverCard.Target>
-                  <UnstyledButton className={classes.dropdownButton}>
+                  <UnstyledButton
+                    className={classes.dropdownButton}
+                    data-active={bookingLinks.some((link) => pathname === link.href) || undefined}
+                  >
                     <Center inline>
                       <Box component={'span'} mr={5}>
                         Bookings
@@ -122,11 +135,7 @@ export default function Header() {
                       key={item.href}
                       component={Link}
                       href={item.href}
-                      className={classes.subLink}
-                      style={{
-                        opacity: item.disabled ? 0.5 : 1,
-                        pointerEvents: item.disabled ? 'none' : 'auto',
-                      }}
+                      className={`${classes.subLink} ${item.disabled ? classes.subLinkDisabled : ''}`}
                     >
                       <Text size={'sm'} fw={500}>
                         {item.label}
@@ -141,33 +150,30 @@ export default function Header() {
             </Group>
 
             <Group visibleFrom={'sm'}>
-              <ActionIcon
-                onClick={() => toggleColorScheme()}
-                variant={'default'}
-                size={'lg'}
-                aria-label={'Toggle color scheme'}
-              >
-                {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
-              </ActionIcon>
-
               {user ? (
                 <Menu shadow={'md'} width={200}>
                   <Menu.Target>
                     <UnstyledButton>
                       <Group gap={'xs'}>
                         <Avatar src={user.picture} alt={user.name} size={'sm'} radius={'xl'} />
-                        <div>
-                          <Text size={'sm'} fw={500}>
-                            {user.name}
-                          </Text>
-                          <Text size={'xs'} c={'dimmed'}>
-                            {user.email}
-                          </Text>
-                        </div>
                       </Group>
                     </UnstyledButton>
                   </Menu.Target>
                   <Menu.Dropdown>
+                    <Menu.Label>
+                      <Stack gap={'xs'} align={'flex-start'}>
+                        <Avatar src={user.picture} alt={user.name} size={'md'} radius={'xl'} />
+                        <div>
+                          <Text size={'sm'} fw={500} truncate>
+                            {user.name}
+                          </Text>
+                          <Text size={'xs'} c={'dimmed'} truncate>
+                            {user.email}
+                          </Text>
+                        </div>
+                      </Stack>
+                    </Menu.Label>
+                    <Menu.Divider />
                     <Menu.Item leftSection={<IconUser size={16} />} disabled>
                       Profile
                     </Menu.Item>
@@ -224,12 +230,8 @@ export default function Header() {
               key={link.href}
               component={Link}
               href={link.href}
-              className={classes.link}
+              className={`${classes.link} ${link.disabled ? classes.linkDisabled : ''}`}
               onClick={!link.disabled ? closeDrawer : undefined}
-              style={{
-                opacity: link.disabled ? 0.5 : 1,
-                pointerEvents: link.disabled ? 'none' : 'auto',
-              }}
             >
               {link.label}
             </Box>
@@ -249,12 +251,8 @@ export default function Header() {
                 key={item.href}
                 component={Link}
                 href={item.href}
-                className={classes.subLink}
+                className={`${classes.subLink} ${item.disabled ? classes.subLinkDisabled : ''}`}
                 onClick={!item.disabled ? closeDrawer : undefined}
-                style={{
-                  opacity: item.disabled ? 0.5 : 1,
-                  pointerEvents: item.disabled ? 'none' : 'auto',
-                }}
               >
                 <Text size={'sm'} fw={500}>
                   {item.label}
@@ -285,15 +283,6 @@ export default function Header() {
           )}
 
           <Stack gap={'md'} pb={'xl'} px={'md'}>
-            <Button
-              onClick={() => toggleColorScheme()}
-              variant={'default'}
-              fullWidth
-              leftSection={colorScheme === 'dark' ? <IconSun size={16} /> : <IconMoon size={16} />}
-            >
-              {colorScheme === 'dark' ? 'Light Mode' : 'Dark Mode'}
-            </Button>
-
             {user && (
               <>
                 <Button
