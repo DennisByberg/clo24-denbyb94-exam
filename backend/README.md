@@ -1,6 +1,6 @@
 # Backend Documentation
 
-![](../images/ace-group-logo.png)
+![](../images/ace-group-logo-header.png)
 
 Developer guide for setting up and working with the backend codebase. Contains setup instructions, project structure overview, and development workflow conventions.
 
