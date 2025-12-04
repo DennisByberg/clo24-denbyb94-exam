@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import {
+  ActionIcon,
   Avatar,
   Box,
   Burger,
@@ -15,15 +16,20 @@ import {
   HoverCard,
   Menu,
   ScrollArea,
+  Stack,
   Text,
   UnstyledButton,
+  useMantineColorScheme,
 } from '@mantine/core';
 import { useDisclosure } from '@mantine/hooks';
 import {
   IconCalendar,
   IconChevronDown,
   IconChevronUp,
+  IconHeartRateMonitor,
   IconLogout,
+  IconMoon,
+  IconSun,
   IconUser,
 } from '@tabler/icons-react';
 import { useAuth } from '@/hooks/useAuth';
@@ -67,17 +73,16 @@ const navLinks: NavLink[] = [
 export default function Header() {
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-  const [adminLinksOpened, { toggle: toggleAdminLinks }] = useDisclosure(false);
   const { user, login, logout } = useAuth();
+  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
 
   const mainLinks = navLinks.filter((link) => !link.description);
   const bookingLinks = navLinks.filter((link) => link.href.startsWith('/bookings'));
-  const adminLinks = navLinks.filter((link) => link.href.startsWith('/admin'));
 
   return (
     <Box>
       <Box component={'header'} h={60}>
-        <Container size={'xl'} h={'100%'}>
+        <Container size={'lg'} h={'100%'}>
           <Group justify={'space-between'} h={'100%'}>
             <Box component={Link} href={'/'} className={classes.logo}>
               ACE GROUP
@@ -133,40 +138,18 @@ export default function Header() {
                   ))}
                 </HoverCard.Dropdown>
               </HoverCard>
-
-              <HoverCard width={300} position={'bottom'} radius={'md'} shadow={'md'} withinPortal>
-                <HoverCard.Target>
-                  <UnstyledButton className={classes.dropdownButton}>
-                    <Center inline>
-                      <Box component={'span'} mr={5}>
-                        Admin
-                      </Box>
-                      <IconChevronDown size={16} />
-                    </Center>
-                  </UnstyledButton>
-                </HoverCard.Target>
-
-                <HoverCard.Dropdown>
-                  {adminLinks.map((item) => (
-                    <Box
-                      key={item.href}
-                      component={Link}
-                      href={item.href}
-                      className={classes.subLink}
-                    >
-                      <Text size={'sm'} fw={500}>
-                        {item.label}
-                      </Text>
-                      <Text size={'xs'} c={'dimmed'}>
-                        {item.description}
-                      </Text>
-                    </Box>
-                  ))}
-                </HoverCard.Dropdown>
-              </HoverCard>
             </Group>
 
             <Group visibleFrom={'sm'}>
+              <ActionIcon
+                onClick={() => toggleColorScheme()}
+                variant={'default'}
+                size={'lg'}
+                aria-label={'Toggle color scheme'}
+              >
+                {colorScheme === 'dark' ? <IconSun size={20} /> : <IconMoon size={20} />}
+              </ActionIcon>
+
               {user ? (
                 <Menu shadow={'md'} width={200}>
                   <Menu.Target>
@@ -194,6 +177,13 @@ export default function Header() {
                       href={'/my-bookings'}
                     >
                       My Bookings
+                    </Menu.Item>
+                    <Menu.Item
+                      leftSection={<IconHeartRateMonitor size={16} />}
+                      component={Link}
+                      href={'/admin/health'}
+                    >
+                      Health Checks
                     </Menu.Item>
                     <Menu.Divider />
                     <Menu.Item
@@ -276,44 +266,75 @@ export default function Header() {
             ))}
           </Collapse>
 
-          <UnstyledButton className={classes.mobileDropdownButton} onClick={toggleAdminLinks}>
-            <Center inline>
-              <Box component={'span'} mr={5}>
-                Admin
-              </Box>
-              {adminLinksOpened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
-            </Center>
-          </UnstyledButton>
-          <Collapse in={adminLinksOpened}>
-            {adminLinks.map((item) => (
-              <Box
-                key={item.href}
-                component={Link}
-                href={item.href}
-                className={classes.subLink}
-                onClick={closeDrawer}
-              >
-                <Text size={'sm'} fw={500}>
-                  {item.label}
-                </Text>
-                <Text size={'xs'} c={'dimmed'}>
-                  {item.description}
-                </Text>
-              </Box>
-            ))}
-          </Collapse>
-
           <Divider my={'md'} />
 
-          <Group justify={'center'} grow pb={'xl'} px={'md'}>
+          {user && (
+            <Box px={'md'} pb={'md'}>
+              <Group gap={'xs'}>
+                <Avatar src={user.picture} alt={user.name} size={'sm'} radius={'xl'} />
+                <div>
+                  <Text size={'sm'} fw={500}>
+                    {user.name}
+                  </Text>
+                  <Text size={'xs'} c={'dimmed'}>
+                    {user.email}
+                  </Text>
+                </div>
+              </Group>
+            </Box>
+          )}
+
+          <Stack gap={'md'} pb={'xl'} px={'md'}>
+            <Button
+              onClick={() => toggleColorScheme()}
+              variant={'default'}
+              fullWidth
+              leftSection={colorScheme === 'dark' ? <IconSun size={16} /> : <IconMoon size={16} />}
+            >
+              {colorScheme === 'dark' ? 'Light Mode' : 'Dark Mode'}
+            </Button>
+
+            {user && (
+              <>
+                <Button
+                  component={Link}
+                  href={'/my-bookings'}
+                  onClick={closeDrawer}
+                  variant={'default'}
+                  fullWidth
+                  leftSection={<IconCalendar size={16} />}
+                >
+                  My Bookings
+                </Button>
+
+                <Button
+                  component={Link}
+                  href={'/admin/health'}
+                  onClick={closeDrawer}
+                  variant={'default'}
+                  fullWidth
+                  leftSection={<IconHeartRateMonitor size={16} />}
+                >
+                  Health Checks
+                </Button>
+              </>
+            )}
+
             {user ? (
-              <Button color={'red'} onClick={logout} leftSection={<IconLogout size={16} />}>
+              <Button
+                color={'red'}
+                onClick={logout}
+                leftSection={<IconLogout size={16} />}
+                fullWidth
+              >
                 Logout
               </Button>
             ) : (
-              <Button onClick={login}>Login</Button>
+              <Button onClick={login} fullWidth>
+                Login
+              </Button>
             )}
-          </Group>
+          </Stack>
         </ScrollArea>
       </Drawer>
     </Box>
