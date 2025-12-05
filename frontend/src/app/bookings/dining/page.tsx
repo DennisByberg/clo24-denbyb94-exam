@@ -37,9 +37,7 @@ export default function DiningPage() {
         a unique culinary journey crafted by award-winning chefs.`}
       />
 
-      {/* ====================================================================== */}
       {/* RESTAURANTS */}
-      {/* ====================================================================== */}
       <Stack>
         <PageHeading order={2} title={'Our Restaurants'} />
         {isLoading ? (
