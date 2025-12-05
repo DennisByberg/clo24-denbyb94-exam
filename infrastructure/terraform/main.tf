@@ -98,7 +98,7 @@ resource "azurerm_linux_web_app" "backend" {
       python_version = "3.13"
     }
     always_on        = true
-    app_command_line = "python -m uvicorn app.main:app --host 0.0.0.0 --port 8000"
+    app_command_line = "bash startup.sh"
   }
 
   app_settings = {
