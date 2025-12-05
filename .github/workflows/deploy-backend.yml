@@ -54,14 +54,28 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen
 
+      # NOTE: Running migrations before deployment has risks:
+      # - If deployment fails after migrations, database is updated but code is not
+      # - Concurrent deployments could cause race conditions
+      # For production, consider: separate manual workflow, startup command, or blue-green deployment
       - name: Run Alembic migrations
+        id: migrate
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: uv run alembic upgrade head
+
+      - name: Rollback migration on failure
+        if: failure() && steps.migrate.outcome == 'failure'
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+        run: |
+          echo "Migration failed, attempting rollback..."
+          uv run alembic downgrade -1
+          exit 1
 
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
           app-name: ${{ secrets.AZURE_APP_SERVICE_NAME }}
           publish-profile: ${{ secrets.AZURE_APP_SERVICE_PUBLISH_PROFILE }}
-          package: ./backend
+          package: backend
