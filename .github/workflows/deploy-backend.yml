@@ -1,3 +1,23 @@
+# Deploy FastAPI backend to Azure App Service
+#
+# Required GitHub Secrets:
+# - DATABASE_URL: PostgreSQL connection string for running migrations
+#   Get from: terraform output -raw postgresql_connection_string
+#   Example: postgresql://user:pass@host:5432/db?sslmode=require
+
+# - AZURE_APP_SERVICE_NAME: Name of the Azure App Service
+#   Get from: terraform output app_service_name
+#   Example: app-ace-group-backend
+
+# - AZURE_APP_SERVICE_PUBLISH_PROFILE: Publish profile XML from Azure Portal
+#   Get from: App Service > Deployment Center > Manage publish profile
+#
+# This workflow:
+# 1. Installs Python 3.13 and UV package manager
+# 2. Installs dependencies with uv sync
+# 3. Runs Alembic database migrations
+# 4. Deploys to Azure App Service using publish profile
+
 name: Deploy Backend to Azure App Service
 
 on:

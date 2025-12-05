@@ -1,3 +1,23 @@
+# Deploy Next.js frontend to Azure Static Web Apps
+#
+# Required GitHub Secrets:
+# - NEXT_PUBLIC_API_URL: Backend API URL for client-side API calls
+#   Get from: terraform output app_service_url
+#   Example: https://app-ace-group-backend.azurewebsites.net
+
+# - NEXT_PUBLIC_AZURE_BLOB_URL: Azure Blob Storage URL for restaurant images
+#   Get from: terraform output restaurant_images_container_url
+#   Example: https://acegroupstorage.blob.core.windows.net/restaurant-images/
+
+# - AZURE_STATIC_WEB_APPS_API_TOKEN: Deployment token for Static Web Apps
+#   Get from: terraform output -raw static_web_app_deployment_token
+#
+# This workflow:
+# 1. Installs Bun 1.3.1
+# 2. Installs dependencies with bun install
+# 3. Builds Next.js app with environment variables
+# 4. Deploys to Azure Static Web Apps
+
 name: Deploy Frontend to Azure Static Web Apps
 
 on:
