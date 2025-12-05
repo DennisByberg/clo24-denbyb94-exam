@@ -1,0 +1,10 @@
+.card {
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  border-color: var(--mantine-color-red-9) !important;
+  box-shadow: 0 0 20px rgba(230, 82, 82, 0.3) !important;
+  background-color: var(--mantine-color-dark-6) !important;
+}
