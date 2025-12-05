@@ -54,8 +54,8 @@ jobs:
       - name: Install dependencies
         run: uv sync --frozen
 
-      - name: Export requirements.txt for Azure
-        run: uv export --no-hashes --format requirements-txt -o requirements.txt
+      # Azure App Service needs all files including pyproject.toml and uv.lock
+      # The startup.sh script will handle installing UV and dependencies on the server
 
       # NOTE: Running migrations before deployment has risks:
       # - If deployment fails after migrations, database is updated but code is not
