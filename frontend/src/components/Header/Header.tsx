@@ -29,6 +29,12 @@ import {
   IconHeartRateMonitor,
   IconLogout,
   IconUser,
+  IconHome,
+  IconInfoCircle,
+  IconPhoto,
+  IconToolsKitchen2,
+  IconPool,
+  IconPresentation,
 } from '@tabler/icons-react';
 import { useAuth } from '@/hooks/useAuth';
 import classes from './Header.module.css';
@@ -38,50 +44,69 @@ interface NavLink {
   label: string;
   disabled?: boolean;
   description?: string;
+  icon?: React.ReactNode;
 }
 
 const navLinks: NavLink[] = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/gallery', label: 'Gallery' },
+  { href: '/', label: 'Home', icon: <IconHome size={16} color="var(--mantine-color-red-6)" /> },
+  {
+    href: '/about',
+    label: 'About',
+    icon: <IconInfoCircle size={16} color="var(--mantine-color-red-6)" />,
+  },
+  {
+    href: '/gallery',
+    label: 'Gallery',
+    icon: <IconPhoto size={16} color="var(--mantine-color-red-6)" />,
+  },
   {
     href: '/bookings/dining',
     label: 'Dining & Drinking',
     description: 'Reserve a table at our restaurants',
+    icon: <IconToolsKitchen2 size={16} color="var(--mantine-color-red-6)" />,
   },
   {
     href: '/bookings/spa',
     label: 'Pool Club & Spa',
     description: 'Book spa treatments and pool access',
     disabled: true,
+    icon: <IconPool size={16} color="var(--mantine-color-red-6)" />,
   },
   {
     href: '/bookings/events',
     label: 'Conference & Events',
     description: 'Book spaces for events',
     disabled: true,
+    icon: <IconPresentation size={16} color="var(--mantine-color-red-6)" />,
   },
   {
     href: '/admin/health',
     label: 'Health Checks',
     description: 'Monitor system health status',
+    icon: <IconHeartRateMonitor size={16} color="var(--mantine-color-red-6)" />,
   },
 ] as const;
 
 export default function Header() {
+  // State & Hooks
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
   const { user, login, logout } = useAuth();
   const pathname = usePathname();
 
+  // Computed Values
   const mainLinks = navLinks.filter((link) => !link.description);
   const bookingLinks = navLinks.filter((link) => link.href.startsWith('/bookings'));
 
   return (
     <Box>
+      {/* ====================================================================== */}
+      {/* DESKTOP HEADER */}
+      {/* ====================================================================== */}
       <Box component={'header'} h={60}>
         <Container size={'md'} h={'100%'}>
           <Group justify={'space-between'} h={'100%'}>
+            {/* Logo */}
             <Box
               c={'var(--mantine-color-text)'}
               td={'none'}
@@ -101,6 +126,7 @@ export default function Header() {
               </Group>
             </Box>
 
+            {/* Desktop Navigation Links */}
             <Group h={'100%'} gap={0} visibleFrom={'sm'}>
               {mainLinks.map((link) => (
                 <Box
@@ -110,10 +136,14 @@ export default function Header() {
                   className={`${classes.link} ${link.disabled ? classes.linkDisabled : ''}`}
                   data-active={pathname === link.href || undefined}
                 >
-                  {link.label}
+                  <Group gap={'xs'} align={'center'}>
+                    {link.icon}
+                    <span>{link.label}</span>
+                  </Group>
                 </Box>
               ))}
 
+              {/* Bookings Dropdown Menu */}
               <HoverCard width={300} position={'bottom'} radius={'md'} shadow={'md'} withinPortal>
                 <HoverCard.Target>
                   <UnstyledButton
@@ -121,7 +151,8 @@ export default function Header() {
                     data-active={bookingLinks.some((link) => pathname === link.href) || undefined}
                   >
                     <Center inline>
-                      <Box component={'span'} mr={5}>
+                      <IconCalendar size={16} color="var(--mantine-color-red-6)" />
+                      <Box component={'span'} ml={5} mr={5}>
                         Bookings
                       </Box>
                       <IconChevronDown size={16} />
@@ -137,32 +168,65 @@ export default function Header() {
                       href={item.href}
                       className={`${classes.subLink} ${item.disabled ? classes.subLinkDisabled : ''}`}
                     >
-                      <Text size={'sm'} fw={500}>
-                        {item.label}
-                      </Text>
-                      <Text size={'xs'} c={'dimmed'}>
-                        {item.description}
-                      </Text>
+                      <Group gap={'xs'} align={'start'}>
+                        {item.icon}
+                        <div>
+                          <Text size={'sm'} fw={500}>
+                            {item.label}
+                          </Text>
+                          <Text size={'xs'} c={'dimmed'}>
+                            {item.description}
+                          </Text>
+                        </div>
+                      </Group>
                     </Box>
                   ))}
                 </HoverCard.Dropdown>
               </HoverCard>
             </Group>
 
+            {/* User Account Menu */}
             <Group visibleFrom={'sm'}>
               {user ? (
-                <Menu shadow={'md'} width={200}>
+                <Menu shadow={'md'} width={220}>
                   <Menu.Target>
-                    <UnstyledButton>
+                    <UnstyledButton
+                      style={{
+                        padding: '6px 12px',
+                        borderRadius: 'var(--mantine-radius-md)',
+                        transition: 'all 200ms ease',
+                      }}
+                      styles={{
+                        root: {
+                          '&:hover': {
+                            backgroundColor: 'var(--mantine-color-dark-6)',
+                          },
+                        },
+                      }}
+                    >
                       <Group gap={'xs'}>
-                        <Avatar src={user.picture} alt={user.name} size={'sm'} radius={'xl'} />
+                        {user.picture ? (
+                          <Avatar src={user.picture} alt={user.name} size={'sm'} radius={'xl'} />
+                        ) : (
+                          <IconUser size={18} color="var(--mantine-color-red-6)" />
+                        )}
+                        <div>
+                          <Text size={'sm'} fw={500} lineClamp={1} maw={120}>
+                            {user.name}
+                          </Text>
+                        </div>
+                        <IconChevronDown size={14} color="var(--mantine-color-red-6)" />
                       </Group>
                     </UnstyledButton>
                   </Menu.Target>
                   <Menu.Dropdown>
                     <Menu.Label>
-                      <Stack gap={'xs'} align={'flex-start'}>
-                        <Avatar src={user.picture} alt={user.name} size={'md'} radius={'xl'} />
+                      <Group gap={'xs'}>
+                        {user.picture ? (
+                          <Avatar src={user.picture} alt={user.name} size={'sm'} radius={'xl'} />
+                        ) : (
+                          <IconUser size={18} color="var(--mantine-color-red-6)" />
+                        )}
                         <div>
                           <Text size={'sm'} fw={500} truncate>
                             {user.name}
@@ -171,21 +235,26 @@ export default function Header() {
                             {user.email}
                           </Text>
                         </div>
-                      </Stack>
+                      </Group>
                     </Menu.Label>
                     <Menu.Divider />
-                    <Menu.Item leftSection={<IconUser size={16} />} disabled>
+                    <Menu.Item
+                      leftSection={<IconUser size={16} color="var(--mantine-color-red-6)" />}
+                      disabled
+                    >
                       Profile
                     </Menu.Item>
                     <Menu.Item
-                      leftSection={<IconCalendar size={16} />}
+                      leftSection={<IconCalendar size={16} color="var(--mantine-color-red-6)" />}
                       component={Link}
                       href={'/my-bookings'}
                     >
                       My Bookings
                     </Menu.Item>
                     <Menu.Item
-                      leftSection={<IconHeartRateMonitor size={16} />}
+                      leftSection={
+                        <IconHeartRateMonitor size={16} color="var(--mantine-color-red-6)" />
+                      }
                       component={Link}
                       href={'/admin/health'}
                     >
@@ -193,7 +262,7 @@ export default function Header() {
                     </Menu.Item>
                     <Menu.Divider />
                     <Menu.Item
-                      leftSection={<IconLogout size={16} />}
+                      leftSection={<IconLogout size={16} color="var(--mantine-color-red-6)" />}
                       color={'red'}
                       onClick={logout}
                     >
@@ -206,6 +275,7 @@ export default function Header() {
               )}
             </Group>
 
+            {/* Mobile Menu Toggle */}
             <Burger
               opened={drawerOpened}
               onClick={toggleDrawer}
@@ -216,6 +286,9 @@ export default function Header() {
         </Container>
       </Box>
 
+      {/* ====================================================================== */}
+      {/* MOBILE DRAWER MENU */}
+      {/* ====================================================================== */}
       <Drawer
         opened={drawerOpened}
         onClose={closeDrawer}
@@ -225,6 +298,7 @@ export default function Header() {
         aria-label={'Navigation Menu'}
       >
         <ScrollArea h={'calc(100vh - 80px)'} mx={'-md'}>
+          {/* Mobile Navigation Links */}
           {mainLinks.map((link) => (
             <Box
               key={link.href}
@@ -233,13 +307,18 @@ export default function Header() {
               className={`${classes.link} ${link.disabled ? classes.linkDisabled : ''}`}
               onClick={!link.disabled ? closeDrawer : undefined}
             >
-              {link.label}
+              <Group gap={'xs'} align={'center'}>
+                {link.icon}
+                <span>{link.label}</span>
+              </Group>
             </Box>
           ))}
 
+          {/* Mobile Bookings Dropdown */}
           <UnstyledButton className={classes.mobileDropdownButton} onClick={toggleLinks}>
             <Center inline>
-              <Box component={'span'} mr={5}>
+              <IconCalendar size={16} color="var(--mantine-color-red-6)" />
+              <Box component={'span'} ml={5} mr={5}>
                 Bookings
               </Box>
               {linksOpened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
@@ -254,18 +333,24 @@ export default function Header() {
                 className={`${classes.subLink} ${item.disabled ? classes.subLinkDisabled : ''}`}
                 onClick={!item.disabled ? closeDrawer : undefined}
               >
-                <Text size={'sm'} fw={500}>
-                  {item.label}
-                </Text>
-                <Text size={'xs'} c={'dimmed'}>
-                  {item.description}
-                </Text>
+                <Group gap={'xs'} align={'start'}>
+                  {item.icon}
+                  <div>
+                    <Text size={'sm'} fw={500}>
+                      {item.label}
+                    </Text>
+                    <Text size={'xs'} c={'dimmed'}>
+                      {item.description}
+                    </Text>
+                  </div>
+                </Group>
               </Box>
             ))}
           </Collapse>
 
           <Divider my={'md'} />
 
+          {/* Mobile User Info */}
           {user && (
             <Box px={'md'} pb={'md'}>
               <Group gap={'xs'}>
@@ -282,6 +367,7 @@ export default function Header() {
             </Box>
           )}
 
+          {/* Mobile Action Buttons */}
           <Stack gap={'md'} pb={'xl'} px={'md'}>
             {user && (
               <>
@@ -291,7 +377,7 @@ export default function Header() {
                   onClick={closeDrawer}
                   variant={'default'}
                   fullWidth
-                  leftSection={<IconCalendar size={16} />}
+                  leftSection={<IconCalendar size={16} color="var(--mantine-color-red-6)" />}
                 >
                   My Bookings
                 </Button>
@@ -302,7 +388,9 @@ export default function Header() {
                   onClick={closeDrawer}
                   variant={'default'}
                   fullWidth
-                  leftSection={<IconHeartRateMonitor size={16} />}
+                  leftSection={
+                    <IconHeartRateMonitor size={16} color="var(--mantine-color-red-6)" />
+                  }
                 >
                   Health Checks
                 </Button>
@@ -313,7 +401,7 @@ export default function Header() {
               <Button
                 color={'red'}
                 onClick={logout}
-                leftSection={<IconLogout size={16} />}
+                leftSection={<IconLogout size={16} color="var(--mantine-color-red-6)" />}
                 fullWidth
               >
                 Logout
