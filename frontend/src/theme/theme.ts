@@ -31,7 +31,7 @@ export const theme = createTheme({
       'rgb(80, 80, 80)', // 3
       'rgb(60, 60, 60)', // 4
       'rgb(40, 40, 40)', // 5
-      'rgb(18, 18, 18)', // 6
+      'rgb(16, 16, 16)', // 6
       BRAND_BLACK, // 7 - Base brand black
       'rgb(5, 5, 5)', // 8
       'rgb(0, 0, 0)', // 9
