@@ -1,54 +1,93 @@
 'use client';
 
-import { Title, SimpleGrid, Stack, Loader, Box, Text, BackgroundImage } from '@mantine/core';
+import { useState } from 'react';
+import { Stack, Loader, Text, SimpleGrid, Paper } from '@mantine/core';
+import { IconInfoCircle, IconBook } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
-import RestaurantCard from '@/components/RestaurantCard/RestaurantCard';
 import { apiClient } from '@/lib/api/client';
 import { Restaurant } from '@/types/restaurant';
-import { getImageUrl } from '@/lib/utils/imageHelpers';
+import { PageHeading } from '@/components/PageHeading/PageHeading';
+import { InfoCard } from '@/components/InfoCard/InfoCard';
+import BookingModal from '@/components/BookingModal/BookingModal';
 
 export default function DiningPage() {
+  // State
+  const [selectedRestaurant, setSelectedRestaurant] = useState<Restaurant | null>(null);
+  const [bookingModalOpened, setBookingModalOpened] = useState(false);
+
+  // Queries
   const { data: restaurants, isLoading } = useQuery<Restaurant[]>({
     queryKey: ['restaurants'],
     queryFn: () => apiClient('/api/restaurants'),
   });
 
+  // Handlers
+  const handleBookTable = (restaurant: Restaurant) => {
+    setSelectedRestaurant(restaurant);
+    setBookingModalOpened(true);
+  };
+
   return (
-    <>
-      {/* Hero Section */}
-      <BackgroundImage src={getImageUrl('restaurant-hero.jpeg')}>
-        <Box
-          p={'200px var(--mantine-spacing-md)'}
-          ta={'center'}
-          display={'flex'}
-          style={{
-            backgroundColor: 'rgba(0, 0, 0, 0.3)',
-            flexDirection: 'column',
-            alignItems: 'center',
-          }}
-        >
-          <Title order={1} size={'3rem'} c={'white'} mb={'1rem'}>
-            Dining & Drinking
-          </Title>
-          <Text size={'xl'} c={'white'} maw={'30rem'}>
-            Discover our exceptional restaurants and reserve your table for an unforgettable
-            culinary experience
-          </Text>
-        </Box>
-      </BackgroundImage>
+    <Stack gap={'xl'}>
+      <PageHeading
+        order={1}
+        title={'Fine Dining Experiences'}
+        description={`Discover our collection of world-class restaurants. 
+        From intimate dining to grand celebrations, each venue offers 
+        a unique culinary journey crafted by award-winning chefs.`}
+      />
 
-      {/* Restaurant List */}
-      <Stack mt={'xl'}>
-        {isLoading && <Loader color={'var(--mantine-color-yellow-2)'} size={'lg'} m={'0 auto'} />}
-
-        {restaurants && restaurants.length > 0 && (
-          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing={'xl'}>
+      {/* ====================================================================== */}
+      {/* RESTAURANTS */}
+      {/* ====================================================================== */}
+      <Stack>
+        <PageHeading order={2} title={'Our Restaurants'} />
+        {isLoading ? (
+          <Loader size={'sm'} color={'dark.0'} />
+        ) : restaurants && restaurants.length > 0 ? (
+          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing={'xl'}>
             {restaurants.map((restaurant) => (
-              <RestaurantCard key={restaurant.id} restaurant={restaurant} />
+              <InfoCard
+                key={restaurant.id}
+                title={restaurant.name}
+                enableHover={false}
+                imageUrl={restaurant.image_url}
+                imageAlt={restaurant.name}
+                details={[
+                  {
+                    icon: <IconInfoCircle size={16} color="var(--mantine-color-red-6)" />,
+                    label: 'Description for the restaurant here coming soon...',
+                  },
+                ]}
+                button={{
+                  label: 'Book Table',
+                  icon: <IconBook size={18} />,
+                  onClick: () => handleBookTable(restaurant),
+                  color: 'red',
+                  variant: 'filled',
+                }}
+              />
             ))}
           </SimpleGrid>
+        ) : (
+          <Paper p={'xl'} withBorder>
+            <Text ta={'center'} c={'dimmed'}>
+              No restaurants available
+            </Text>
+          </Paper>
         )}
       </Stack>
-    </>
+
+      {/* Booking Modal */}
+      {selectedRestaurant && (
+        <BookingModal
+          restaurantId={selectedRestaurant.id}
+          opened={bookingModalOpened}
+          onClose={() => setBookingModalOpened(false)}
+          restaurantName={selectedRestaurant.name}
+          restaurantImage={selectedRestaurant.image_url || undefined}
+        />
+      )}
+    </Stack>
   );
 }

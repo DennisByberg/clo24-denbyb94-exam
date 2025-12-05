@@ -23,7 +23,7 @@ export default function RestaurantCard({ restaurant }: RestaurantCardProps) {
       <Card padding={40} bg={'var(--mantine-color-dark-8)'}>
         {/* Restaurant Image */}
         <Box pos={'relative'}>
-          <Image src={restaurant.image_url || undefined} alt={restaurant.name} h={300} />
+          <Image src={restaurant.image_url || undefined} alt={restaurant.name} h={200} />
 
           {/* Restaurant Name */}
           <Box>

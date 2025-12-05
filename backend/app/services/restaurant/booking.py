@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import datetime
 from typing import Literal
 
 from fastapi import HTTPException
@@ -27,11 +27,12 @@ class BookingService:
         Returns:
             List of BookingResponse objects with nested restaurant, table, and slot information
         """
-        today = date.today()
+        today = datetime.now()
 
+        # Build base query with necessary joins for filtering
         query = db.query(Booking).filter(Booking.user_id == user_id)
 
-        # Apply filter if provided
+        # Apply filter if provided - join with BookingSlot
         if booking_filter == "upcoming":
             query = query.join(BookingSlot).filter(BookingSlot.arrival_date >= today)
         elif booking_filter == "past":
@@ -42,6 +43,7 @@ class BookingService:
         # Convert each booking to BookingResponse
         result = []
         for booking in bookings:
+            # Fetch related data (N+1 query - will be fixed in issue #148)
             booking_slot = (
                 db.query(BookingSlot)
                 .filter(BookingSlot.id == booking.booking_slot_id)

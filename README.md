@@ -1,6 +1,6 @@
 # CLO24 Exam Project - Cloud Development
 
-![ACE Group Logo](./images/ace-group-logo.png)
+![ACE Group Logo](./images/ace-group-logo-header.png)
 
 This repository contains the exam project for the CLO24 Cloud Development course, where students independently deepen and broaden their technical competencies by learning new technologies not previously covered in the program.
 

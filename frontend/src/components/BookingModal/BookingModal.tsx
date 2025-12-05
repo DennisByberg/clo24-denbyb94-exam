@@ -78,7 +78,11 @@ export default function BookingModal({
     onSuccess: (data) => {
       setBookingResult(data);
       setErrorMessage(null);
+
+      // Invalidate related queries to refresh data
       queryClient.invalidateQueries({ queryKey: ['available-slots'] });
+      queryClient.invalidateQueries({ queryKey: ['bookings'] });
+
       setStep(3);
 
       // Trigger confetti celebration
