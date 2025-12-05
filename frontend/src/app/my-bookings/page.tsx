@@ -1,18 +1,16 @@
 'use client';
 
-import { Title, Stack, Paper, Group, Badge, Loader, Text, SimpleGrid } from '@mantine/core';
-import {
-  IconCalendar,
-  IconUsers,
-  IconClock,
-  IconCalendarEvent,
-  IconHistory,
-} from '@tabler/icons-react';
+import { Stack, Loader, Text, SimpleGrid, Paper } from '@mantine/core';
+import { IconCalendar, IconUsers, IconClock } from '@tabler/icons-react';
 import { useQuery } from '@tanstack/react-query';
 import { apiClient } from '@/lib/api/client';
 import { BookingResponse } from '@/types/booking';
+import { PageHeading } from '@/components/PageHeading/PageHeading';
+import { InfoCard } from '@/components/InfoCard/InfoCard';
+import { formatDate, formatTime } from '@/lib/utils/dateFormatter';
 
 export default function MyBookingsPage() {
+  // Queries
   const { data: upcomingBookings, isLoading: upcomingLoading } = useQuery<BookingResponse[]>({
     queryKey: ['bookings', 'upcoming'],
     queryFn: async () => {
@@ -29,63 +27,43 @@ export default function MyBookingsPage() {
     },
   });
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      weekday: 'long',
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    });
-  };
-
-  const formatTime = (dateString: string) => {
-    return new Date(dateString).toLocaleTimeString('en-US', {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  };
-
   return (
     <Stack gap={'xl'}>
-      {/* Upcoming Bookings */}
+      <PageHeading
+        order={1}
+        title={'Your Royal Reservations'}
+        description={`View and manage all your bookings across our exclusive venues. 
+        Track upcoming reservations and review your dining history.`}
+      />
+      {/* ====================================================================== */}
+      {/* UPCOMING BOOKINGS */}
+      {/* ====================================================================== */}
       <Stack>
-        <Group gap={'xs'}>
-          <IconCalendarEvent size={24} />
-          <Title order={2} size={'h3'}>
-            Upcoming Bookings
-          </Title>
-        </Group>
+        <PageHeading order={2} title={'Upcoming Bookings'} />
         {upcomingLoading ? (
-          <Loader size={'sm'} color={'yellow.2'} />
+          <Loader size={'sm'} color={'dark.0'} />
         ) : upcomingBookings && upcomingBookings.length > 0 ? (
-          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing={'xl'}>
+          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing={'xl'}>
             {upcomingBookings.map((booking) => (
-              <Paper key={booking.id} p={'md'} withBorder>
-                <Group gap={'xs'} mb={'xs'}>
-                  <Title order={3} size={'h4'}>
-                    {booking.restaurant_name}
-                  </Title>
-                  <Badge color={'green'} variant={'light'}>
-                    Upcoming
-                  </Badge>
-                </Group>
-                <Stack gap={'xs'}>
-                  <Group gap={'xs'}>
-                    <IconCalendar size={16} />
-                    <Text size={'sm'}>{formatDate(booking.arrival_date)}</Text>
-                  </Group>
-                  <Group gap={'xs'}>
-                    <IconClock size={16} />
-                    <Text size={'sm'}>
-                      {formatTime(booking.arrival_date)} - {formatTime(booking.departure_date)}
-                    </Text>
-                  </Group>
-                  <Group gap={'xs'}>
-                    <IconUsers size={16} />
-                    <Text size={'sm'}>{booking.guest_count} guests</Text>
-                  </Group>
-                </Stack>
-              </Paper>
+              <InfoCard
+                key={booking.id}
+                title={booking.restaurant_name}
+                badge={{ label: 'Upcoming', color: 'green' }}
+                details={[
+                  {
+                    icon: <IconCalendar size={16} color="var(--mantine-color-red-6)" />,
+                    label: formatDate(booking.arrival_date),
+                  },
+                  {
+                    icon: <IconClock size={16} color="var(--mantine-color-red-6)" />,
+                    label: `${formatTime(booking.arrival_date)} - ${formatTime(booking.departure_date)}`,
+                  },
+                  {
+                    icon: <IconUsers size={16} color="var(--mantine-color-red-6)" />,
+                    label: `${booking.guest_count} guests`,
+                  },
+                ]}
+              />
             ))}
           </SimpleGrid>
         ) : (
@@ -97,45 +75,36 @@ export default function MyBookingsPage() {
         )}
       </Stack>
 
-      {/* Past Bookings */}
+      {/* ====================================================================== */}
+      {/* PAST BOOKINGS */}
+      {/* ====================================================================== */}
       <Stack gap={'md'}>
-        <Group gap={'xs'}>
-          <IconHistory size={24} />
-          <Title order={2} size={'h3'}>
-            Past Bookings
-          </Title>
-        </Group>
+        <PageHeading order={2} title={'Past Bookings'} />
         {pastLoading ? (
-          <Loader size={'sm'} color="yellow.2" />
+          <Loader size={'sm'} color={'dark.0'} />
         ) : pastBookings && pastBookings.length > 0 ? (
-          <SimpleGrid cols={{ base: 1, sm: 2, md: 3 }} spacing={'xl'}>
+          <SimpleGrid cols={{ base: 1, sm: 2 }} spacing={'xl'}>
             {pastBookings.map((booking) => (
-              <Paper key={booking.id} p={'md'} withBorder opacity={0.7}>
-                <Group gap={'xs'} mb={'xs'}>
-                  <Title order={3} size={'h4'}>
-                    {booking.restaurant_name}
-                  </Title>
-                  <Badge color={'gray'} variant={'light'}>
-                    Past
-                  </Badge>
-                </Group>
-                <Stack gap={'xs'}>
-                  <Group gap={'xs'}>
-                    <IconCalendar size={16} />
-                    <Text size={'sm'}>{formatDate(booking.arrival_date)}</Text>
-                  </Group>
-                  <Group gap={'xs'}>
-                    <IconClock size={16} />
-                    <Text size={'sm'}>
-                      {formatTime(booking.arrival_date)} - {formatTime(booking.departure_date)}
-                    </Text>
-                  </Group>
-                  <Group gap={'xs'}>
-                    <IconUsers size={16} />
-                    <Text size={'sm'}>{booking.guest_count} guests</Text>
-                  </Group>
-                </Stack>
-              </Paper>
+              <InfoCard
+                key={booking.id}
+                title={booking.restaurant_name}
+                badge={{ label: 'Past', color: 'gray' }}
+                details={[
+                  {
+                    icon: <IconCalendar size={16} color="var(--mantine-color-red-6)" />,
+                    label: formatDate(booking.arrival_date),
+                  },
+                  {
+                    icon: <IconClock size={16} color="var(--mantine-color-red-6)" />,
+                    label: `${formatTime(booking.arrival_date)} - ${formatTime(booking.departure_date)}`,
+                  },
+                  {
+                    icon: <IconUsers size={16} color="var(--mantine-color-red-6)" />,
+                    label: `${booking.guest_count} guests`,
+                  },
+                ]}
+                opacity={0.7}
+              />
             ))}
           </SimpleGrid>
         ) : (
