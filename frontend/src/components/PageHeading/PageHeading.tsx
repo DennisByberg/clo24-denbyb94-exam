@@ -11,7 +11,7 @@ export function PageHeading({ title, description, order = 1, titleProps }: PageH
   const hashtags = '#'.repeat(order);
 
   return (
-    <Stack>
+    <Stack gap={'xs'}>
       <Group gap={2}>
         <Flex display={'flex'} align={'start'}>
           <Title fw={700} fs={'italic'} order={order} {...titleProps}>
