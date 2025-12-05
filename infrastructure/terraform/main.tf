@@ -97,7 +97,8 @@ resource "azurerm_linux_web_app" "backend" {
     application_stack {
       python_version = "3.13"
     }
-    always_on = true
+    always_on        = true
+    app_command_line = "python -m uvicorn app.main:app --host 0.0.0.0 --port 8000"
   }
 
   app_settings = {
@@ -107,7 +108,6 @@ resource "azurerm_linux_web_app" "backend" {
     "MOCK_AUTH"            = "false"
     "ALLOWED_ORIGINS"      = "https://${azurerm_static_web_app.frontend.default_host_name}"
     "DATABASE_URL"         = "postgresql://${var.postgresql_admin_username}:${var.postgresql_admin_password}@${azurerm_postgresql_flexible_server.main.fqdn}:5432/${var.postgresql_database_name}?sslmode=require"
-    "STARTUP_COMMAND"      = "uv run uvicorn app.main:app --host 0.0.0.0 --port 8000"
   }
 
   identity {
@@ -154,6 +154,10 @@ resource "azurerm_postgresql_flexible_server" "main" {
 
   backup_retention_days        = 7
   geo_redundant_backup_enabled = false # true for production
+
+  lifecycle {
+    ignore_changes = [zone]
+  }
 
   tags = {
     managed-by  = var.managed_by_tag
