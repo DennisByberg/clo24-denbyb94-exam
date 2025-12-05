@@ -55,7 +55,7 @@ jobs:
         run: uv sync --frozen
 
       - name: Export requirements.txt for Azure
-        run: uv pip compile pyproject.toml -o requirements.txt
+        run: uv export --no-hashes --format requirements-txt -o requirements.txt
 
       # NOTE: Running migrations before deployment has risks:
       # - If deployment fails after migrations, database is updated but code is not
