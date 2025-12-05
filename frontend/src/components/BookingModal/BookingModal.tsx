@@ -166,7 +166,7 @@ export default function BookingModal({
   const renderSectionHeader = (title: string, icon: React.ReactNode) => (
     <Group gap={'xs'} bg={'dark.8'} p={'xs'}>
       {icon}
-      <Text fw={500} size={'sm'} c={'yellow.2'}>
+      <Text fw={500} size={'sm'} c={'dark-0'}>
         {title}
       </Text>
     </Group>
@@ -180,7 +180,7 @@ export default function BookingModal({
         <Stack>
           {renderSectionHeader(
             'Number of Guests',
-            <IconUsers size={18} color="var(--mantine-color-yellow-2)" />
+            <IconUsers size={18} color="var(--mantine-color-red-6)" />
           )}
           <Group gap={'xs'}>
             {GUEST_OPTIONS.map((num) => (
@@ -200,7 +200,7 @@ export default function BookingModal({
         <Stack>
           {renderSectionHeader(
             'Select Date',
-            <IconCalendar size={18} color="var(--mantine-color-yellow-2)" />
+            <IconCalendar size={18} color="var(--mantine-color-red-6)" />
           )}
           <Group justify={'center'}>
             <DatePicker
@@ -209,7 +209,6 @@ export default function BookingModal({
               onChange={handleDateChange}
               minDate={today}
               maxDate={maxDate}
-              c={'yellow.2'}
             />
           </Group>
         </Stack>
@@ -218,9 +217,9 @@ export default function BookingModal({
         <Stack>
           {renderSectionHeader(
             'Select Time',
-            <IconClock size={18} color="var(--mantine-color-yellow-2)" />
+            <IconClock size={18} color="var(--mantine-color-red-6)" />
           )}
-          {isLoading && <Loader />}
+          {isLoading && <Loader color="var(--mantine-color-dark-0)" />}
           {!numberOfGuests || !selectedDate ? (
             <Text c={'dimmed'}>Please select number of guests and date first</Text>
           ) : !isLoading && availableSlots && availableSlots.length > 0 ? (
@@ -266,7 +265,7 @@ export default function BookingModal({
         <Stack>
           {renderSectionHeader(
             'Booking Summary',
-            <IconFileText size={18} color="var(--mantine-color-yellow-2)" />
+            <IconFileText size={18} color="var(--mantine-color-red-6)" />
           )}
           <Stack p={'sm'}>
             <Group justify={'space-between'}>

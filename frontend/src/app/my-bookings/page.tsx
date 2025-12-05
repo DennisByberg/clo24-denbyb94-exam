@@ -35,9 +35,7 @@ export default function MyBookingsPage() {
         description={`View and manage all your bookings across our exclusive venues. 
         Track upcoming reservations and review your dining history.`}
       />
-      {/* ====================================================================== */}
       {/* UPCOMING BOOKINGS */}
-      {/* ====================================================================== */}
       <Stack>
         <PageHeading order={2} title={'Upcoming Bookings'} />
         {upcomingLoading ? (
@@ -75,9 +73,7 @@ export default function MyBookingsPage() {
         )}
       </Stack>
 
-      {/* ====================================================================== */}
       {/* PAST BOOKINGS */}
-      {/* ====================================================================== */}
       <Stack gap={'md'}>
         <PageHeading order={2} title={'Past Bookings'} />
         {pastLoading ? (

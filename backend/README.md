@@ -102,6 +102,7 @@ FastAPI automatically generates interactive API documentation at [http://localho
 
 **Bookings:**
 
+- `GET /api/bookings/me` - Get current user's bookings (with optional filter: `upcoming` or `past`)
 - `POST /api/bookings` - Create new booking
 
 **Health:**
