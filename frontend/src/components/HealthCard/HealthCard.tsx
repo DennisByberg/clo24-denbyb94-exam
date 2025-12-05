@@ -10,15 +10,6 @@ interface HealthCardProps {
   icon?: React.ReactNode;
 }
 
-/**
- * Card component displaying health status with visual indicators
- * @param title - Card title
- * @param data - Raw data from API
- * @param isLoading - Loading state
- * @param error - Error object if request failed
- * @param icon - Optional custom icon
- * @returns Paper component with health information
- */
 export default function HealthCard({ title, data, isLoading, error, icon }: HealthCardProps) {
   const status = data?.toString() || 'unknown';
   const isHealthy = isHealthyStatus(status);

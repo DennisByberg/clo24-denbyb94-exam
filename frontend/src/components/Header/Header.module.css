@@ -1,68 +1,95 @@
-.logo {
-  font-size: 1.5rem;
-  font-weight: 600;
-  text-decoration: none;
-  color: var(--mantine-color-yellow-2);
-}
-
-.link {
+/* Shared link styles with animated border */
+.link,
+.dropdownButton {
+  color: var(--mantine-color-text);
+  padding-inline: var(--mantine-spacing-md);
   display: flex;
   align-items: center;
   height: 100%;
-  padding-left: var(--mantine-spacing-md);
-  padding-right: var(--mantine-spacing-md);
   text-decoration: none;
-  color: var(--mantine-color-white);
   font-weight: 500;
   font-size: var(--mantine-font-size-sm);
+  position: relative;
 }
 
-.link:hover {
-  background-color: var(--mantine-color-dark-6);
+/* Animated bottom border on hover/active */
+.link::after,
+.dropdownButton::after {
+  content: '';
+  position: absolute;
+  bottom: 12px;
+  left: 0;
+  width: 0;
+  height: 2px;
+  background-color: var(--mantine-color-red-6);
+  transition: width 200ms ease;
 }
+
+/* Hover and active states */
+.link:hover,
+.dropdownButton:hover,
+.link[data-active],
+.dropdownButton[data-active] {
+  color: var(--mantine-color-dark-1);
+}
+
+/* Expand border on hover */
+.link:hover::after,
+.dropdownButton:hover::after {
+  width: 100%;
+}
+
+/* ============================================================================
+   DROPDOWN SUB-LINKS (Bookings Menu Items)
+   ============================================================================ */
 
 .subLink {
   padding: var(--mantine-spacing-xs) var(--mantine-spacing-md);
   border-radius: var(--mantine-radius-md);
   text-decoration: none;
   display: block;
-  color: var(--mantine-color-yellow-2);
+  color: var(--mantine-color-text);
 }
 
 .subLink:hover {
-  background-color: var(--mantine-color-dark-7);
+  color: var(--mantine-color-dark-1);
 }
 
-.dropdownButton {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  padding-left: var(--mantine-spacing-md);
-  padding-right: var(--mantine-spacing-md);
-  color: var(--mantine-color-white);
-  font-weight: 500;
-  font-size: var(--mantine-font-size-sm);
+/* Disabled sub-link state */
+.subLinkDisabled {
+  opacity: 0.5;
+  pointer-events: none;
 }
 
-.dropdownButton:hover {
-  background-color: var(--mantine-color-dark-6);
-}
+/* ============================================================================
+   MOBILE MENU STYLES
+   ============================================================================ */
 
+/* Mobile dropdown button (Bookings toggle) */
 .mobileDropdownButton {
   display: flex;
   align-items: center;
   height: 42px;
   width: 100%;
-  padding-left: var(--mantine-spacing-md);
-  padding-right: var(--mantine-spacing-md);
+  padding-inline: var(--mantine-spacing-md);
   color: var(--mantine-color-white);
   font-weight: 500;
   font-size: var(--mantine-font-size-sm);
 }
 
+/* ============================================================================
+   RESPONSIVE STYLES
+   ============================================================================ */
+
+/* Mobile responsive adjustments */
 @media (max-width: 768px) {
   .link {
     height: 42px;
     width: 100%;
+  }
+
+  /* Hide animated border on mobile */
+  .link::after {
+    display: none;
   }
 }

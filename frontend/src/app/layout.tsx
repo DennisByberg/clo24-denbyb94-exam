@@ -7,6 +7,7 @@ import Header from '@/components/Header/Header';
 
 const firaSans = Fira_Sans({
   weight: ['300', '400', '500', '600', '700'],
+  style: ['normal', 'italic'],
   subsets: ['latin'],
   variable: '--font-fira-sans',
 });
@@ -34,7 +35,7 @@ export default function RootLayout({
       <body className={firaSans.className}>
         <AppProviders>
           <Header />
-          <Container size={'lg'} py={'xl'}>
+          <Container size={'md'} py={'xl'}>
             {children}
           </Container>
         </AppProviders>

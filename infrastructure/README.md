@@ -1,6 +1,6 @@
 # Infrastructure Documentation
 
-![](../images/ace-group-logo.png)
+![](../images/ace-group-logo-header.png)
 
 Developer guide for managing infrastructure resources. Contains Terraform configurations for Azure resources and utility scripts.
 

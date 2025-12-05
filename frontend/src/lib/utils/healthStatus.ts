@@ -13,3 +13,16 @@ export function isHealthyStatus(status: string): boolean {
     /^(mock|azure) mode$/.test(status) // Operation mode
   );
 }
+
+/**
+ * Returns a badge configuration based on health status
+ * @param status - Health status string
+ * @returns Badge object with label and color
+ */
+export function getHealthStatusBadge(status: string): { label: string; color: string } {
+  const isHealthy = isHealthyStatus(status);
+  return {
+    label: isHealthy ? 'Healthy' : 'Unhealthy',
+    color: isHealthy ? 'green' : 'red',
+  };
+}
