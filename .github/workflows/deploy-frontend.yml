@@ -73,8 +73,15 @@ jobs:
           NEXT_PUBLIC_AZURE_BLOB_URL: ${{ secrets.NEXT_PUBLIC_AZURE_BLOB_URL }}
         run: bun run build
 
+      - name: Prepare standalone deployment
+        working-directory: frontend
+        run: |
+          cp -r .next/standalone ./deploy
+          cp -r .next/static ./deploy/.next/static
+          cp -r public ./deploy/public
+
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
           app-name: app-ace-group-frontend
-          package: frontend
+          package: frontend/deploy
