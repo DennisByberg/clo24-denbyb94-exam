@@ -1,3 +1,4 @@
+from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -23,6 +24,19 @@ class Settings(BaseSettings):
 
     # API
     api_prefix: str = "/api"
+
+    @field_validator("allowed_origins", mode="before")
+    @classmethod
+    def parse_allowed_origins(cls, v):
+        """Parse allowed_origins from string or list.
+
+        Azure App Settings pass as comma-separated string,
+        but we want a list for CORS middleware.
+        """
+        if isinstance(v, str):
+            # Split by comma and strip whitespace
+            return [origin.strip() for origin in v.split(",")]
+        return v
 
     model_config = SettingsConfigDict(
         env_file=".env",
