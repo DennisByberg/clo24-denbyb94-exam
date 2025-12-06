@@ -1,6 +1,7 @@
 from typing import Annotated
 
-from fastapi import Depends, Header, HTTPException, status
+from fastapi import Cookie, Depends, HTTPException, status
+from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
 from app.config import settings
@@ -11,15 +12,16 @@ from app.schemas.user import UserResponse
 
 async def get_current_user(
     db: Annotated[Session, Depends(get_db)],
-    x_ms_client_principal_id: str | None = Header(None),
-    x_ms_client_principal_name: str | None = Header(None),
-    x_ms_client_principal_email: str | None = Header(None),
+    next_auth_session_token: str | None = Cookie(None, alias="next-auth.session-token"),
+    __Secure_next_auth_session_token: str | None = Cookie(
+        None, alias="__Secure-next-auth.session-token"
+    ),
 ) -> UserResponse:
     """
-    Authenticate and retrieve the current user.
+    Authenticate and retrieve the current user from NextAuth.js session.
     """
 
-    # Development mode: return mock user for testing without Azure Easy Auth
+    # Development mode: return mock user for testing without NextAuth
     if settings.mock_auth:
         # Check if mock user exists in DB, create if not
         mock_user_id = "mock-user-123"
@@ -38,25 +40,47 @@ async def get_current_user(
 
         return UserResponse.model_validate(user)
 
-    # Production mode: validate Azure Easy Auth headers
-    if not x_ms_client_principal_id:
+    # Production mode: validate NextAuth.js session token
+    session_token = __Secure_next_auth_session_token or next_auth_session_token
+
+    if not session_token:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Not authenticated - Azure Easy Auth headers missing",
+            detail="Not authenticated - NextAuth session token missing",
         )
 
-    # Query database for existing user by Azure AD ID
-    user = db.query(User).filter(User.id == x_ms_client_principal_id).first()
+    # Decode and verify NextAuth JWT session token
+    try:
+        payload = jwt.decode(
+            session_token,
+            settings.nextauth_secret,
+            algorithms=["HS256"],
+        )
+        user_id: str | None = payload.get("sub")
+        user_email: str | None = payload.get("email")
+        user_name: str | None = payload.get("name")
+
+        if not user_id:
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid session token - missing user ID",
+            )
+    except JWTError:
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid or expired session token",
+        )
+
+    # Query database for existing user
+    user = db.query(User).filter(User.id == user_id).first()
 
     # First-time login: create new user account
     if not user:
         try:
-            # Create new user with Azure Easy Auth data, defaulting to 'customer' role
             user = User(
-                id=x_ms_client_principal_id,
-                name=x_ms_client_principal_name or "Unknown",
-                email=x_ms_client_principal_email
-                or f"{x_ms_client_principal_id}@unknown.com",
+                id=user_id,
+                name=user_name or "Unknown",
+                email=user_email or f"{user_id}@unknown.com",
                 role="customer",
             )
             db.add(user)
@@ -70,15 +94,15 @@ async def get_current_user(
             )
         return UserResponse.model_validate(user)
 
-    # Existing user: update name/email only if changed to avoid unnecessary DB writes
+    # Existing user: update name/email only if changed
     changed = False
 
-    if x_ms_client_principal_name and str(user.name) != x_ms_client_principal_name:
-        user.name = x_ms_client_principal_name  # type: ignore
+    if user_name and str(user.name) != user_name:
+        user.name = user_name  # type: ignore
         changed = True
 
-    if x_ms_client_principal_email and str(user.email) != x_ms_client_principal_email:
-        user.email = x_ms_client_principal_email  # type: ignore
+    if user_email and str(user.email) != user_email:
+        user.email = user_email  # type: ignore
         changed = True
 
     # Persist updated user information only if something changed

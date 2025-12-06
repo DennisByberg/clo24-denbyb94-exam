@@ -23,6 +23,7 @@
     "@tanstack/react-query": "5.90.12",
     "canvas-confetti": "^1.9.4",
     "next": "16.0.7",
+    "next-auth": "^4.24.13",
     "react": "19.2.1",
     "react-dom": "19.2.1"
   },

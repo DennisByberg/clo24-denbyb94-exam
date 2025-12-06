@@ -89,19 +89,44 @@ variable "postgresql_database_name" {
   type        = string
 }
 
-variable "static_web_app_name" {
-  description = "Static Web App name"
+variable "frontend_app_service_plan_name" {
+  description = "Frontend App Service Plan name"
   type        = string
 }
 
-variable "google_oauth_client_id" {
-  description = "Google OAuth client ID for Easy Auth"
+variable "frontend_app_service_name" {
+  description = "Frontend App Service name"
   type        = string
-  sensitive   = true
 }
 
-variable "google_oauth_client_secret" {
-  description = "Google OAuth client secret for Easy Auth"
+variable "key_vault_name" {
+  description = "Azure Key Vault name"
+  type        = string
+
+  validation {
+    condition     = can(regex("^[a-zA-Z][a-zA-Z0-9-]{1,22}[a-zA-Z0-9]$", var.key_vault_name))
+    error_message = "Key Vault name must be 3-24 characters, start with a letter, contain only alphanumeric characters and hyphens, and end with alphanumeric"
+  }
+}
+
+variable "nextauth_secret" {
+  description = "NextAuth.js secret for session encryption"
   type        = string
   sensitive   = true
+
+  validation {
+    condition     = can(regex("^.{32,}$", var.nextauth_secret))
+    error_message = "NextAuth secret must be at least 32 characters"
+  }
+}
+
+variable "database_url" {
+  description = "PostgreSQL database connection string"
+  type        = string
+  sensitive   = true
+
+  validation {
+    condition     = can(regex("^postgresql://", var.database_url))
+    error_message = "Database URL must be a valid PostgreSQL connection string starting with postgresql://"
+  }
 }

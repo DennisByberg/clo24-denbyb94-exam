@@ -20,6 +20,7 @@ class Settings(BaseSettings):
 
     # Authentication
     mock_auth: bool = True
+    nextauth_secret: str = ""  # Required for NextAuth.js session validation
 
     # Security/CORS
     # Accept both string (from Azure App Settings) and list (from .env)
