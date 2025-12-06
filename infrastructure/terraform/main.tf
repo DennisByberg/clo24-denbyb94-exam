@@ -51,23 +51,15 @@ resource "azurerm_storage_container" "restaurant_images" {
 
 data "azurerm_client_config" "current" {}
 
+# Local values for constructing connection strings
+locals {
+  database_url = "postgresql://${var.postgresql_admin_username}:${var.postgresql_admin_password}@${azurerm_postgresql_flexible_server.main.fqdn}:5432/${var.postgresql_database_name}"
+}
+
 resource "azurerm_role_assignment" "blob_contributor" {
   scope                = azurerm_storage_account.images.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = data.azurerm_client_config.current.object_id
-}
-
-# Upload restaurant images to the storage container
-# Runs once when resource is created; re-upload manually if needed
-resource "null_resource" "upload_images" {
-  depends_on = [
-    azurerm_storage_container.restaurant_images,
-    azurerm_role_assignment.blob_contributor
-  ]
-
-  provisioner "local-exec" {
-    command = "bash ${path.module}/../scripts/${var.restaurant_images_upload_script}"
-  }
 }
 
 # App Service Plan for Backend
@@ -190,26 +182,8 @@ resource "azurerm_key_vault" "main" {
   }
 }
 
-# Key Vault Secret: NextAuth Secret
-resource "azurerm_key_vault_secret" "nextauth_secret" {
-  name         = "nextauth-secret"
-  value        = var.nextauth_secret
-  key_vault_id = azurerm_key_vault.main.id
-
-  depends_on = [azurerm_key_vault.main]
-}
-
-# Key Vault Secret: Database URL
-resource "azurerm_key_vault_secret" "database_url" {
-  name         = "database-url"
-  value        = var.database_url
-  key_vault_id = azurerm_key_vault.main.id
-
-  depends_on = [azurerm_key_vault.main]
-}
-
-# Key Vault Access Policy for Terraform User/Service Principal
-resource "azurerm_key_vault_access_policy" "terraform_user" {
+# Key Vault Access Policy for Terraform
+resource "azurerm_key_vault_access_policy" "terraform" {
   key_vault_id = azurerm_key_vault.main.id
   tenant_id    = data.azurerm_client_config.current.tenant_id
   object_id    = data.azurerm_client_config.current.object_id
@@ -222,36 +196,24 @@ resource "azurerm_key_vault_access_policy" "terraform_user" {
     "Purge",
     "Recover"
   ]
-
-  depends_on = [azurerm_key_vault.main]
 }
 
-# Key Vault Access Policy for Backend App Service
-resource "azurerm_key_vault_access_policy" "backend" {
+# Key Vault Secret: NextAuth Secret
+resource "azurerm_key_vault_secret" "nextauth_secret" {
+  name         = "nextauth-secret"
+  value        = var.nextauth_secret
   key_vault_id = azurerm_key_vault.main.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = azurerm_linux_web_app.backend.identity[0].principal_id
 
-  secret_permissions = [
-    "Get",
-    "List"
-  ]
-
-  depends_on = [azurerm_linux_web_app.backend]
+  depends_on = [azurerm_key_vault_access_policy.terraform]
 }
 
-# Key Vault Access Policy for Frontend App Service
-resource "azurerm_key_vault_access_policy" "frontend" {
+# Key Vault Secret: Database URL
+resource "azurerm_key_vault_secret" "database_url" {
+  name         = "database-url"
+  value        = local.database_url
   key_vault_id = azurerm_key_vault.main.id
-  tenant_id    = data.azurerm_client_config.current.tenant_id
-  object_id    = azurerm_linux_web_app.frontend.identity[0].principal_id
 
-  secret_permissions = [
-    "Get",
-    "List"
-  ]
-
-  depends_on = [azurerm_linux_web_app.frontend]
+  depends_on = [azurerm_key_vault_access_policy.terraform]
 }
 
 # Key Vault Access Policy for GitHub Actions Service Principal
