@@ -28,7 +28,9 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
  */
 async function fetchCurrentUser(): Promise<User | null> {
   try {
-    const response = await fetch('/api/auth/me', {
+    const backendUrl =
+      process.env.NEXT_PUBLIC_API_URL || 'https://app-ace-group-backend.azurewebsites.net';
+    const response = await fetch(`${backendUrl}/api/auth/me`, {
       credentials: 'include',
     });
 
@@ -62,11 +64,17 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
 
   const login = () => {
-    window.location.href = '/.auth/login/google';
+    const backendUrl =
+      process.env.NEXT_PUBLIC_API_URL || 'https://app-ace-group-backend.azurewebsites.net';
+    const redirectUri = encodeURIComponent(window.location.origin);
+    window.location.href = `${backendUrl}/.auth/login/google?post_login_redirect_uri=${redirectUri}`;
   };
 
   const logout = () => {
-    window.location.href = '/.auth/logout';
+    const backendUrl =
+      process.env.NEXT_PUBLIC_API_URL || 'https://app-ace-group-backend.azurewebsites.net';
+    const redirectUri = encodeURIComponent(window.location.origin);
+    window.location.href = `${backendUrl}/.auth/logout?post_logout_redirect_uri=${redirectUri}`;
   };
 
   const value: AuthContextType = {
