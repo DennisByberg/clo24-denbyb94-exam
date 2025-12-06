@@ -17,6 +17,12 @@ fi
 # Ensure UV is in PATH for this session
 export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
 
+# Remove old/incompatible virtual environment if it exists
+if [ -d ".venv" ]; then
+    echo "Removing existing virtual environment..."
+    rm -rf .venv
+fi
+
 # Sync dependencies
 echo "Installing dependencies with UV..."
 uv sync --frozen
