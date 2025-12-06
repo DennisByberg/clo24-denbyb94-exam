@@ -51,23 +51,15 @@ resource "azurerm_storage_container" "restaurant_images" {
 
 data "azurerm_client_config" "current" {}
 
+# Local values for constructing connection strings
+locals {
+  database_url = "postgresql://${var.postgresql_admin_username}:${var.postgresql_admin_password}@${azurerm_postgresql_flexible_server.main.fqdn}:5432/${var.postgresql_database_name}"
+}
+
 resource "azurerm_role_assignment" "blob_contributor" {
   scope                = azurerm_storage_account.images.id
   role_definition_name = "Storage Blob Data Contributor"
   principal_id         = data.azurerm_client_config.current.object_id
-}
-
-# Upload restaurant images to the storage container
-# Runs once when resource is created; re-upload manually if needed
-resource "null_resource" "upload_images" {
-  depends_on = [
-    azurerm_storage_container.restaurant_images,
-    azurerm_role_assignment.blob_contributor
-  ]
-
-  provisioner "local-exec" {
-    command = "bash ${path.module}/../scripts/${var.restaurant_images_upload_script}"
-  }
 }
 
 # App Service Plan for Backend
@@ -103,32 +95,14 @@ resource "azurerm_linux_web_app" "backend" {
 
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
-    # TODO: For production, use Key Vault reference: @Microsoft.KeyVault(SecretUri=...)
-    "GOOGLE_CLIENT_SECRET" = var.google_oauth_client_secret
-    "MOCK_AUTH"            = "false"
-    "ALLOWED_ORIGINS"      = "https://${azurerm_static_web_app.frontend.default_host_name}"
-    "DATABASE_URL"         = "postgresql://${var.postgresql_admin_username}:${var.postgresql_admin_password}@${azurerm_postgresql_flexible_server.main.fqdn}:5432/${var.postgresql_database_name}?sslmode=require"
+    "MOCK_AUTH"                           = "false"
+    "NEXTAUTH_SECRET"                     = var.nextauth_secret
+    "ALLOWED_ORIGINS"                     = "https://${var.frontend_app_service_name}.azurewebsites.net"
+    "DATABASE_URL"                        = var.database_url
   }
 
   identity {
     type = "SystemAssigned"
-  }
-
-  auth_settings_v2 {
-    auth_enabled           = true
-    require_authentication = false
-    unauthenticated_action = "AllowAnonymous"
-
-    login {
-      token_store_enabled = true
-    }
-
-    google_v2 {
-      client_id                  = var.google_oauth_client_id
-      client_secret_setting_name = "GOOGLE_CLIENT_SECRET"
-      allowed_audiences          = ["https://${azurerm_static_web_app.frontend.default_host_name}"]
-      login_scopes               = ["openid", "profile", "email"]
-    }
   }
 
   tags = {
@@ -191,17 +165,112 @@ resource "azurerm_postgresql_flexible_server_firewall_rule" "app_service" {
   end_ip_address   = "0.0.0.0"
 }
 
-# Static Web App for Frontend
-# Note: Location hardcoded to "West Europe" - Free tier only available in: West US 2, Central US, East US 2, West Europe, East Asia
-# Configuration: Frontend requires environment variables set via GitHub Actions or Azure Portal:
-# - NEXT_PUBLIC_API_URL: Backend App Service URL (from output app_service_url)
-# - NEXT_PUBLIC_AZURE_BLOB_URL: Storage blob endpoint (from output storage_account_primary_blob_endpoint)
-resource "azurerm_static_web_app" "frontend" {
-  name                = var.static_web_app_name
+# Azure Key Vault for secrets management
+resource "azurerm_key_vault" "main" {
+  name                       = var.key_vault_name
+  resource_group_name        = azurerm_resource_group.main.name
+  location                   = var.location
+  tenant_id                  = data.azurerm_client_config.current.tenant_id
+  sku_name                   = "standard"
+  soft_delete_retention_days = 7
+  purge_protection_enabled   = false
+
+  tags = {
+    managed-by  = var.managed_by_tag
+    environment = var.environment
+    project     = var.project
+  }
+}
+
+# Key Vault Access Policy for Terraform
+resource "azurerm_key_vault_access_policy" "terraform" {
+  key_vault_id = azurerm_key_vault.main.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+
+  secret_permissions = [
+    "Get",
+    "List",
+    "Set",
+    "Delete",
+    "Purge",
+    "Recover"
+  ]
+}
+
+# Key Vault Secret: NextAuth Secret
+resource "azurerm_key_vault_secret" "nextauth_secret" {
+  name         = "nextauth-secret"
+  value        = var.nextauth_secret
+  key_vault_id = azurerm_key_vault.main.id
+
+  depends_on = [azurerm_key_vault_access_policy.terraform]
+}
+
+# Key Vault Secret: Database URL
+resource "azurerm_key_vault_secret" "database_url" {
+  name         = "database-url"
+  value        = local.database_url
+  key_vault_id = azurerm_key_vault.main.id
+
+  depends_on = [azurerm_key_vault_access_policy.terraform]
+}
+
+# Key Vault Access Policy for GitHub Actions Service Principal
+resource "azurerm_key_vault_access_policy" "github_actions" {
+  key_vault_id = azurerm_key_vault.main.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = var.github_actions_object_id
+
+  secret_permissions = [
+    "Get",
+    "List"
+  ]
+
+  depends_on = [azurerm_key_vault.main]
+}
+
+# App Service Plan for Frontend
+resource "azurerm_service_plan" "frontend" {
+  name                = var.frontend_app_service_plan_name
   resource_group_name = azurerm_resource_group.main.name
-  location            = "West Europe"
-  sku_tier            = "Free"
-  sku_size            = "Free"
+  location            = var.location
+  os_type             = "Linux"
+  sku_name            = "B1"
+
+  tags = {
+    managed-by  = var.managed_by_tag
+    environment = var.environment
+    project     = var.project
+  }
+}
+
+# App Service for Frontend (Node.js)
+resource "azurerm_linux_web_app" "frontend" {
+  name                = var.frontend_app_service_name
+  resource_group_name = azurerm_resource_group.main.name
+  location            = var.location
+  service_plan_id     = azurerm_service_plan.frontend.id
+  https_only          = true
+
+  site_config {
+    application_stack {
+      node_version = "20-lts"
+    }
+    always_on = true
+  }
+
+  app_settings = {
+    "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
+    "NEXTAUTH_SECRET"                     = var.nextauth_secret
+    "NEXTAUTH_URL"                        = "https://${var.frontend_app_service_name}.azurewebsites.net"
+    "NEXT_PUBLIC_API_URL"                 = "https://${var.app_service_name}.azurewebsites.net"
+    "NEXT_PUBLIC_AZURE_BLOB_URL"          = "${azurerm_storage_account.images.primary_blob_endpoint}restaurant-images/"
+  }
+
+  identity {
+    type = "SystemAssigned"
+  }
 
   tags = {
     managed-by  = var.managed_by_tag

@@ -1,29 +1,35 @@
-# Deploy Next.js frontend to Azure Static Web Apps
+# Deploy Next.js frontend to Azure App Service
 #
 # Required GitHub Secrets:
+# - AZURE_CREDENTIALS: Azure Service Principal credentials (JSON)
+#   Create once: az ad sp create-for-rbac --name "github-actions-ace-group" --role contributor --scopes /subscriptions/{subscription-id}/resourceGroups/rg-ace-group --sdk-auth
+#   Store entire JSON output as secret
+#
+# - AZURE_SUBSCRIPTION_ID: Azure subscription ID
+#   Get from: terraform output or Azure Portal
+#
 # - NEXT_PUBLIC_API_URL: Backend API URL for client-side API calls
 #   Get from: terraform output app_service_url
 #   Example: https://app-ace-group-backend.azurewebsites.net
-
+#
 # - NEXT_PUBLIC_AZURE_BLOB_URL: Azure Blob Storage URL for restaurant images
 #   Get from: terraform output restaurant_images_container_url
 #   Example: https://acegroupstorage.blob.core.windows.net/restaurant-images/
-
-# - AZURE_STATIC_WEB_APPS_API_TOKEN: Deployment token for Static Web Apps
-#   Get from: terraform output -raw static_web_app_deployment_token
+#
+# Note: NEXTAUTH_SECRET is managed via Azure Key Vault in App Service settings
 #
 # This workflow:
-# 1. Installs Bun 1.3.1
+# 1. Installs Bun 1.3.1 and Node.js 20
 # 2. Installs dependencies with bun install
 # 3. Builds Next.js app with environment variables
-# 4. Deploys to Azure Static Web Apps
+# 4. Deploys to Azure App Service using Service Principal
 
-name: Deploy Frontend to Azure Static Web Apps
+name: Deploy Frontend to Azure App Service
 
 on:
   push:
     branches:
-      - main
+      - dev
     paths:
       - 'frontend/**'
       - '.github/workflows/deploy-frontend.yml'
@@ -41,10 +47,20 @@ jobs:
           submodules: true
           lfs: false
 
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
           bun-version: 1.3.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
 
       - name: Install dependencies
         working-directory: frontend
@@ -57,12 +73,15 @@ jobs:
           NEXT_PUBLIC_AZURE_BLOB_URL: ${{ secrets.NEXT_PUBLIC_AZURE_BLOB_URL }}
         run: bun run build
 
-      - name: Deploy to Azure Static Web Apps
-        uses: Azure/static-web-apps-deploy@v1
+      - name: Prepare standalone deployment
+        working-directory: frontend
+        run: |
+          cp -r .next/standalone ./deploy
+          cp -r .next/static ./deploy/.next/static
+          cp -r public ./deploy/public
+
+      - name: Deploy to Azure App Service
+        uses: azure/webapps-deploy@v3
         with:
-          azure_static_web_apps_api_token: ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN }}
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
-          action: 'upload'
-          app_location: '/frontend/out'
-          output_location: ''
-          skip_app_build: true
+          app-name: app-ace-group-frontend
+          package: frontend/deploy

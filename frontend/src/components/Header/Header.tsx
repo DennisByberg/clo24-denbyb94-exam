@@ -36,7 +36,7 @@ import {
   IconPool,
   IconPresentation,
 } from '@tabler/icons-react';
-import { useAuth } from '@/hooks/useAuth';
+import { useSession, signOut } from 'next-auth/react';
 import classes from './Header.module.css';
 
 interface NavLink {
@@ -91,8 +91,10 @@ export default function Header() {
   // State & Hooks
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-  const { user, login, logout } = useAuth();
+  const { data: session } = useSession();
   const pathname = usePathname();
+
+  const user = session?.user;
 
   // Computed Values
   const mainLinks = navLinks.filter((link) => !link.description);
@@ -205,8 +207,13 @@ export default function Header() {
                       }}
                     >
                       <Group gap={'xs'}>
-                        {user.picture ? (
-                          <Avatar src={user.picture} alt={user.name} size={'sm'} radius={'xl'} />
+                        {user.image ? (
+                          <Avatar
+                            src={user.image}
+                            alt={user.name ?? undefined}
+                            size={'sm'}
+                            radius={'xl'}
+                          />
                         ) : (
                           <IconUser size={18} color="var(--mantine-color-red-6)" />
                         )}
@@ -222,8 +229,13 @@ export default function Header() {
                   <Menu.Dropdown>
                     <Menu.Label>
                       <Group gap={'xs'}>
-                        {user.picture ? (
-                          <Avatar src={user.picture} alt={user.name} size={'sm'} radius={'xl'} />
+                        {user.image ? (
+                          <Avatar
+                            src={user.image}
+                            alt={user.name ?? undefined}
+                            size={'sm'}
+                            radius={'xl'}
+                          />
                         ) : (
                           <IconUser size={18} color="var(--mantine-color-red-6)" />
                         )}
@@ -264,14 +276,16 @@ export default function Header() {
                     <Menu.Item
                       leftSection={<IconLogout size={16} color="var(--mantine-color-red-6)" />}
                       color={'red'}
-                      onClick={logout}
+                      onClick={() => signOut()}
                     >
                       Logout
                     </Menu.Item>
                   </Menu.Dropdown>
                 </Menu>
               ) : (
-                <Button onClick={login}>Login</Button>
+                <Button component={Link} href="/login">
+                  Login
+                </Button>
               )}
             </Group>
 
@@ -354,7 +368,12 @@ export default function Header() {
           {user && (
             <Box px={'md'} pb={'md'}>
               <Group gap={'xs'}>
-                <Avatar src={user.picture} alt={user.name} size={'sm'} radius={'xl'} />
+                <Avatar
+                  src={user.image ?? undefined}
+                  alt={user.name ?? undefined}
+                  size={'sm'}
+                  radius={'xl'}
+                />
                 <div>
                   <Text size={'sm'} fw={500}>
                     {user.name}
@@ -400,14 +419,14 @@ export default function Header() {
             {user ? (
               <Button
                 color={'red'}
-                onClick={logout}
+                onClick={() => signOut()}
                 leftSection={<IconLogout size={16} color="var(--mantine-color-red-6)" />}
                 fullWidth
               >
                 Logout
               </Button>
             ) : (
-              <Button onClick={login} fullWidth>
+              <Button component={Link} href="/login" fullWidth>
                 Login
               </Button>
             )}

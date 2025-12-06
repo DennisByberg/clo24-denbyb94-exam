@@ -1,29 +1,23 @@
 # Deploy FastAPI backend to Azure App Service
 #
 # Required GitHub Secrets:
-# - DATABASE_URL: PostgreSQL connection string for running migrations
-#   Get from: terraform output -raw postgresql_connection_string
-#   Example: postgresql://user:pass@host:5432/db?sslmode=require
-
-# - AZURE_APP_SERVICE_NAME: Name of the Azure App Service
-#   Get from: terraform output app_service_name
-#   Example: app-ace-group-backend
-
-# - AZURE_APP_SERVICE_PUBLISH_PROFILE: Publish profile XML from Azure Portal
-#   Get from: App Service > Deployment Center > Manage publish profile
+# - AZURE_CREDENTIALS: Azure Service Principal credentials (JSON)
+#   Create once: az ad sp create-for-rbac --name "github-actions-ace-group" --role contributor --scopes /subscriptions/{subscription-id}/resourceGroups/rg-ace-group --sdk-auth
+#   Store entire JSON output as secret
 #
 # This workflow:
 # 1. Installs Python 3.13 and UV package manager
 # 2. Installs dependencies with uv sync
-# 3. Runs Alembic database migrations
-# 4. Deploys to Azure App Service using publish profile
+# 3. Fetches DATABASE_URL from Azure Key Vault
+# 4. Runs Alembic database migrations
+# 5. Deploys to Azure App Service using Service Principal
 
 name: Deploy Backend to Azure App Service
 
 on:
   push:
     branches:
-      - main
+      - dev
     paths:
       - 'backend/**'
       - '.github/workflows/deploy-backend.yml'
@@ -41,6 +35,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Azure Login
+        uses: azure/login@v2
+        with:
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
@@ -57,6 +56,14 @@ jobs:
       # Azure App Service needs all files including pyproject.toml and uv.lock
       # The startup.sh script will handle installing UV and dependencies on the server
 
+      # Fetch DATABASE_URL from Azure Key Vault for migrations
+      - name: Get Database URL from Key Vault
+        id: get-db-url
+        run: |
+          DATABASE_URL=$(az keyvault secret show --name database-url --vault-name kv-ace-group --query value -o tsv)
+          echo "::add-mask::$DATABASE_URL"
+          echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_OUTPUT
+
       # NOTE: Running migrations before deployment has risks:
       # - If deployment fails after migrations, database is updated but code is not
       # - Concurrent deployments could cause race conditions
@@ -64,13 +71,13 @@ jobs:
       - name: Run Alembic migrations
         id: migrate
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ steps.get-db-url.outputs.DATABASE_URL }}
         run: uv run alembic upgrade head
 
       - name: Rollback migration on failure
         if: failure() && steps.migrate.outcome == 'failure'
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: ${{ steps.get-db-url.outputs.DATABASE_URL }}
         run: |
           echo "Migration failed, attempting rollback..."
           uv run alembic downgrade -1
@@ -79,6 +86,5 @@ jobs:
       - name: Deploy to Azure App Service
         uses: azure/webapps-deploy@v3
         with:
-          app-name: ${{ secrets.AZURE_APP_SERVICE_NAME }}
-          publish-profile: ${{ secrets.AZURE_APP_SERVICE_PUBLISH_PROFILE }}
+          app-name: app-ace-group-backend
           package: backend
