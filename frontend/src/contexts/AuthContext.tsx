@@ -66,14 +66,30 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const login = () => {
     const backendUrl =
       process.env.NEXT_PUBLIC_API_URL || 'https://app-ace-group-backend.azurewebsites.net';
-    const redirectUri = encodeURIComponent(window.location.origin);
+
+    // Lokalt: Ingen Azure Easy Auth, gör ingenting (mock user används)
+    if (backendUrl.includes('localhost')) {
+      console.log('Local dev mode - Azure Easy Auth not available, using mock user');
+      return;
+    }
+
+    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`);
     window.location.href = `${backendUrl}/.auth/login/google?post_login_redirect_uri=${redirectUri}`;
   };
 
   const logout = () => {
     const backendUrl =
       process.env.NEXT_PUBLIC_API_URL || 'https://app-ace-group-backend.azurewebsites.net';
-    const redirectUri = encodeURIComponent(window.location.origin);
+
+    // Lokalt: MOCK_AUTH är aktivt, logout är inte möjligt
+    if (backendUrl.includes('localhost')) {
+      alert(
+        'Logout is disabled in local development mode (MOCK_AUTH is enabled).\nYou are always logged in as the mock user during local development.'
+      );
+      return;
+    }
+
+    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/logout`);
     window.location.href = `${backendUrl}/.auth/logout?post_logout_redirect_uri=${redirectUri}`;
   };
 
