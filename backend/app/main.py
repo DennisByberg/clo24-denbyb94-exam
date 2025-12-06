@@ -24,3 +24,9 @@ app.include_router(health_router)
 app.include_router(auth_router, prefix=settings.api_prefix)
 app.include_router(restaurants_router, prefix=settings.api_prefix)
 app.include_router(bookings_router, prefix=settings.api_prefix)
+
+
+@app.get(f"{settings.api_prefix}/version")
+async def get_version():
+    """Get API version."""
+    return {"version": settings.app_version}

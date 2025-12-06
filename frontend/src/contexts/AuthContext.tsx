@@ -69,12 +69,12 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Lokalt: Ingen Azure Easy Auth, gör ingenting (mock user används)
     if (backendUrl.includes('localhost')) {
-      console.log('Local dev mode - Azure Easy Auth not available, using mock user');
+      alert('Login is disabled in local development mode (MOCK_AUTH=true)');
       return;
     }
 
-    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/callback`);
-    window.location.href = `${backendUrl}/.auth/login/google?post_login_redirect_uri=${redirectUri}`;
+    const redirectUri = `${window.location.origin}/auth/callback`;
+    window.location.href = `${backendUrl}/.auth/login/google?post_login_redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
   const logout = () => {
@@ -89,8 +89,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const redirectUri = encodeURIComponent(`${window.location.origin}/auth/logout`);
-    window.location.href = `${backendUrl}/.auth/logout?post_logout_redirect_uri=${redirectUri}`;
+    const redirectUri = `${window.location.origin}/auth/logout`;
+    window.location.href = `${backendUrl}/.auth/logout?post_logout_redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
   const value: AuthContextType = {

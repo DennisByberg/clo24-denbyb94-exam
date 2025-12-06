@@ -9,7 +9,7 @@ class Settings(BaseSettings):
 
     # App info
     app_name: str = "ESS Booking Platform API"
-    app_version: str = "0.1.0"
+    app_version: str = "0.2.0"
     app_description: str = "REST API for managing bookings at ESS Group's facility including restaurant, spa, and event spaces"
 
     # Database
@@ -23,7 +23,10 @@ class Settings(BaseSettings):
 
     # Security/CORS
     # Accept both string (from Azure App Settings) and list (from .env)
-    allowed_origins: Union[str, list[str]] = ["http://localhost:3000", "http://localhost:8000"]
+    allowed_origins: Union[str, list[str]] = [
+        "http://localhost:3000",
+        "http://localhost:8000",
+    ]
 
     # API
     api_prefix: str = "/api"

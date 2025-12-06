@@ -116,8 +116,8 @@ resource "azurerm_linux_web_app" "backend" {
 
   auth_settings_v2 {
     auth_enabled           = true
-    require_authentication = true
-    unauthenticated_action = "RedirectToLoginPage"
+    require_authentication = false
+    unauthenticated_action = "AllowAnonymous"
 
     login {
       token_store_enabled = true
