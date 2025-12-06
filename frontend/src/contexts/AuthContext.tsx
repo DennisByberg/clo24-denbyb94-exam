@@ -73,7 +73,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const redirectUri = `${window.location.origin}/auth/callback`;
+    // Production frontend URL (Azure Static Web Apps)
+    const frontendUrl = 'https://happy-flower-054f3af03.3.azurestaticapps.net';
+    const redirectUri = `${frontendUrl}/auth/callback`;
     window.location.href = `${backendUrl}/.auth/login/google?post_login_redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
@@ -89,7 +91,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       return;
     }
 
-    const redirectUri = `${window.location.origin}/auth/logout`;
+    // Production frontend URL (Azure Static Web Apps)
+    const frontendUrl = 'https://happy-flower-054f3af03.3.azurestaticapps.net';
+    const redirectUri = `${frontendUrl}/auth/logout`;
     window.location.href = `${backendUrl}/.auth/logout?post_logout_redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
