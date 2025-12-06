@@ -36,7 +36,7 @@ import {
   IconPool,
   IconPresentation,
 } from '@tabler/icons-react';
-import { useSession, signIn, signOut } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 import classes from './Header.module.css';
 
 interface NavLink {
@@ -207,8 +207,13 @@ export default function Header() {
                       }}
                     >
                       <Group gap={'xs'}>
-                        {user.picture ? (
-                          <Avatar src={user.picture} alt={user.name} size={'sm'} radius={'xl'} />
+                        {user.image ? (
+                          <Avatar
+                            src={user.image}
+                            alt={user.name ?? undefined}
+                            size={'sm'}
+                            radius={'xl'}
+                          />
                         ) : (
                           <IconUser size={18} color="var(--mantine-color-red-6)" />
                         )}
@@ -224,8 +229,13 @@ export default function Header() {
                   <Menu.Dropdown>
                     <Menu.Label>
                       <Group gap={'xs'}>
-                        {user.picture ? (
-                          <Avatar src={user.picture} alt={user.name} size={'sm'} radius={'xl'} />
+                        {user.image ? (
+                          <Avatar
+                            src={user.image}
+                            alt={user.name ?? undefined}
+                            size={'sm'}
+                            radius={'xl'}
+                          />
                         ) : (
                           <IconUser size={18} color="var(--mantine-color-red-6)" />
                         )}
@@ -358,7 +368,12 @@ export default function Header() {
           {user && (
             <Box px={'md'} pb={'md'}>
               <Group gap={'xs'}>
-                <Avatar src={user.picture} alt={user.name} size={'sm'} radius={'xl'} />
+                <Avatar
+                  src={user.image ?? undefined}
+                  alt={user.name ?? undefined}
+                  size={'sm'}
+                  radius={'xl'}
+                />
                 <div>
                   <Text size={'sm'} fw={500}>
                     {user.name}
