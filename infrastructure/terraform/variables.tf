@@ -130,3 +130,13 @@ variable "database_url" {
     error_message = "Database URL must be a valid PostgreSQL connection string starting with postgresql://"
   }
 }
+
+variable "github_actions_object_id" {
+  description = "Object ID of the GitHub Actions Service Principal for Key Vault access"
+  type        = string
+
+  validation {
+    condition     = can(regex("^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$", var.github_actions_object_id))
+    error_message = "GitHub Actions object ID must be a valid UUID"
+  }
+}
