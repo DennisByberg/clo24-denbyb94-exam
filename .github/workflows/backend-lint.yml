@@ -37,3 +37,9 @@ jobs:
 
       - name: Run Ruff formatting check
         run: uv run ruff format --check .
+
+      - name: Type check with mypy
+        run: uv run mypy . || true
+
+      - name: Build check (import validation)
+        run: uv run python -c "import app.main; print('✓ Backend imports successfully')"
