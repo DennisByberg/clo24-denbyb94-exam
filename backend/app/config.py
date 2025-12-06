@@ -1,3 +1,5 @@
+from typing import Union
+
 from pydantic import field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
@@ -20,7 +22,8 @@ class Settings(BaseSettings):
     mock_auth: bool = True
 
     # Security/CORS
-    allowed_origins: list[str] = ["http://localhost:3000", "http://localhost:8000"]
+    # Accept both string (from Azure App Settings) and list (from .env)
+    allowed_origins: Union[str, list[str]] = ["http://localhost:3000", "http://localhost:8000"]
 
     # API
     api_prefix: str = "/api"
