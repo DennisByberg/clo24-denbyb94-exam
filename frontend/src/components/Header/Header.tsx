@@ -273,7 +273,9 @@ export default function Header() {
                   </Menu.Dropdown>
                 </Menu>
               ) : (
-                <Button component={Link} href="/login">Login</Button>
+                <Button component={Link} href="/login">
+                  Login
+                </Button>
               )}
             </Group>
 

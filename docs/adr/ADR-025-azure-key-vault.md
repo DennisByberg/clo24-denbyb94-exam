@@ -14,11 +14,13 @@ The ACE Group booking platform requires secure storage and management of sensiti
 - API keys and other sensitive configuration
 
 Previously, secrets were stored in:
+
 1. **GitHub Secrets:** For CI/CD deployment
 2. **Azure App Service Settings:** Hardcoded in Terraform
 3. **Local `.env` files:** For development
 
 This approach has security and maintainability issues:
+
 - Secrets scattered across multiple locations
 - Difficult to rotate secrets without updating Terraform and GitHub
 - No audit logging of secret access
@@ -103,6 +105,7 @@ We will use Azure Key Vault to store all production secrets for the following re
 5. **Best practice:** Industry-standard approach for Azure workloads
 
 **Implementation approach:**
+
 - Create `azurerm_key_vault` resource in Terraform
 - Store `NEXTAUTH_SECRET` as Key Vault secret
 - Grant App Services read access via Managed Identity
@@ -110,6 +113,7 @@ We will use Azure Key Vault to store all production secrets for the following re
 - Use separate access policies for backend, frontend, and Terraform user
 
 **Secrets to migrate:**
+
 - ✅ `NEXTAUTH_SECRET` (immediate)
 - 🔄 Database password (future)
 - 🔄 OAuth client secrets (when migrating to Google OAuth)
@@ -144,6 +148,7 @@ We will use Azure Key Vault to store all production secrets for the following re
 ## Implementation Details
 
 **Terraform resources created:**
+
 ```hcl
 # Key Vault
 resource "azurerm_key_vault" "main"
@@ -157,6 +162,7 @@ resource "azurerm_key_vault_access_policy" "frontend"
 ```
 
 **App Service reference example:**
+
 ```hcl
 app_settings = {
   "NEXTAUTH_SECRET" = "@Microsoft.KeyVault(SecretUri=${azurerm_key_vault_secret.nextauth_secret.id})"
@@ -164,6 +170,7 @@ app_settings = {
 ```
 
 **Access policy permissions:**
+
 - **App Services:** `Get`, `List` (read-only)
 - **Terraform user:** `Get`, `List`, `Set`, `Delete`, `Purge`, `Recover` (full management)
 

@@ -1,32 +1,32 @@
-import NextAuth, { AuthOptions } from "next-auth";
-import CredentialsProvider from "next-auth/providers/credentials";
+import NextAuth, { AuthOptions } from 'next-auth';
+import CredentialsProvider from 'next-auth/providers/credentials';
 
 // Required for Next.js App Router with dynamic API routes
-export const dynamic = "force-dynamic";
+export const dynamic = 'force-dynamic';
 
 // Hardcoded test users for development
 const testUsers = [
   {
-    id: "1",
-    name: "Test User",
-    email: "test@example.com",
-    password: "password123",
+    id: '1',
+    name: 'Test User',
+    email: 'test@example.com',
+    password: 'password123',
   },
   {
-    id: "2",
-    name: "Admin User",
-    email: "admin@example.com",
-    password: "admin123",
+    id: '2',
+    name: 'Admin User',
+    email: 'admin@example.com',
+    password: 'admin123',
   },
 ];
 
 export const authOptions: AuthOptions = {
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: 'Credentials',
       credentials: {
-        email: { label: "Email", type: "email", placeholder: "test@example.com" },
-        password: { label: "Password", type: "password" },
+        email: { label: 'Email', type: 'email', placeholder: 'test@example.com' },
+        password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
         if (!credentials?.email || !credentials?.password) {
@@ -52,7 +52,7 @@ export const authOptions: AuthOptions = {
     }),
   ],
   pages: {
-    signIn: "/login",
+    signIn: '/login',
   },
   callbacks: {
     async session({ session, token }) {

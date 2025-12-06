@@ -3,7 +3,16 @@
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
-import { Button, Container, Paper, PasswordInput, Stack, Text, TextInput, Title } from '@mantine/core';
+import {
+  Button,
+  Container,
+  Paper,
+  PasswordInput,
+  Stack,
+  Text,
+  TextInput,
+  Title,
+} from '@mantine/core';
 
 export default function LoginPage() {
   const router = useRouter();
@@ -36,7 +45,10 @@ export default function LoginPage() {
   return (
     <Container size={420} my={40}>
       <Title ta="center" fw={700}>
-        Welcome to <Text component="span" c="red" inherit>ACE GROUP</Text>
+        Welcome to{' '}
+        <Text component="span" c="red" inherit>
+          ACE GROUP
+        </Text>
       </Title>
       <Text c="dimmed" size="sm" ta="center" mt={5}>
         Sign in to manage your bookings
@@ -71,7 +83,9 @@ export default function LoginPage() {
         </form>
 
         <Paper p="md" mt="xl" bg="dark.6" radius="md">
-          <Text size="xs" fw={600} mb="xs">Test Accounts:</Text>
+          <Text size="xs" fw={600} mb="xs">
+            Test Accounts:
+          </Text>
           <Text size="xs" c="dimmed">
             • test@example.com / password123
           </Text>

@@ -78,6 +78,7 @@ We will migrate from Azure Easy Auth to NextAuth.js v4 for the following reasons
 5. **Session control:** Backend validates JWT tokens via `python-jose`, enabling custom session data
 
 **Implementation approach:**
+
 - Frontend: NextAuth.js Route Handler at `/api/auth/[...nextauth]/route.ts`
 - Backend: JWT validation in `dependencies/auth.py` using `python-jose`
 - Development: Credentials Provider with hardcoded test users
