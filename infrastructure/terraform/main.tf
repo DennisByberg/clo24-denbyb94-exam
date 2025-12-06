@@ -183,21 +183,6 @@ resource "azurerm_key_vault" "main" {
   soft_delete_retention_days = 7
   purge_protection_enabled   = false
 
-  # Allow current user/service principal to manage secrets
-  access_policy {
-    tenant_id = data.azurerm_client_config.current.tenant_id
-    object_id = data.azurerm_client_config.current.object_id
-
-    secret_permissions = [
-      "Get",
-      "List",
-      "Set",
-      "Delete",
-      "Purge",
-      "Recover"
-    ]
-  }
-
   tags = {
     managed-by  = var.managed_by_tag
     environment = var.environment
@@ -219,6 +204,24 @@ resource "azurerm_key_vault_secret" "database_url" {
   name         = "database-url"
   value        = var.database_url
   key_vault_id = azurerm_key_vault.main.id
+
+  depends_on = [azurerm_key_vault.main]
+}
+
+# Key Vault Access Policy for Terraform User/Service Principal
+resource "azurerm_key_vault_access_policy" "terraform_user" {
+  key_vault_id = azurerm_key_vault.main.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = data.azurerm_client_config.current.object_id
+
+  secret_permissions = [
+    "Get",
+    "List",
+    "Set",
+    "Delete",
+    "Purge",
+    "Recover"
+  ]
 
   depends_on = [azurerm_key_vault.main]
 }
