@@ -8,9 +8,11 @@ class Settings(BaseSettings):
     """Application settings and configuration."""
 
     # App info
-    app_name: str = "ESS Booking Platform API"
-    app_version: str = "0.2.0"
-    app_description: str = "REST API for managing bookings at ESS Group's facility including restaurant, spa, and event spaces"
+    app_name: str = "Ace Group API"
+    app_version: str = "0.3.0"
+    app_description: str = (
+        "REST API for managing restaurant table bookings at ACE Group's dining venues"
+    )
 
     # Database
     database_url: str = "postgresql://user:password@localhost:5432/restaurant_db"
