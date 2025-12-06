@@ -10,7 +10,17 @@ echo "Starting ACE Group Backend..."
 if ! command -v uv &> /dev/null; then
     echo "Installing UV package manager..."
     curl -LsSf https://astral.sh/uv/install.sh | sh
-    export PATH="$HOME/.cargo/bin:$PATH"
+    # Add UV to PATH (installed to ~/.local/bin by default)
+    export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+fi
+
+# Ensure UV is in PATH for this session
+export PATH="$HOME/.local/bin:$HOME/.cargo/bin:$PATH"
+
+# Remove old/incompatible virtual environment if it exists
+if [ -d ".venv" ]; then
+    echo "Removing existing virtual environment..."
+    rm -rf .venv
 fi
 
 # Sync dependencies

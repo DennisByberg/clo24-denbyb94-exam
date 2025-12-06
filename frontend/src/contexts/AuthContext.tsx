@@ -28,7 +28,9 @@ export const AuthContext = createContext<AuthContextType | undefined>(undefined)
  */
 async function fetchCurrentUser(): Promise<User | null> {
   try {
-    const response = await fetch('/api/auth/me', {
+    const backendUrl =
+      process.env.NEXT_PUBLIC_API_URL || 'https://app-ace-group-backend.azurewebsites.net';
+    const response = await fetch(`${backendUrl}/api/auth/me`, {
       credentials: 'include',
     });
 
@@ -62,11 +64,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   });
 
   const login = () => {
-    window.location.href = '/.auth/login/google';
+    const backendUrl =
+      process.env.NEXT_PUBLIC_API_URL || 'https://app-ace-group-backend.azurewebsites.net';
+
+    // Lokalt: Ingen Azure Easy Auth, gör ingenting (mock user används)
+    if (backendUrl.includes('localhost')) {
+      alert('Login is disabled in local development mode (MOCK_AUTH=true)');
+      return;
+    }
+
+    // Production frontend URL (Azure Static Web Apps)
+    const frontendUrl = 'https://happy-flower-054f3af03.3.azurestaticapps.net';
+    const redirectUri = frontendUrl;
+    window.location.href = `${backendUrl}/.auth/login/google?post_login_redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
   const logout = () => {
-    window.location.href = '/.auth/logout';
+    const backendUrl =
+      process.env.NEXT_PUBLIC_API_URL || 'https://app-ace-group-backend.azurewebsites.net';
+
+    // Lokalt: MOCK_AUTH är aktivt, logout är inte möjligt
+    if (backendUrl.includes('localhost')) {
+      alert(
+        'Logout is disabled in local development mode (MOCK_AUTH is enabled).\nYou are always logged in as the mock user during local development.'
+      );
+      return;
+    }
+
+    // Production frontend URL (Azure Static Web Apps)
+    const frontendUrl = 'https://happy-flower-054f3af03.3.azurestaticapps.net';
+    const redirectUri = frontendUrl;
+    window.location.href = `${backendUrl}/.auth/logout?post_logout_redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
   const value: AuthContextType = {

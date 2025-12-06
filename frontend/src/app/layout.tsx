@@ -1,9 +1,10 @@
-import { ColorSchemeScript, Container } from '@mantine/core';
+import { ColorSchemeScript, Container, Flex } from '@mantine/core';
 import { Fira_Sans } from 'next/font/google';
 import '@mantine/core/styles.css';
 import '@mantine/dates/styles.css';
 import AppProviders from '@/providers/AppProviders';
 import Header from '@/components/Header/Header';
+import Footer from '@/components/Footer/Footer';
 
 const firaSans = Fira_Sans({
   weight: ['300', '400', '500', '600', '700'],
@@ -34,10 +35,13 @@ export default function RootLayout({
       </head>
       <body className={firaSans.className}>
         <AppProviders>
-          <Header />
-          <Container size={'md'} py={'xl'}>
-            {children}
-          </Container>
+          <Flex display={'flex'} direction={'column'} mih={'100vh'}>
+            <Header />
+            <Container size={'md'} py={'xl'}>
+              {children}
+            </Container>
+            <Footer />
+          </Flex>
         </AppProviders>
       </body>
     </html>
