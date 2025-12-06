@@ -126,7 +126,7 @@ resource "azurerm_linux_web_app" "backend" {
     google_v2 {
       client_id                  = var.google_oauth_client_id
       client_secret_setting_name = "GOOGLE_CLIENT_SECRET"
-      allowed_audiences          = []
+      allowed_audiences          = ["https://${azurerm_static_web_app.frontend.default_host_name}"]
       login_scopes               = ["openid", "profile", "email"]
     }
   }
