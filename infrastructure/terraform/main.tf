@@ -251,6 +251,20 @@ resource "azurerm_key_vault_access_policy" "frontend" {
   depends_on = [azurerm_linux_web_app.frontend]
 }
 
+# Key Vault Access Policy for GitHub Actions Service Principal
+resource "azurerm_key_vault_access_policy" "github_actions" {
+  key_vault_id = azurerm_key_vault.main.id
+  tenant_id    = data.azurerm_client_config.current.tenant_id
+  object_id    = var.github_actions_object_id
+
+  secret_permissions = [
+    "Get",
+    "List"
+  ]
+
+  depends_on = [azurerm_key_vault.main]
+}
+
 # App Service Plan for Frontend
 resource "azurerm_service_plan" "frontend" {
   name                = var.frontend_app_service_plan_name
