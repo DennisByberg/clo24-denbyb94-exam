@@ -36,7 +36,7 @@ import {
   IconPool,
   IconPresentation,
 } from '@tabler/icons-react';
-import { useAuth } from '@/hooks/useAuth';
+import { useSession, signIn, signOut } from 'next-auth/react';
 import classes from './Header.module.css';
 
 interface NavLink {
@@ -91,8 +91,10 @@ export default function Header() {
   // State & Hooks
   const [drawerOpened, { toggle: toggleDrawer, close: closeDrawer }] = useDisclosure(false);
   const [linksOpened, { toggle: toggleLinks }] = useDisclosure(false);
-  const { user, login, logout } = useAuth();
+  const { data: session } = useSession();
   const pathname = usePathname();
+
+  const user = session?.user;
 
   // Computed Values
   const mainLinks = navLinks.filter((link) => !link.description);
@@ -264,14 +266,14 @@ export default function Header() {
                     <Menu.Item
                       leftSection={<IconLogout size={16} color="var(--mantine-color-red-6)" />}
                       color={'red'}
-                      onClick={logout}
+                      onClick={() => signOut()}
                     >
                       Logout
                     </Menu.Item>
                   </Menu.Dropdown>
                 </Menu>
               ) : (
-                <Button onClick={login}>Login</Button>
+                <Button component={Link} href="/login">Login</Button>
               )}
             </Group>
 
@@ -400,14 +402,14 @@ export default function Header() {
             {user ? (
               <Button
                 color={'red'}
-                onClick={logout}
+                onClick={() => signOut()}
                 leftSection={<IconLogout size={16} color="var(--mantine-color-red-6)" />}
                 fullWidth
               >
                 Logout
               </Button>
             ) : (
-              <Button onClick={login} fullWidth>
+              <Button component={Link} href="/login" fullWidth>
                 Login
               </Button>
             )}
