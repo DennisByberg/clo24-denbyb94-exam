@@ -75,7 +75,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Production frontend URL (Azure Static Web Apps)
     const frontendUrl = 'https://happy-flower-054f3af03.3.azurestaticapps.net';
-    const redirectUri = `${frontendUrl}/auth/callback`;
+    const redirectUri = frontendUrl;
     window.location.href = `${backendUrl}/.auth/login/google?post_login_redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
@@ -93,7 +93,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
     // Production frontend URL (Azure Static Web Apps)
     const frontendUrl = 'https://happy-flower-054f3af03.3.azurestaticapps.net';
-    const redirectUri = `${frontendUrl}/auth/logout`;
+    const redirectUri = frontendUrl;
     window.location.href = `${backendUrl}/.auth/logout?post_logout_redirect_uri=${encodeURIComponent(redirectUri)}`;
   };
 
