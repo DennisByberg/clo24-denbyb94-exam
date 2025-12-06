@@ -196,6 +196,10 @@ resource "azurerm_key_vault_secret" "nextauth_secret" {
   value        = var.nextauth_secret
   key_vault_id = azurerm_key_vault.main.id
 
+  lifecycle {
+    ignore_changes = [tags]
+  }
+
   depends_on = [azurerm_key_vault.main]
 }
 
@@ -204,6 +208,10 @@ resource "azurerm_key_vault_secret" "database_url" {
   name         = "database-url"
   value        = var.database_url
   key_vault_id = azurerm_key_vault.main.id
+
+  lifecycle {
+    ignore_changes = [tags]
+  }
 
   depends_on = [azurerm_key_vault.main]
 }
