@@ -104,9 +104,9 @@ resource "azurerm_linux_web_app" "backend" {
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
     "MOCK_AUTH"                           = "false"
-    "NEXTAUTH_SECRET"                     = "@Microsoft.KeyVault(SecretUri=https://${azurerm_key_vault.main.name}.vault.azure.net/secrets/${azurerm_key_vault_secret.nextauth_secret.name})"
+    "NEXTAUTH_SECRET"                     = var.nextauth_secret
     "ALLOWED_ORIGINS"                     = "https://${var.frontend_app_service_name}.azurewebsites.net"
-    "DATABASE_URL"                        = "@Microsoft.KeyVault(SecretUri=https://${azurerm_key_vault.main.name}.vault.azure.net/secrets/${azurerm_key_vault_secret.database_url.name})"
+    "DATABASE_URL"                        = var.database_url
   }
 
   identity {
@@ -300,7 +300,7 @@ resource "azurerm_linux_web_app" "frontend" {
 
   app_settings = {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
-    "NEXTAUTH_SECRET"                     = "@Microsoft.KeyVault(SecretUri=https://${azurerm_key_vault.main.name}.vault.azure.net/secrets/${azurerm_key_vault_secret.nextauth_secret.name})"
+    "NEXTAUTH_SECRET"                     = var.nextauth_secret
     "NEXTAUTH_URL"                        = "https://${var.frontend_app_service_name}.azurewebsites.net"
     "NEXT_PUBLIC_API_URL"                 = "https://${var.app_service_name}.azurewebsites.net"
     "NEXT_PUBLIC_AZURE_BLOB_URL"          = "${azurerm_storage_account.images.primary_blob_endpoint}restaurant-images/"
