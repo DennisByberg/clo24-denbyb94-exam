@@ -1,5 +1,6 @@
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import { getRequiredEnv } from '@/lib/utils/env';
 
 // Extend NextAuth types to include user ID
 declare module 'next-auth' {
@@ -22,8 +23,8 @@ export const dynamic = 'force-dynamic';
 export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: getRequiredEnv('GOOGLE_CLIENT_ID'),
+      clientSecret: getRequiredEnv('GOOGLE_CLIENT_SECRET'),
     }),
   ],
   pages: {
@@ -31,15 +32,13 @@ export const authOptions: AuthOptions = {
   },
   callbacks: {
     async session({ session, token }) {
-      // Add user ID to session
-      if (session.user) {
-        session.user.id = token.sub!;
+      if (session.user && token.sub) {
+        session.user.id = token.sub;
       }
       return session;
     },
     async jwt({ token, user }) {
-      // Persist user ID to token on sign in
-      if (user) {
+      if (user?.id) {
         token.sub = user.id;
       }
       return token;
