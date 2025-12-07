@@ -55,6 +55,10 @@ def _decode_jwt_token(token: str) -> tuple[str, str | None, str | None]:
             token,
             settings.nextauth_secret,
             algorithms=["HS256"],
+            options={
+                "verify_exp": True,  # Verify expiration time
+                "verify_iat": True,  # Verify issued-at time
+            },
         )
         user_id: str | None = payload.get("sub")
         user_email: str | None = payload.get("email")
@@ -88,12 +92,12 @@ def _create_user(
         db.commit()
         db.refresh(user)
         return user
-    except Exception:
+    except Exception as error:
         db.rollback()
         raise HTTPException(
             status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
             detail="Failed to create user account",
-        )
+        ) from error
 
 
 # Update user email/name if changed (syncs from OAuth provider)
@@ -114,12 +118,12 @@ def _update_user_if_changed(
         try:
             db.commit()
             db.refresh(user)
-        except Exception:
+        except Exception as error:
             db.rollback()
             raise HTTPException(
                 status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
                 detail="Failed to update user account",
-            )
+            ) from error
 
 
 # FastAPI dependency: Authenticate user via NextAuth.js JWT session (cookie or Bearer token)
