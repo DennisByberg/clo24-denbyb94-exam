@@ -7,30 +7,21 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Application settings and configuration."""
 
-    # App info
+    # App Info
     app_name: str = "Ace Group API"
     app_version: str = "0.4.0"
     app_description: str = (
         "REST API for managing restaurant table bookings at ACE Group's dining venues"
     )
 
-    # Database
     database_url: str = "postgresql://user:password@localhost:5432/restaurant_db"
-
-    # Environment
     debug: bool = True
-
-    # Authentication
-    mock_auth: bool
-    nextauth_secret: str = ""  # Required for NextAuth.js session validation
-
-    # Security/CORS
-    # Accept both string (from Azure App Settings) and list (from .env)
+    mock_auth: bool = False
+    nextauth_secret: str = ""
     allowed_origins: Union[str, list[str]] = [
         "http://localhost:3000",
         "http://localhost:8000",
     ]
-
     # API
     api_prefix: str = "/api"
 
