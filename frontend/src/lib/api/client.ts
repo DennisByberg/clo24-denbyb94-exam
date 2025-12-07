@@ -1,7 +1,6 @@
 // Use empty string in production to use Next.js rewrites (same-origin)
 // Use localhost:8000 in development for direct backend calls
-const BASE_URL =
-  process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8000';
+const BASE_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8000';
 
 export class ApiError extends Error {
   constructor(
