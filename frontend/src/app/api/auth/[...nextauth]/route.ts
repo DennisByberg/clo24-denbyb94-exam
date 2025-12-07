@@ -58,7 +58,8 @@ export const authOptions: AuthOptions = {
       name: `next-auth.session-token`,
       options: {
         httpOnly: true,
-        sameSite: 'lax',
+        // Use 'none' for cross-site (Azure), 'lax' for same-site (localhost)
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
         path: '/',
         // NextAuth auto-prefixes with __Secure- when secure=true (production HTTPS)
         // Backend checks both: __Secure-next-auth.session-token (prod) and next-auth.session-token (dev)
