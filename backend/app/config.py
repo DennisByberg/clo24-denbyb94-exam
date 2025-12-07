@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     debug: bool = True
 
     # Authentication
-    mock_auth: bool = True
+    mock_auth: bool
     nextauth_secret: str = ""  # Required for NextAuth.js session validation
 
     # Security/CORS
@@ -53,4 +53,4 @@ class Settings(BaseSettings):
     )
 
 
-settings = Settings()
+settings = Settings()  # type: ignore
