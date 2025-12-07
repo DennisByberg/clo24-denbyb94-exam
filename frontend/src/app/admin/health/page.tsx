@@ -1,7 +1,6 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { apiClient } from '@/lib/api/client';
 import { Stack, SimpleGrid } from '@mantine/core';
 import {
   IconServer,
@@ -16,10 +15,14 @@ import { PageHeading } from '@/components/PageHeading/PageHeading';
 import { InfoCard } from '@/components/InfoCard/InfoCard';
 
 export default function HealthPage() {
-  // Queries
+  // Queries - use fetch directly to ensure it goes through Next.js API route
   const { data, error, isLoading } = useQuery({
     queryKey: ['health-detailed'],
-    queryFn: () => apiClient('/health/detailed'),
+    queryFn: async () => {
+      const response = await fetch('/api/health/detailed');
+      if (!response.ok) throw new Error('Failed to fetch health data');
+      return response.json();
+    },
   });
 
   const healthChecks = [
