@@ -6,11 +6,19 @@ const nextConfig: NextConfig = {
   output: 'standalone',
 
   // Proxy /api requests to backend in production to avoid cross-site cookie issues
+  // Excludes /api/auth/* which is handled by NextAuth locally
   async rewrites() {
+    const backendUrl =
+      process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+
     return [
       {
+        source: '/api/auth/:path*',
+        destination: '/api/auth/:path*', // Keep NextAuth routes local
+      },
+      {
         source: '/api/:path*',
-        destination: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000/api/:path*',
+        destination: `${backendUrl}/api/:path*`, // Proxy all other /api to backend
       },
     ];
   },
