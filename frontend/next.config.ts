@@ -20,10 +20,6 @@ const nextConfig: NextConfig = {
         destination: `${backendUrl}/health`, // Basic health check (no /api prefix)
       },
       {
-        source: '/health/detailed',
-        destination: `${backendUrl}/api/health/detailed`, // Detailed health with /api prefix
-      },
-      {
         source: '/api/:path*',
         destination: `${backendUrl}/api/:path*`, // Proxy all other /api to backend
       },
