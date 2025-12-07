@@ -97,7 +97,7 @@ resource "azurerm_linux_web_app" "backend" {
     "WEBSITES_ENABLE_APP_SERVICE_STORAGE" = "false"
     "MOCK_AUTH"                           = "false"
     "NEXTAUTH_SECRET"                     = var.nextauth_secret
-    "ALLOWED_ORIGINS"                     = "https://${var.frontend_app_service_name}.azurewebsites.net"
+    "ALLOWED_ORIGINS"                     = "https://${var.frontend_app_service_name}.azurewebsites.net,https://${var.app_service_name}.azurewebsites.net"
     "DATABASE_URL"                        = var.database_url
   }
 

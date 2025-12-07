@@ -23,6 +23,7 @@ export async function apiClient(endpoint: string, options?: RequestInit) {
   const response = await fetch(url, {
     ...options,
     headers,
+    credentials: 'include', // Send cookies for NextAuth.js session
   });
 
   if (!response.ok) {
