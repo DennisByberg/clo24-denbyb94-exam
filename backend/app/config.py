@@ -35,6 +35,17 @@ class Settings(BaseSettings):
         "http://localhost:8000",
     ]
 
+    # Validate nextauth_secret is set when not in mock auth mode
+    @field_validator("nextauth_secret")
+    @classmethod
+    def validate_nextauth_secret(cls, v: str) -> str:
+        if not v:
+            raise ValueError(
+                "NEXTAUTH_SECRET must be set in environment variables. "
+                "Generate one with: openssl rand -base64 32"
+            )
+        return v
+
     # Parse allowed_origins from string or list for Azure compatibility
     @field_validator("allowed_origins", mode="before")
     @classmethod
