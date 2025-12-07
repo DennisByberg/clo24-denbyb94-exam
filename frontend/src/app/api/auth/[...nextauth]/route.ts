@@ -36,14 +36,15 @@ export const authOptions: AuthOptions = {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   jwt: {
-    // Use HS256 (HMAC SHA256) instead of default JWE encryption
-    // This makes the token readable by backend using python-jose
+    // Use HS256 instead of default JWE encryption for backend compatibility (PyJWT)
     secret: process.env.NEXTAUTH_SECRET,
     maxAge: 30 * 24 * 60 * 60,
-    // Custom encode/decode to force HS256 instead of JWE
-    encode: async ({ secret, token }) => {
+    encode: async ({ secret, token, maxAge }) => {
       if (!secret) throw new Error('No secret provided for JWT encoding');
-      return jwt.sign(token || {}, secret, { algorithm: 'HS256' });
+      return jwt.sign(token || {}, secret, {
+        algorithm: 'HS256',
+        expiresIn: maxAge,
+      });
     },
     decode: async ({ secret, token }) => {
       if (!secret || !token) return null;
@@ -59,10 +60,12 @@ export const authOptions: AuthOptions = {
     sessionToken: {
       name: `next-auth.session-token`,
       options: {
-        httpOnly: true, // Prevent JavaScript access to cookie (security)
+        httpOnly: true,
         sameSite: 'lax',
         path: '/',
-        secure: false, // Set to false for localhost (HTTP), true in production
+        // NextAuth auto-prefixes with __Secure- when secure=true (production HTTPS)
+        // Backend checks both: __Secure-next-auth.session-token (prod) and next-auth.session-token (dev)
+        secure: process.env.NODE_ENV === 'production',
       },
     },
   },
@@ -80,7 +83,7 @@ export const authOptions: AuthOptions = {
       return token;
     },
   },
-  debug: true, // Enable debug logging
+  debug: process.env.NODE_ENV !== 'production',
 };
 
 const handler = NextAuth(authOptions);
