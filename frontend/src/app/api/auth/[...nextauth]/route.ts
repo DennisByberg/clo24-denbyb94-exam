@@ -1,5 +1,7 @@
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import jwt from 'jsonwebtoken';
+import type { JWT } from 'next-auth/jwt';
 
 // Extend NextAuth types to include user ID
 declare module 'next-auth' {
@@ -29,6 +31,41 @@ export const authOptions: AuthOptions = {
   pages: {
     signIn: '/login',
   },
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  jwt: {
+    // Use HS256 (HMAC SHA256) instead of default JWE encryption
+    // This makes the token readable by backend using python-jose
+    secret: process.env.NEXTAUTH_SECRET,
+    maxAge: 30 * 24 * 60 * 60,
+    // Custom encode/decode to force HS256 instead of JWE
+    encode: async ({ secret, token }) => {
+      if (!secret) throw new Error('No secret provided for JWT encoding');
+      return jwt.sign(token || {}, secret, { algorithm: 'HS256' });
+    },
+    decode: async ({ secret, token }) => {
+      if (!secret || !token) return null;
+      try {
+        return jwt.verify(token, secret, { algorithms: ['HS256'] }) as JWT;
+      } catch (error) {
+        console.error('[NextAuth] JWT decode error:', error);
+        return null;
+      }
+    },
+  },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true, // Prevent JavaScript access to cookie (security)
+        sameSite: 'lax',
+        path: '/',
+        secure: false, // Set to false for localhost (HTTP), true in production
+      },
+    },
+  },
   callbacks: {
     async session({ session, token }) {
       if (session.user && token.sub) {
@@ -43,6 +80,7 @@ export const authOptions: AuthOptions = {
       return token;
     },
   },
+  debug: true, // Enable debug logging
 };
 
 const handler = NextAuth(authOptions);
