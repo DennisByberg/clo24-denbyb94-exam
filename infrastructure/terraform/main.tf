@@ -207,6 +207,24 @@ resource "azurerm_key_vault_secret" "nextauth_secret" {
   depends_on = [azurerm_key_vault_access_policy.terraform]
 }
 
+# Key Vault Secret: Google OAuth Client ID
+resource "azurerm_key_vault_secret" "google_client_id" {
+  name         = "google-client-id"
+  value        = var.google_client_id
+  key_vault_id = azurerm_key_vault.main.id
+
+  depends_on = [azurerm_key_vault_access_policy.terraform]
+}
+
+# Key Vault Secret: Google OAuth Client Secret
+resource "azurerm_key_vault_secret" "google_client_secret" {
+  name         = "google-client-secret"
+  value        = var.google_client_secret
+  key_vault_id = azurerm_key_vault.main.id
+
+  depends_on = [azurerm_key_vault_access_policy.terraform]
+}
+
 # Key Vault Secret: Database URL
 resource "azurerm_key_vault_secret" "database_url" {
   name         = "database-url"
@@ -266,6 +284,8 @@ resource "azurerm_linux_web_app" "frontend" {
     "NEXTAUTH_URL"                        = "https://${var.frontend_app_service_name}.azurewebsites.net"
     "NEXT_PUBLIC_API_URL"                 = "https://${var.app_service_name}.azurewebsites.net"
     "NEXT_PUBLIC_AZURE_BLOB_URL"          = "${azurerm_storage_account.images.primary_blob_endpoint}restaurant-images/"
+    "GOOGLE_CLIENT_ID"                    = var.google_client_id
+    "GOOGLE_CLIENT_SECRET"                = var.google_client_secret
   }
 
   identity {

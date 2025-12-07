@@ -52,6 +52,14 @@ jobs:
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
+      - name: Get secrets from Azure Key Vault
+        uses: azure/CLI@v2
+        with:
+          inlineScript: |
+            echo "GOOGLE_CLIENT_ID=$(az keyvault secret show --name google-client-id --vault-name kv-ace-group --query value -o tsv)" >> $GITHUB_ENV
+            echo "GOOGLE_CLIENT_SECRET=$(az keyvault secret show --name google-client-secret --vault-name kv-ace-group --query value -o tsv)" >> $GITHUB_ENV
+            echo "NEXTAUTH_SECRET=$(az keyvault secret show --name nextauth-secret --vault-name kv-ace-group --query value -o tsv)" >> $GITHUB_ENV
+
       - name: Setup Bun
         uses: oven-sh/setup-bun@v2
         with:
@@ -71,6 +79,9 @@ jobs:
         env:
           NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
           NEXT_PUBLIC_AZURE_BLOB_URL: ${{ secrets.NEXT_PUBLIC_AZURE_BLOB_URL }}
+          GOOGLE_CLIENT_ID: ${{ env.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ env.GOOGLE_CLIENT_SECRET }}
+          NEXTAUTH_SECRET: ${{ env.NEXTAUTH_SECRET }}
         run: bun run build
 
       - name: Prepare standalone deployment

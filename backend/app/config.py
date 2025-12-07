@@ -7,43 +7,39 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class Settings(BaseSettings):
     """Application settings and configuration."""
 
-    # App info
+    # App Info
     app_name: str = "Ace Group API"
-    app_version: str = "0.3.0"
+    app_version: str = "0.4.0"
     app_description: str = (
         "REST API for managing restaurant table bookings at ACE Group's dining venues"
     )
 
-    # Database
+    # (.env) Database connection
     database_url: str = "postgresql://user:password@localhost:5432/restaurant_db"
+
+    # API Configuration
+    api_prefix: str = "/api"
 
     # Environment
     debug: bool = True
 
-    # Authentication
-    mock_auth: bool = True
-    nextauth_secret: str = ""  # Required for NextAuth.js session validation
+    # (.env) Authentication
+    mock_auth: bool = False
 
-    # Security/CORS
-    # Accept both string (from Azure App Settings) and list (from .env)
+    # (.env) NextAuth.js
+    nextauth_secret: str = ""
+
+    # (.env) Security/CORS
     allowed_origins: Union[str, list[str]] = [
         "http://localhost:3000",
         "http://localhost:8000",
     ]
 
-    # API
-    api_prefix: str = "/api"
-
+    # Parse allowed_origins from string or list for Azure compatibility
     @field_validator("allowed_origins", mode="before")
     @classmethod
     def parse_allowed_origins(cls, v):
-        """Parse allowed_origins from string or list.
-
-        Azure App Settings pass as comma-separated string,
-        but we want a list for CORS middleware.
-        """
         if isinstance(v, str):
-            # Split by comma and strip whitespace
             return [origin.strip() for origin in v.split(",")]
         return v
 

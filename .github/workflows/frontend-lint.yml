@@ -32,6 +32,3 @@ jobs:
 
       - name: Type check
         run: bunx tsc --noEmit
-
-      - name: Build check
-        run: bun run build
