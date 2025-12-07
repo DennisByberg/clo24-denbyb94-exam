@@ -11,14 +11,38 @@ export class ApiError extends Error {
   }
 }
 
+/**
+ * Get NextAuth session token from cookies
+ * This works for both localhost (HTTP) and production (HTTPS) environments
+ */
+function getSessionToken(): string | null {
+  if (typeof document === 'undefined') return null;
+
+  const cookies = document.cookie.split(';');
+  for (const cookie of cookies) {
+    const [name, value] = cookie.trim().split('=');
+    // Check for both secure and non-secure cookie names
+    if (name === '__Secure-next-auth.session-token' || name === 'next-auth.session-token') {
+      return decodeURIComponent(value);
+    }
+  }
+  return null;
+}
+
 // Centralized API client for all backend requests
 export async function apiClient(endpoint: string, options?: RequestInit) {
   const url = `${BASE_URL}${endpoint}`;
 
-  const headers = {
+  // Get session token and add to Authorization header for cross-origin requests
+  const sessionToken = getSessionToken();
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...options?.headers,
+    ...(options?.headers as Record<string, string>),
   };
+
+  if (sessionToken) {
+    headers['Authorization'] = `Bearer ${sessionToken}`;
+  }
 
   const response = await fetch(url, {
     ...options,
