@@ -32,11 +32,22 @@ async def health_check(db: Annotated[Session, Depends(get_db)]):
     # Calculate response time in milliseconds
     response_time_ms = int((time.time() - start_time) * 1000)
 
+    # Determine auth mode based on configuration
+    if settings.mock_auth:
+        auth_mode = "mock"
+    else:
+        auth_mode = "nextauth-jwt"
+
+    # Determine environment based on debug mode
+    environment = "development" if settings.debug else "production"
+
     return {
         "api_status": "healthy",
         "database_status": database_status,
-        "auth_mode": "mock" if settings.mock_auth else "azure",
+        "auth_mode": auth_mode,
         "user_count": user_count,
-        "environment": "development" if settings.mock_auth else "production",
+        "environment": environment,
+        "debug_mode": settings.debug,
+        "mock_auth": settings.mock_auth,
         "response_time_ms": response_time_ms,
     }

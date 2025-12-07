@@ -9,6 +9,8 @@ import {
   IconShieldLock,
   IconUsers,
   IconClock,
+  IconCloud,
+  IconBug,
 } from '@tabler/icons-react';
 import { PageHeading } from '@/components/PageHeading/PageHeading';
 import { InfoCard } from '@/components/InfoCard/InfoCard';
@@ -35,6 +37,16 @@ export default function HealthPage() {
       title: 'Authentication',
       icon: <IconShieldLock size={16} color="var(--mantine-color-red-6)" />,
       data: data?.auth_mode ? `${data.auth_mode} mode` : undefined,
+    },
+    {
+      title: 'Environment',
+      icon: <IconCloud size={16} color="var(--mantine-color-red-6)" />,
+      data: data?.environment,
+    },
+    {
+      title: 'Debug Mode',
+      icon: <IconBug size={16} color="var(--mantine-color-red-6)" />,
+      data: data?.debug_mode !== undefined ? (data.debug_mode ? 'Enabled' : 'Disabled') : undefined,
     },
     {
       title: 'Users',
