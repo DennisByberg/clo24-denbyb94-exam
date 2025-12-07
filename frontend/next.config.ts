@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         destination: '/api/auth/:path*', // Keep NextAuth routes local
       },
       {
+        source: '/health',
+        destination: `${backendUrl}/health`, // Proxy /health to backend (no /api prefix)
+      },
+      {
         source: '/api/:path*',
         destination: `${backendUrl}/api/:path*`, // Proxy all other /api to backend
       },

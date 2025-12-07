@@ -12,8 +12,15 @@ from app.models.user import User
 router = APIRouter(tags=["health"])
 
 
+# Basic health check for Docker/Azure (no auth required)
 @router.get("/health")
-async def health_check(db: Annotated[Session, Depends(get_db)]):
+async def basic_health_check():
+    return {"status": "healthy"}
+
+
+# Detailed health check with metrics (will require admin auth in future)
+@router.get("/health/detailed")
+async def detailed_health_check(db: Annotated[Session, Depends(get_db)]):
     start_time = time.time()
 
     try:

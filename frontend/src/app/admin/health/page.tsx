@@ -18,8 +18,8 @@ import { InfoCard } from '@/components/InfoCard/InfoCard';
 export default function HealthPage() {
   // Queries
   const { data, error, isLoading } = useQuery({
-    queryKey: ['health'],
-    queryFn: () => apiClient('/health'),
+    queryKey: ['health-detailed'],
+    queryFn: () => apiClient('/health/detailed'),
   });
 
   const healthChecks = [
