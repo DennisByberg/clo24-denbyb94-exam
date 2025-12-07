@@ -38,7 +38,11 @@ class Settings(BaseSettings):
     # Validate nextauth_secret is set when not in mock auth mode
     @field_validator("nextauth_secret")
     @classmethod
-    def validate_nextauth_secret(cls, v: str) -> str:
+    def validate_nextauth_secret(cls, v: str, info) -> str:
+        # Skip validation if mock_auth is enabled (development/testing)
+        mock_auth = info.data.get("mock_auth", False)
+        if mock_auth:
+            return v
         if not v:
             raise ValueError(
                 "NEXTAUTH_SECRET must be set in environment variables. "
