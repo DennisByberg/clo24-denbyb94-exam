@@ -1,6 +1,6 @@
 from typing import Annotated
 
-from fastapi import Cookie, Depends, HTTPException, status
+from fastapi import Cookie, Depends, Header, HTTPException, status
 from jose import JWTError, jwt
 from sqlalchemy.orm import Session
 
@@ -16,9 +16,11 @@ async def get_current_user(
     __Secure_next_auth_session_token: str | None = Cookie(
         None, alias="__Secure-next-auth.session-token"
     ),
+    authorization: str | None = Header(None),
 ) -> UserResponse:
     """
     Authenticate and retrieve the current user from NextAuth.js session.
+    Supports both Cookie-based (same-origin) and Authorization header (cross-origin) authentication.
     """
 
     # Development mode: return mock user for testing without NextAuth
@@ -41,7 +43,12 @@ async def get_current_user(
         return UserResponse.model_validate(user)
 
     # Production mode: validate NextAuth.js session token
-    session_token = __Secure_next_auth_session_token or next_auth_session_token
+    # Try Authorization header first (for cross-origin requests), then cookies (same-origin)
+    session_token = None
+    if authorization and authorization.startswith("Bearer "):
+        session_token = authorization.replace("Bearer ", "")
+    else:
+        session_token = __Secure_next_auth_session_token or next_auth_session_token
 
     if not session_token:
         raise HTTPException(
