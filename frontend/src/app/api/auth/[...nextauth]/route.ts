@@ -36,15 +36,12 @@ export const authOptions: AuthOptions = {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   jwt: {
-    // Use HS256 instead of default JWE encryption for backend compatibility (PyJWT)
     secret: process.env.NEXTAUTH_SECRET,
     maxAge: 30 * 24 * 60 * 60,
-    encode: async ({ secret, token, maxAge }) => {
+    // Use HS256 JWT instead of default JWE encryption for backend compatibility
+    encode: async ({ secret, token }) => {
       if (!secret) throw new Error('No secret provided for JWT encoding');
-      return jwt.sign(token || {}, secret, {
-        algorithm: 'HS256',
-        expiresIn: maxAge,
-      });
+      return jwt.sign(token || {}, secret, { algorithm: 'HS256' });
     },
     decode: async ({ secret, token }) => {
       if (!secret || !token) return null;

@@ -57,7 +57,6 @@ def _decode_jwt_token(token: str) -> tuple[str, str | None, str | None]:
             algorithms=["HS256"],
             options={
                 "verify_exp": True,  # Verify expiration time
-                "verify_iat": True,  # Verify issued-at time
             },
         )
         user_id: str | None = payload.get("sub")
