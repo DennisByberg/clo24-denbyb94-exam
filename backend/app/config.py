@@ -17,19 +17,19 @@ class Settings(BaseSettings):
     # (.env) Database connection
     database_url: str = "postgresql://user:password@localhost:5432/restaurant_db"
 
-    # (.env) API Configuration
+    # API Configuration
     api_prefix: str = "/api"
 
-    # (.env) Environment
+    # Environment
     debug: bool = True
 
-    # (.env) Authentication - Set to 'true' for development with mock user, 'false' for production with NextAuth
+    # (.env) Authentication
     mock_auth: bool = False
 
-    # (.env) NextAuth.js - Must match frontend NEXTAUTH_SECRET
+    # (.env) NextAuth.js
     nextauth_secret: str = ""
 
-    # (.env) Security/CORS - Comma-separated list of allowed origins
+    # (.env) Security/CORS
     allowed_origins: Union[str, list[str]] = [
         "http://localhost:3000",
         "http://localhost:8000",
@@ -49,5 +49,4 @@ class Settings(BaseSettings):
     )
 
 
-# Initialize settings from environment variables
 settings = Settings()
