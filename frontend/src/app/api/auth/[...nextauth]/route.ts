@@ -1,6 +1,5 @@
 import NextAuth, { AuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { getRequiredEnv } from '@/lib/utils/env';
 
 // Extend NextAuth types to include user ID
 declare module 'next-auth' {
@@ -23,8 +22,8 @@ export const dynamic = 'force-dynamic';
 export const authOptions: AuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: getRequiredEnv('GOOGLE_CLIENT_ID'),
-      clientSecret: getRequiredEnv('GOOGLE_CLIENT_SECRET'),
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   pages: {
