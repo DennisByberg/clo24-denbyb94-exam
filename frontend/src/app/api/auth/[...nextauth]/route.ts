@@ -1,5 +1,7 @@
 import NextAuth, { AuthOptions } from 'next-auth';
-import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google';
+import jwt from 'jsonwebtoken';
+import type { JWT } from 'next-auth/jwt';
 
 // Extend NextAuth types to include user ID
 declare module 'next-auth' {
@@ -19,72 +21,67 @@ declare module 'next-auth' {
 // Required for Next.js App Router with dynamic API routes
 export const dynamic = 'force-dynamic';
 
-// Hardcoded test users for development
-const testUsers = [
-  {
-    id: '1',
-    name: 'Test User',
-    email: 'test@example.com',
-    password: 'password123',
-  },
-  {
-    id: '2',
-    name: 'Admin User',
-    email: 'admin@example.com',
-    password: 'admin123',
-  },
-];
-
 export const authOptions: AuthOptions = {
   providers: [
-    CredentialsProvider({
-      name: 'Credentials',
-      credentials: {
-        email: { label: 'Email', type: 'email', placeholder: 'test@example.com' },
-        password: { label: 'Password', type: 'password' },
-      },
-      async authorize(credentials) {
-        if (!credentials?.email || !credentials?.password) {
-          return null;
-        }
-
-        // Find user by email and password
-        const user = testUsers.find(
-          (u) => u.email === credentials.email && u.password === credentials.password
-        );
-
-        if (user) {
-          // Return user object (without password)
-          return {
-            id: user.id,
-            name: user.name,
-            email: user.email,
-          };
-        }
-
-        return null;
-      },
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
   ],
   pages: {
     signIn: '/login',
   },
+  session: {
+    strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+  },
+  jwt: {
+    secret: process.env.NEXTAUTH_SECRET,
+    maxAge: 30 * 24 * 60 * 60,
+    // Use HS256 JWT instead of default JWE encryption for backend compatibility
+    encode: async ({ secret, token }) => {
+      if (!secret) throw new Error('No secret provided for JWT encoding');
+      return jwt.sign(token || {}, secret, { algorithm: 'HS256' });
+    },
+    decode: async ({ secret, token }) => {
+      if (!secret || !token) return null;
+      try {
+        return jwt.verify(token, secret, { algorithms: ['HS256'] }) as JWT;
+      } catch (error) {
+        console.error('[NextAuth] JWT decode error:', error);
+        return null;
+      }
+    },
+  },
+  cookies: {
+    sessionToken: {
+      name: `next-auth.session-token`,
+      options: {
+        httpOnly: true,
+        // Use 'none' for cross-site (Azure), 'lax' for same-site (localhost)
+        sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+        path: '/',
+        // NextAuth auto-prefixes with __Secure- when secure=true (production HTTPS)
+        // Backend checks both: __Secure-next-auth.session-token (prod) and next-auth.session-token (dev)
+        secure: process.env.NODE_ENV === 'production',
+      },
+    },
+  },
   callbacks: {
     async session({ session, token }) {
-      // Add user ID to session
-      if (session.user) {
-        session.user.id = token.sub!;
+      if (session.user && token.sub) {
+        session.user.id = token.sub;
       }
       return session;
     },
     async jwt({ token, user }) {
-      // Persist user ID to token on sign in
-      if (user) {
+      if (user?.id) {
         token.sub = user.id;
       }
       return token;
     },
   },
+  debug: process.env.NODE_ENV !== 'production',
 };
 
 const handler = NextAuth(authOptions);

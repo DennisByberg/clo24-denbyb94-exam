@@ -1,7 +1,6 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { apiClient } from '@/lib/api/client';
 import { Stack, SimpleGrid } from '@mantine/core';
 import {
   IconServer,
@@ -9,15 +8,21 @@ import {
   IconShieldLock,
   IconUsers,
   IconClock,
+  IconCloud,
+  IconBug,
 } from '@tabler/icons-react';
 import { PageHeading } from '@/components/PageHeading/PageHeading';
 import { InfoCard } from '@/components/InfoCard/InfoCard';
 
 export default function HealthPage() {
-  // Queries
+  // Queries - use fetch directly to ensure it goes through Next.js API route
   const { data, error, isLoading } = useQuery({
-    queryKey: ['health'],
-    queryFn: () => apiClient('/health'),
+    queryKey: ['health-detailed'],
+    queryFn: async () => {
+      const response = await fetch('/api/health/detailed');
+      if (!response.ok) throw new Error('Failed to fetch health data');
+      return response.json();
+    },
   });
 
   const healthChecks = [
@@ -35,6 +40,16 @@ export default function HealthPage() {
       title: 'Authentication',
       icon: <IconShieldLock size={16} color="var(--mantine-color-red-6)" />,
       data: data?.auth_mode ? `${data.auth_mode} mode` : undefined,
+    },
+    {
+      title: 'Environment',
+      icon: <IconCloud size={16} color="var(--mantine-color-red-6)" />,
+      data: data?.environment,
+    },
+    {
+      title: 'Debug Mode',
+      icon: <IconBug size={16} color="var(--mantine-color-red-6)" />,
+      data: data?.debug_mode !== undefined ? (data.debug_mode ? 'Enabled' : 'Disabled') : undefined,
     },
     {
       title: 'Users',

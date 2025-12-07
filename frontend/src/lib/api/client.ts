@@ -1,6 +1,7 @@
-const BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+// Use empty string in production to use Next.js rewrites (same-origin)
+// Use localhost:8000 in development for direct backend calls
+const BASE_URL = process.env.NODE_ENV === 'production' ? '' : 'http://localhost:8000';
 
-// Custom error class for API errors with status code
 export class ApiError extends Error {
   constructor(
     public status: number,
@@ -11,22 +12,22 @@ export class ApiError extends Error {
   }
 }
 
-// Centralized API client for all backend requests
+// API client with automatic cookie handling for NextAuth session
 export async function apiClient(endpoint: string, options?: RequestInit) {
   const url = `${BASE_URL}${endpoint}`;
 
-  const headers = {
+  const headers: Record<string, string> = {
     'Content-Type': 'application/json',
-    ...options?.headers,
+    ...(options?.headers as Record<string, string>),
   };
 
   const response = await fetch(url, {
     ...options,
     headers,
+    credentials: 'include', // Sends session cookies to backend
   });
 
   if (!response.ok) {
-    // Try to get error message from response body
     let errorMessage = `API error: ${response.statusText}`;
     try {
       const errorData = await response.json();
@@ -34,7 +35,7 @@ export async function apiClient(endpoint: string, options?: RequestInit) {
         errorMessage = errorData.detail;
       }
     } catch {
-      // If parsing fails, use statusText
+      // Use statusText if JSON parsing fails
     }
     throw new ApiError(response.status, errorMessage);
   }

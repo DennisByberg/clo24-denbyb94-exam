@@ -20,7 +20,7 @@ app.add_middleware(
 )
 
 # Register routers
-app.include_router(health_router)
+app.include_router(health_router)  # No prefix - available at /health
 app.include_router(auth_router, prefix=settings.api_prefix)
 app.include_router(restaurants_router, prefix=settings.api_prefix)
 app.include_router(bookings_router, prefix=settings.api_prefix)

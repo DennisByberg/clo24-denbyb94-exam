@@ -64,20 +64,22 @@ jobs:
           echo "::add-mask::$DATABASE_URL"
           echo "DATABASE_URL=$DATABASE_URL" >> $GITHUB_OUTPUT
 
+      # Create minimal .env for Alembic migrations (only needs DATABASE_URL, not NEXTAUTH_SECRET)
+      - name: Create environment file for migrations
+        run: |
+          echo "MOCK_AUTH=true" > .env
+          echo "DATABASE_URL=${{ steps.get-db-url.outputs.DATABASE_URL }}" >> .env
+
       # NOTE: Running migrations before deployment has risks:
       # - If deployment fails after migrations, database is updated but code is not
       # - Concurrent deployments could cause race conditions
       # For production, consider: separate manual workflow, startup command, or blue-green deployment
       - name: Run Alembic migrations
         id: migrate
-        env:
-          DATABASE_URL: ${{ steps.get-db-url.outputs.DATABASE_URL }}
         run: uv run alembic upgrade head
 
       - name: Rollback migration on failure
         if: failure() && steps.migrate.outcome == 'failure'
-        env:
-          DATABASE_URL: ${{ steps.get-db-url.outputs.DATABASE_URL }}
         run: |
           echo "Migration failed, attempting rollback..."
           uv run alembic downgrade -1

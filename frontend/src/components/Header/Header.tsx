@@ -192,20 +192,7 @@ export default function Header() {
               {user ? (
                 <Menu shadow={'md'} width={220}>
                   <Menu.Target>
-                    <UnstyledButton
-                      style={{
-                        padding: '6px 12px',
-                        borderRadius: 'var(--mantine-radius-md)',
-                        transition: 'all 200ms ease',
-                      }}
-                      styles={{
-                        root: {
-                          '&:hover': {
-                            backgroundColor: 'var(--mantine-color-dark-6)',
-                          },
-                        },
-                      }}
-                    >
+                    <UnstyledButton className={classes.userMenuButton}>
                       <Group gap={'xs'}>
                         {user.image ? (
                           <Avatar
@@ -217,37 +204,32 @@ export default function Header() {
                         ) : (
                           <IconUser size={18} color="var(--mantine-color-red-6)" />
                         )}
-                        <div>
-                          <Text size={'sm'} fw={500} lineClamp={1} maw={120}>
-                            {user.name}
-                          </Text>
-                        </div>
                         <IconChevronDown size={14} color="var(--mantine-color-red-6)" />
                       </Group>
                     </UnstyledButton>
                   </Menu.Target>
                   <Menu.Dropdown>
                     <Menu.Label>
-                      <Group gap={'xs'}>
+                      <Stack gap={'xs'} align={'center'}>
                         {user.image ? (
                           <Avatar
                             src={user.image}
                             alt={user.name ?? undefined}
-                            size={'sm'}
+                            size={'md'}
                             radius={'xl'}
                           />
                         ) : (
-                          <IconUser size={18} color="var(--mantine-color-red-6)" />
+                          <IconUser size={24} color="var(--mantine-color-red-6)" />
                         )}
-                        <div>
-                          <Text size={'sm'} fw={500} truncate>
+                        <div style={{ textAlign: 'center', width: '100%' }}>
+                          <Text size={'sm'} fw={500} c={'var(--mantine-color-text)'}>
                             {user.name}
                           </Text>
-                          <Text size={'xs'} c={'dimmed'} truncate>
+                          <Text size={'xs'} c={'dimmed'}>
                             {user.email}
                           </Text>
                         </div>
-                      </Group>
+                      </Stack>
                     </Menu.Label>
                     <Menu.Divider />
                     <Menu.Item
@@ -330,13 +312,13 @@ export default function Header() {
 
           {/* Mobile Bookings Dropdown */}
           <UnstyledButton className={classes.mobileDropdownButton} onClick={toggleLinks}>
-            <Center inline>
-              <IconCalendar size={16} color="var(--mantine-color-red-6)" />
-              <Box component={'span'} ml={5} mr={5}>
-                Bookings
-              </Box>
+            <Group gap={'xs'} align={'center'} justify={'space-between'} style={{ flex: 1 }}>
+              <Group gap={'xs'} align={'center'}>
+                <IconCalendar size={16} color="var(--mantine-color-red-6)" />
+                <span>Bookings</span>
+              </Group>
               {linksOpened ? <IconChevronUp size={16} /> : <IconChevronDown size={16} />}
-            </Center>
+            </Group>
           </UnstyledButton>
           <Collapse in={linksOpened}>
             {bookingLinks.map((item) => (

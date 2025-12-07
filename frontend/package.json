@@ -1,6 +1,6 @@
 {
   "name": "frontend",
-  "version": "0.2.1",
+  "version": "0.5.0",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -22,6 +22,7 @@
     "@tabler/icons-react": "^3.35.0",
     "@tanstack/react-query": "5.90.12",
     "canvas-confetti": "^1.9.4",
+    "jsonwebtoken": "^9.0.3",
     "next": "16.0.7",
     "next-auth": "^4.24.13",
     "react": "19.2.1",
@@ -29,6 +30,7 @@
   },
   "devDependencies": {
     "@types/canvas-confetti": "^1.9.0",
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "24.10.1",
     "@types/react": "19.2.7",
     "@types/react-dom": "19.2.3",

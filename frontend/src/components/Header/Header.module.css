@@ -62,6 +62,24 @@
 }
 
 /* ============================================================================
+   USER MENU BUTTON
+   ============================================================================ */
+
+.userMenuButton {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 6px 12px;
+  border-radius: var(--mantine-radius-md);
+  transition: background-color 200ms ease;
+  color: var(--mantine-color-text);
+}
+
+.userMenuButton:hover {
+  background-color: var(--mantine-color-dark-6);
+}
+
+/* ============================================================================
    MOBILE MENU STYLES
    ============================================================================ */
 
@@ -75,6 +93,13 @@
   color: var(--mantine-color-white);
   font-weight: 500;
   font-size: var(--mantine-font-size-sm);
+  transition: all 200ms ease;
+  border-radius: var(--mantine-radius-sm);
+}
+
+.mobileDropdownButton:hover {
+  background-color: var(--mantine-color-dark-6);
+  color: var(--mantine-color-dark-1);
 }
 
 /* ============================================================================
@@ -86,10 +111,20 @@
   .link {
     height: 42px;
     width: 100%;
+    transition: background-color 200ms ease;
+    border-radius: var(--mantine-radius-sm);
+  }
+
+  .link:hover {
+    background-color: var(--mantine-color-dark-6);
   }
 
   /* Hide animated border on mobile */
   .link::after {
     display: none;
+  }
+
+  .subLink:hover {
+    background-color: var(--mantine-color-dark-7);
   }
 }
