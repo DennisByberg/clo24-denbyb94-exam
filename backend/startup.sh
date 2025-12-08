@@ -27,10 +27,35 @@ fi
 echo "Installing dependencies with UV..."
 uv sync --frozen
 
-# Run Alembic migrations (optional - can be done in GitHub Actions instead)
-# Uncomment if you want migrations to run on startup:
-# echo "Running database migrations..."
-# uv run alembic upgrade head
+# Run Alembic migrations
+echo "Running database migrations..."
+uv run alembic upgrade head
+
+# Run seed script if RUN_SEED_ON_STARTUP is set to "true"
+if [ "$RUN_SEED_ON_STARTUP" = "true" ]; then
+    echo "RUN_SEED_ON_STARTUP is enabled - seeding database..."
+    uv run python -m app.db.seed_restaurant_data
+    echo "✓ Database seeded successfully"
+    
+    # Automatically disable seeding for future restarts
+    echo "Disabling RUN_SEED_ON_STARTUP for future restarts..."
+    if [ -n "$WEBSITE_SITE_NAME" ] && [ -n "$WEBSITE_RESOURCE_GROUP" ]; then
+        # Running in Azure App Service - disable via Azure CLI
+        if command -v az &> /dev/null; then
+            az webapp config appsettings set \
+                --name "$WEBSITE_SITE_NAME" \
+                --resource-group "$WEBSITE_RESOURCE_GROUP" \
+                --settings RUN_SEED_ON_STARTUP=false \
+                --output none 2>/dev/null && echo "✓ Auto-disabled seeding for next restart" || echo "⚠ Could not auto-disable (run manually if needed)"
+        else
+            echo "⚠ Azure CLI not available - seeding will run on next restart"
+        fi
+    else
+        echo "⚠ Not running in Azure App Service - skipping auto-disable"
+    fi
+else
+    echo "Skipping database seeding (RUN_SEED_ON_STARTUP not set to 'true')"
+fi
 
 # Start the application
 echo "Starting FastAPI application..."
