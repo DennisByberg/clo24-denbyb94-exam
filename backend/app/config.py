@@ -9,7 +9,7 @@ class Settings(BaseSettings):
 
     # App Info
     app_name: str = "Ace Group API"
-    app_version: str = "0.4.0"
+    app_version: str = "1.0.1"
     app_description: str = (
         "REST API for managing restaurant table bookings at ACE Group's dining venues"
     )

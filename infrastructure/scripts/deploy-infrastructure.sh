@@ -86,6 +86,14 @@ echo "  Triggering frontend deployment workflow..."
 gh workflow run deploy-frontend.yml --ref dev 2>/dev/null && echo "  ✓ Frontend deployment triggered" || echo "  ⚠ Failed to trigger frontend (run manually: gh workflow run deploy-frontend.yml --ref dev)"
 
 echo ""
+echo "Step 8: Enabling database seeding for first startup..."
+az webapp config appsettings set \
+  --name app-ace-group-backend \
+  --resource-group rg-ace-group \
+  --settings RUN_SEED_ON_STARTUP=true \
+  --output none 2>/dev/null && echo "  ✓ Database seeding enabled (will auto-disable after first run)" || echo "  ⚠ Failed to set seeding flag (may need manual setup)"
+
+echo ""
 echo "========================================="
 echo "✓ Infrastructure deployed successfully!"
 echo "========================================="
@@ -96,6 +104,7 @@ echo "  - Service Principal: ✓ Permissions configured"
 echo "  - Restaurant images: ✓ Uploaded"
 echo "  - Backend deployment: Triggered (check GitHub Actions)"
 echo "  - Frontend deployment: Triggered (check GitHub Actions)"
+echo "  - Database seeding: ✓ Enabled for first startup"
 echo ""
 echo "Monitor deployments:"
 echo "  gh run list --workflow=deploy-backend.yml"
