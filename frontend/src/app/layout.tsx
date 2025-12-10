@@ -17,7 +17,7 @@ export const metadata = {
   title: {
     default: 'Ace Group',
   },
-  description: 'Full-stack booking platform for ESS Group facility management',
+  description: 'Ace Group Booking Platform',
   icons: {
     icon: '/favicon.ico',
   },
